@@ -1,0 +1,608 @@
+{
+   "Acorn squash": {
+      "price": 1.2136,
+      "cupEQ": 0.4519,
+      "unit": "pounds",
+      "yield": 0.4586
+   },
+   "Artichoke": {
+      "price": 2.4703,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 0.375
+   },
+   "Asparagus": {
+      "price": 6.8212,
+      "cupEQ": 0.3968,
+      "unit": "pounds",
+      "yield": 1.0335
+   },
+   "Avocados": {
+      "price": 2.6737,
+      "cupEQ": 0.3197,
+      "unit": "pounds",
+      "yield": 0.7408
+   },
+   "Black beans": {
+      "price": 1.525,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.4692
+   },
+   "Blackeye peas": {
+      "price": 1.9265,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.5397
+   },
+   "Broccoli florets": {
+      "price": 2.9162,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Broccoli heads": {
+      "price": 3.082,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 0.78
+   },
+   "Broccoli": {
+      "price": 2.3458,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 0.8818
+   },
+   "Brussels sprouts": {
+      "price": 2.5949,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 0.96
+   },
+   "Butternut squash": {
+      "price": 1.2691,
+      "cupEQ": 0.4519,
+      "unit": "pounds",
+      "yield": 0.714
+   },
+   "Cabbage, green": {
+      "price": 0.797,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.7788
+   },
+   "Cabbage, red": {
+      "price": 1.2604,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.7791
+   },
+   "Carrots, cooked whole": {
+      "price": 0.9761,
+      "cupEQ": 0.3197,
+      "unit": "pounds",
+      "yield": 0.8158
+   },
+   "Carrots, raw whole": {
+      "price": 0.9761,
+      "cupEQ": 0.2756,
+      "unit": "pounds",
+      "yield": 0.89
+   },
+   "Carrots, baby": {
+      "price": 1.3507,
+      "cupEQ": 0.2756,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Carrots": {
+      "price": 1.7277,
+      "cupEQ": 0.3197,
+      "unit": "pounds",
+      "yield": 0.98
+   },
+   "Cauliflower florets": {
+      "price": 3.8022,
+      "cupEQ": 0.2756,
+      "unit": "pounds",
+      "yield": 0.9702
+   },
+   "Cauliflower heads": {
+      "price": 2.1841,
+      "cupEQ": 0.2756,
+      "unit": "pounds",
+      "yield": 0.8926
+   },
+   "Cauliflower": {
+      "price": 2.3974,
+      "cupEQ": 0.2756,
+      "unit": "pounds",
+      "yield": 0.9304
+   },
+   "Celery, trimmed bunches": {
+      "price": 1.1637,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 0.73
+   },
+   "Celery sticks": {
+      "price": 2.4941,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Collard greens": {
+      "price": 2.3512,
+      "cupEQ": 0.3638,
+      "unit": "pounds",
+      "yield": 0.8818
+   },
+   "Corn": {
+      "price": 1.6889,
+      "cupEQ": 0.3638,
+      "unit": "pounds",
+      "yield": 0.963
+   },
+   "Cucumbers with peel": {
+      "price": 1.2473,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 0.97
+   },
+   "Cucumbers without peel": {
+      "price": 1.2473,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 0.73
+   },
+   "Great northern beans": {
+      "price": 1.7202,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.4692
+   },
+   "Green beans": {
+      "price": 1.9983,
+      "cupEQ": 0.2976,
+      "unit": "pounds",
+      "yield": 0.903
+   },
+   "Green peas": {
+      "price": 1.996,
+      "cupEQ": 0.3527,
+      "unit": "pounds",
+      "yield": 0.8924
+   },
+   "Green peppers": {
+      "price": 1.4789,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 0.82
+   },
+   "Kale": {
+      "price": 2.2983,
+      "cupEQ": 0.3638,
+      "unit": "pounds",
+      "yield": 0.8995
+   },
+   "Kidney beans": {
+      "price": 1.9176,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.4692
+   },
+   "Lentils": {
+      "price": 1.839,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.4692
+   },
+   "Lettuce, iceberg": {
+      "price": 1.2512,
+      "cupEQ": 0.2425,
+      "unit": "pounds",
+      "yield": 0.95
+   },
+   "Lettuce, romaine, heads": {
+      "price": 2.3074,
+      "cupEQ": 0.2094,
+      "unit": "pounds",
+      "yield": 0.94
+   },
+   "Lettuce, romaine, hearts": {
+      "price": 3.2802,
+      "cupEQ": 0.2094,
+      "unit": "pounds",
+      "yield": 0.85
+   },
+   "Lima beans": {
+      "price": 2.3933,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.5397
+   },
+   "Mixed vegetables, peas & carrots": {
+      "price": 1.8433,
+      "cupEQ": 0.3392,
+      "unit": "pounds",
+      "yield": 0.99
+   },
+   "Mixed vegetables, carrots, peas, corn, green beans": {
+      "price": 1.7859,
+      "cupEQ": 0.334,
+      "unit": "pounds",
+      "yield": 0.97
+   },
+   "Mixed vegetables, broccoli, cauliflower, carrots": {
+      "price": 2.1538,
+      "cupEQ": 0.3105,
+      "unit": "pounds",
+      "yield": 0.97
+   },
+   "Mushrooms, whole": {
+      "price": 3.8929,
+      "cupEQ": 0.1543,
+      "unit": "pounds",
+      "yield": 0.97
+   },
+   "Mushrooms, sliced": {
+      "price": 3.9224,
+      "cupEQ": 0.1543,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Mustard greens": {
+      "price": 2.4324,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.7478
+   },
+   "Navy beans": {
+      "price": 1.6073,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.4692
+   },
+   "Okra": {
+      "price": 2.2528,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.8995
+   },
+   "Onions": {
+      "price": 1.1062,
+      "cupEQ": 0.3527,
+      "unit": "pounds",
+      "yield": 0.9
+   },
+   "Pinto beans": {
+      "price": 1.4173,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 2.4692
+   },
+   "Potatoes": {
+      "price": 0.8166,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 0.8113
+   },
+   "Potatoes, french fries": {
+      "price": 1.9018,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 0.776
+   },
+   "Radish": {
+      "price": 1.8126,
+      "cupEQ": 0.2756,
+      "unit": "pounds",
+      "yield": 0.9
+   },
+   "Red peppers": {
+      "price": 1.8742,
+      "cupEQ": 0.2646,
+      "unit": "pounds",
+      "yield": 0.82
+   },
+   "Spinach, boiled": {
+      "price": 4.1214,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.77
+   },
+   "Spinach, eaten raw": {
+      "price": 4.1214,
+      "cupEQ": 0.1543,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Spinach": {
+      "price": 2.2796,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.776
+   },
+   "Sweet potatoes": {
+      "price": 1.1565,
+      "cupEQ": 0.4409,
+      "unit": "pounds",
+      "yield": 0.8818
+   },
+   "Tomatoes, grape & cherry": {
+      "price": 3.8729,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.91
+   },
+   "Tomatoes, roma & plum": {
+      "price": 1.2453,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.91
+   },
+   "Tomatoes, large round": {
+      "price": 2.1868,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.91
+   },
+   "Turnip greens": {
+      "price": 2.5169,
+      "cupEQ": 0.3527,
+      "unit": "pounds",
+      "yield": 0.776
+   },
+   "Zucchini": {
+      "price": 1.6359,
+      "cupEQ": 0.3968,
+      "unit": "pounds",
+      "yield": 0.7695
+   },
+   "Apples": {
+      "price": 1.8541,
+      "cupEQ": 0.2425,
+      "unit": "pounds",
+      "yield": 0.9
+   },
+   "Apples, ready-to-drink": {
+      "price": 0.8699,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Apples, frozen concentrate": {
+      "price": 0.6086,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Apricots": {
+      "price": 7.6611,
+      "cupEQ": 0.1433,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Bananas": {
+      "price": 0.5971,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.64
+   },
+   "Berries, mixed": {
+      "price": 4.2673,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Blackberries": {
+      "price": 4.8277,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Blueberries": {
+      "price": 3.821,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Cantaloupe": {
+      "price": 0.7523,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.51
+   },
+   "Cherries": {
+      "price": 4.6632,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 0.92
+   },
+   "Clementines": {
+      "price": 1.5811,
+      "cupEQ": 0.463,
+      "unit": "pounds",
+      "yield": 0.77
+   },
+   "Cranberries": {
+      "price": 5.0828,
+      "cupEQ": 0.1232,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Dates": {
+      "price": 5.7499,
+      "cupEQ": 0.1653,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Figs": {
+      "price": 7.3233,
+      "cupEQ": 0.1653,
+      "unit": "pounds",
+      "yield": 0.96
+   },
+   "Grapefruit": {
+      "price": 1.4444,
+      "cupEQ": 0.463,
+      "unit": "pounds",
+      "yield": 0.49
+   },
+   "Grapefruit, ready-to-drink": {
+      "price": 1.1935,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Grapes": {
+      "price": 2.0363,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.96
+   },
+   "Grapes (raisins)": {
+      "price": 3.9936,
+      "cupEQ": 0.1653,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Grapes, ready-to-drink": {
+      "price": 1.0509,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Grapes, frozen concentrate": {
+      "price": 0.7524,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Honeydew": {
+      "price": 1.1589,
+      "cupEQ": 0.3748,
+      "unit": "pounds",
+      "yield": 0.46
+   },
+   "Kiwi": {
+      "price": 2.6064,
+      "cupEQ": 0.3858,
+      "unit": "pounds",
+      "yield": 0.76
+   },
+   "Mangoes": {
+      "price": 10.3035,
+      "cupEQ": 0.1253,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Nectarines": {
+      "price": 2.3721,
+      "cupEQ": 0.3197,
+      "unit": "pounds",
+      "yield": 0.91
+   },
+   "Oranges": {
+      "price": 1.4624,
+      "cupEQ": 0.4079,
+      "unit": "pounds",
+      "yield": 0.68
+   },
+   "Oranges, ready-to-drink": {
+      "price": 1.0572,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Oranges, frozen concentrate": {
+      "price": 0.7338,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Papaya": {
+      "price": 7.4854,
+      "cupEQ": 0.1543,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Peaches": {
+      "price": 3.6058,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Pears": {
+      "price": 1.8472,
+      "cupEQ": 0.3638,
+      "unit": "pounds",
+      "yield": 0.9
+   },
+   "Pineapple": {
+      "price": 7.0133,
+      "cupEQ": 0.1543,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Pineapple, ready-to-drink": {
+      "price": 1.2243,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Pineapple, frozen concentrate": {
+      "price": 0.7256,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Plum": {
+      "price": 2.5259,
+      "cupEQ": 0.3638,
+      "unit": "pounds",
+      "yield": 0.94
+   },
+   "Plum (prunes)": {
+      "price": 6.3293,
+      "cupEQ": 0.1874,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Plum (prune), ready-to-drink": {
+      "price": 1.6988,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Pomegranate": {
+      "price": 2.4672,
+      "cupEQ": 0.3417,
+      "unit": "pounds",
+      "yield": 0.56
+   },
+   "Pomegranate, ready-to-drink": {
+      "price": 3.2788,
+      "cupEQ": 8.0,
+      "unit": "fluid ounces",
+      "yield": 1.0
+   },
+   "Raspberries": {
+      "price": 6.159,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Strawberries": {
+      "price": 3.3421,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 1.0
+   },
+   "Watermelon": {
+      "price": 0.382,
+      "cupEQ": 0.3307,
+      "unit": "pounds",
+      "yield": 0.52
+   }
+}
