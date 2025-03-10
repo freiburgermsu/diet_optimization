@@ -6,7 +6,7 @@
    },
    "Total Fiber": {
       "low_bound": "41",
-      "high_bound": Infinity,
+      "high_bound": "10000",
       "units": "grams"
    },
    "Protein": {
@@ -24,25 +24,30 @@
       "high_bound": "33.3",
       "units": "grams"
    },
-   "\u03b1-Linolenic Acid": {
+   "Linolenic Acid": {
       "low_bound": "1.6",
-      "high_bound": Infinity,
+      "high_bound": "10000",
       "units": "grams"
    },
    "Linoleic Acid": {
       "low_bound": "17",
-      "high_bound": Infinity,
+      "high_bound": "10000",
       "units": "grams"
    },
    "Dietary Cholesterol": {
       "low_bound": "0",
       "high_bound": "800",
-      "units": "milligrams"
+      "units": "mg"
    },
    "Total Water": {
       "low_bound": "0.37",
       "high_bound": "3.7",
       "units": "liters"
+   },
+   "Energy": {
+      "low_bound": 2400,
+      "high_bound": 3200,
+      "units": "kcal"
    },
    "Vitamin A": {
       "low_bound": "900",
@@ -71,27 +76,27 @@
    },
    "Vitamin K": {
       "low_bound": "120",
-      "high_bound": "inf",
+      "high_bound": "10000",
       "units": "mcg"
    },
    "Thiamin": {
       "low_bound": "1.2",
-      "high_bound": "inf",
+      "high_bound": "10000",
       "units": "mg"
    },
    "Vitamin B12": {
       "low_bound": "2.4",
-      "high_bound": "inf",
+      "high_bound": "10000",
       "units": "mcg"
    },
    "Riboflavin": {
       "low_bound": "1.3",
-      "high_bound": "inf",
+      "high_bound": "10000",
       "units": "mg"
    },
    "Folate": {
       "low_bound": "400",
-      "high_bound": "1,000",
+      "high_bound": "3000",
       "units": "mcg"
    },
    "Niacin": {
@@ -100,24 +105,24 @@
       "units": "mg"
    },
    "Choline": {
-      "low_bound": "0.55",
-      "high_bound": "3.5",
-      "units": "g"
+      "low_bound": "550",
+      "high_bound": "10000",
+      "units": "mg"
    },
    "Pantothenic Acid": {
       "low_bound": "5",
-      "high_bound": "inf",
+      "high_bound": "10000",
       "units": "mg"
    },
    "Biotin": {
       "low_bound": "30",
-      "high_bound": "inf",
+      "high_bound": "10000",
       "units": "mcg"
    },
    "Carotenoids": {
       "low_bound": "0",
-      "high_bound": "inf",
-      "units": "milligrams"
+      "high_bound": "100000",
+      "units": "mg"
    },
    "Calcium": {
       "low_bound": "1,000",
@@ -135,9 +140,9 @@
       "units": "mcg"
    },
    "Copper": {
-      "low_bound": "900",
-      "high_bound": "10,000",
-      "units": "mcg"
+      "low_bound": "0.9",
+      "high_bound": "10",
+      "units": "mg"
    },
    "Fluoride": {
       "low_bound": "4",
@@ -156,7 +161,7 @@
    },
    "Magnesium": {
       "low_bound": "400",
-      "high_bound": "350",
+      "high_bound": "10000",
       "units": "mg"
    },
    "Manganese": {
@@ -170,13 +175,13 @@
       "units": "mcg"
    },
    "Phosphorus": {
-      "low_bound": "0.7",
-      "high_bound": "4",
-      "units": "g"
+      "low_bound": "700",
+      "high_bound": "4000",
+      "units": "mg"
    },
    "Potassium": {
       "low_bound": "3,400",
-      "high_bound": "inf",
+      "high_bound": "15000",
       "units": "mg"
    },
    "Selenium": {

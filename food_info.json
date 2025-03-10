@@ -90,14 +90,9 @@
       "yield": 0.51
    },
    "Carrots": {
-      "price": 1.2266333333333332,
-      "cupEQ": 0.305,
-      "yield": 0.8952666666666667
-   },
-   "Carrots, baby": {
-      "price": 1.3507,
-      "cupEQ": 0.2756,
-      "yield": 1.0
+      "price": 1.25765,
+      "cupEQ": 0.29764999999999997,
+      "yield": 0.92145
    },
    "Cauliflower": {
       "price": 2.794566666666667,
@@ -343,5 +338,10 @@
       "price": 1.6359,
       "cupEQ": 0.3968,
       "yield": 0.7695
+   },
+   "Flax seeds": {
+      "price": 3.86,
+      "cupEQ": 0.37,
+      "yield": 1
    }
 }
