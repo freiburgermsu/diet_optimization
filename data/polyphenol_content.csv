@@ -1,0 +1,36 @@
+food_name,polyphenol_mg_per_100g,source,notes
+# Polyphenol content (Phenol-Explorer 3.6, http://phenol-explorer.eu/).
+# Values are total polyphenol content by Folin method, mg per 100g
+# edible portion. Preferred over USDA ORAC (withdrawn 2012 as non-
+# predictive of in-vivo antioxidant activity) per user decision.
+#
+# Full database has 500+ foods; this starter covers the foods currently
+# in food_info.json. Add more rows as food coverage grows (#1, #4).
+#
+# Source column: "PE3.6" = Phenol-Explorer 3.6 direct entry;
+#                "PE3.6/approx" = mapped to closest PE entry by family.
+Blueberries,836,PE3.6,"Highbush, raw"
+Strawberries,235,PE3.6,raw
+Apples,136,PE3.6,"Gala, with peel, raw"
+Oranges,279,PE3.6,raw
+Broccoli,75,PE3.6,raw
+Spinach,119,PE3.6,raw
+Kale,185,PE3.6,raw
+Red Cabbage,171,PE3.6,raw
+Onions,70,PE3.6,yellow raw
+Carrots,18,PE3.6,raw
+Celery,29,PE3.6,raw
+Tomatoes,18,PE3.6,raw
+Bell Peppers,36,PE3.6,"green, raw"
+Cauliflower,26,PE3.6,raw
+Pinto Beans,170,PE3.6,cooked
+Black Beans,191,PE3.6,cooked
+Lentils,168,PE3.6,cooked
+Flax seeds,1528,PE3.6,"linseed, raw"
+Walnuts,1576,PE3.6,raw
+Almonds,187,PE3.6,raw
+Oats,139,PE3.6,raw
+Brown Rice,12,PE3.6/approx,"closest match: whole grain"
+White Rice,0,PE3.6,refined
+Banana,33,PE3.6,raw
+Cucumbers,6,PE3.6,raw
