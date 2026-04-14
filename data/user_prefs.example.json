@@ -1,0 +1,21 @@
+{
+  "_comment": "Example user preferences. Copy to user_prefs.json and edit.",
+
+  "blacklist": [
+    "Shellfish",
+    "Peanuts"
+  ],
+
+  "whitelist": [
+    "Blueberries"
+  ],
+
+  "whitelist_min_grams": {
+    "Blueberries": 125
+  },
+
+  "allergen_tags": [
+    "gluten",
+    "dairy"
+  ]
+}
