@@ -1,0 +1,42 @@
+# Supplements modeled as LP variables with a nutrient vector and a per-dose
+# price. Flag `counts_against_volume: false` keeps them out of the 5-20 cup
+# volume constraint and any #11 group caps.
+#
+# Sourced from Centrum Adult Multivitamin (Pfizer) label, US formulation,
+# Q4 2024. Multivitamin brand nutrient content varies ~±20% — re-capture
+# when bumping the product.
+
+centrum_adult:
+  product: "Centrum Adult Multivitamin"
+  source_url: "https://www.centrum.com/products/centrum-adult"
+  label_date: "2024-10-01"
+  price_per_dose: 0.10   # $/tablet, retail bulk ~$10 / 100 tablets
+  dose_unit: "tablet"
+  counts_against_volume: false
+  # nutrient vector per dose (one tablet), units match nutrition.json
+  nutrients:
+    Vitamin A: 1050            # mcg RAE
+    Vitamin C: 90              # mg
+    Vitamin D: 25              # mcg (1000 IU)
+    Vitamin E: 13.5            # mg
+    Vitamin K: 60              # mcg
+    Thiamin: 1.2               # mg
+    Riboflavin: 1.3            # mg
+    Niacin: 16                 # mg NE
+    Vitamin B6: 2              # mg
+    Folate: 667                # mcg DFE
+    Vitamin B12: 25            # mcg
+    Biotin: 40                 # mcg
+    Pantothenic Acid: 15       # mg
+    Calcium: 220               # mg
+    Iron: 8                    # mg
+    Phosophorous: 20           # mg   (matches spelling in food_physiology_mapping.json)
+    Iodine: 150                # mcg
+    Magnesium: 100             # mg
+    Zinc: 11                   # mg
+    Selenium: 55               # mcg
+    Copper: 0.5                # mg
+    Manganese: 2.3             # mg
+    Chromium: 35               # mcg
+    Molybdenum: 45             # mcg
+    Choline: 20                # mg
