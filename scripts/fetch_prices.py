@@ -34,6 +34,7 @@ import sys
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 STALENESS_THRESHOLD_DAYS = 30
@@ -128,6 +129,15 @@ _SEGMENT_TERMINATORS = {
     "whole", "sliced", "chopped", "diced",
     "prepared", "unprepared",
 }
+
+
+def _slugify(term: str) -> str:
+    """Filesystem-safe slug: lowercase, spaces→'_', drops non [a-z0-9_-]."""
+    import re
+    s = term.lower().strip()
+    s = re.sub(r"\s+", "_", s)
+    s = re.sub(r"[^a-z0-9_-]+", "", s)
+    return s or "_unnamed"
 
 
 def _is_nutrient_header(segment: str) -> bool:
@@ -238,21 +248,54 @@ def get_access_token(cfg: RetailerConfig) -> str:
     return resp.json()["access_token"]
 
 
-def search_products(token: str, term: str, location_id: str, limit: int = 50) -> list[dict]:
-    import requests
+def search_products(
+    token: str,
+    term: str,
+    location_id: str,
+    limit: int = 50,
+    max_retries: int = 3,
+    backoff_base_sec: float = 2.0,
+) -> list[dict]:
+    """Search products, retrying transient 5xx / timeout errors.
 
-    resp = requests.get(
-        PRODUCT_SEARCH_URL,
-        headers={"Authorization": f"Bearer {token}"},
-        params={
-            "filter.term": term,
-            "filter.locationId": location_id,
-            "filter.limit": str(limit),
-        },
-        timeout=30,
-    )
-    resp.raise_for_status()
-    return resp.json().get("data", [])
+    Returns [] on persistent failure after `max_retries` attempts, with
+    a warning to stderr — the caller can continue with the next term
+    rather than losing a whole scrape to one bad response.
+    """
+    import requests
+    import time
+
+    last_exc: Exception | None = None
+    for attempt in range(max_retries):
+        try:
+            resp = requests.get(
+                PRODUCT_SEARCH_URL,
+                headers={"Authorization": f"Bearer {token}"},
+                params={
+                    "filter.term": term,
+                    "filter.locationId": location_id,
+                    "filter.limit": str(limit),
+                },
+                timeout=30,
+            )
+            # Retry on 5xx; raise on 4xx (won't fix with retry)
+            if 500 <= resp.status_code < 600:
+                raise requests.HTTPError(f"{resp.status_code} from Kroger", response=resp)
+            resp.raise_for_status()
+            return resp.json().get("data", [])
+        except (requests.Timeout, requests.ConnectionError, requests.HTTPError) as e:
+            last_exc = e
+            if attempt < max_retries - 1:
+                delay = backoff_base_sec * (2 ** attempt)
+                print(
+                    f"  [retry {attempt + 1}/{max_retries}] {term!r}: {e}; "
+                    f"sleeping {delay:.1f}s",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
+            continue
+    print(f"  [skip] {term!r}: {last_exc}", file=sys.stderr)
+    return []
 
 
 def normalize_product(raw: dict, location_id: str) -> dict | None:
@@ -341,6 +384,18 @@ def main() -> int:
     )
     fetch.add_argument("--output", default="prices_raw.json")
     fetch.add_argument("--rate-limit-sec", type=float, default=1.0)
+    fetch.add_argument(
+        "--cache-dir", default=None,
+        help="directory to cache per-term results. Default: "
+             "cache/kroger-<location_id>/. A cached term is skipped on "
+             "re-run — so an interrupted scrape resumes by just re-running "
+             "the same command.",
+    )
+    fetch.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="disable per-term caching (forces every term to hit the API)",
+    )
 
     find = sub.add_parser("find-location", help="look up store IDs near a zip code")
     find.add_argument("--zip", required=True, help="5-digit US zip code")
@@ -395,16 +450,52 @@ def main() -> int:
     else:
         terms = [t.strip() for t in args.terms.split(",") if t.strip()]
 
-    products: list[dict] = []
-    for term in terms:
-        print(f"searching: {term}", file=sys.stderr)
-        for raw in search_products(token, term, cfg.location_id):
-            normalized = normalize_product(raw, cfg.location_id)
-            if normalized:
-                normalized["search_term"] = term  # provenance for downstream join
-                products.append(normalized)
-        time.sleep(args.rate_limit_sec)
+    # Per-term cache: each search term writes its own JSON file. Re-runs
+    # skip terms that already have a cache hit. At the end, we merge all
+    # cache files into the single --output file.
+    if args.no_cache:
+        cache_dir = None
+    else:
+        cache_dir = Path(args.cache_dir) if args.cache_dir else Path(
+            f"cache/kroger-{cfg.location_id}"
+        )
+        cache_dir.mkdir(parents=True, exist_ok=True)
 
+    try:
+        for i, term in enumerate(terms, start=1):
+            cache_file = cache_dir / f"{_slugify(term)}.json" if cache_dir else None
+            if cache_file and cache_file.exists():
+                # Cached — skip fetch
+                continue
+            print(f"[{i}/{len(terms)}] searching: {term}", file=sys.stderr)
+            hits = search_products(token, term, cfg.location_id)
+            term_products = []
+            for raw in hits:
+                normalized = normalize_product(raw, cfg.location_id)
+                if normalized:
+                    normalized["search_term"] = term
+                    term_products.append(normalized)
+            if cache_file:
+                cache_file.write_text(json.dumps({
+                    "search_term": term,
+                    "fetched_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                    "location_id": cfg.location_id,
+                    "products": term_products,
+                }, indent=2))
+            time.sleep(args.rate_limit_sec)
+    except KeyboardInterrupt:
+        print("\n[interrupted] per-term caches preserved; re-run to resume", file=sys.stderr)
+        return 130
+
+    # Merge all cache files (or in-memory results if --no-cache) into --output.
+    products: list[dict] = []
+    if cache_dir:
+        for term in terms:
+            cache_file = cache_dir / f"{_slugify(term)}.json"
+            if cache_file.exists():
+                products.extend(json.loads(cache_file.read_text()).get("products", []))
+
+    out_path = Path(args.output)
     out: dict[str, Any] = {
         "fetched_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "retailer": "kroger",
@@ -412,9 +503,16 @@ def main() -> int:
         "terms": terms,
         "products": products,
     }
-    with open(args.output, "w") as f:
-        json.dump(out, f, indent=2)
-    print(f"wrote {len(products)} products to {args.output}", file=sys.stderr)
+    out_path.write_text(json.dumps(out, indent=2))
+    cached_terms = sum(
+        1 for t in terms
+        if cache_dir and (cache_dir / f"{_slugify(t)}.json").exists()
+    ) if cache_dir else 0
+    print(
+        f"merged {cached_terms}/{len(terms)} cached terms → {len(products)} "
+        f"products → {out_path}",
+        file=sys.stderr,
+    )
     return 0
 
 
