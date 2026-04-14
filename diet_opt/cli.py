@@ -8,13 +8,14 @@ from .data import load_pipeline_inputs, validate_bounds
 from .model import build_model
 from .overrides import apply_overrides, load_overrides
 from .report import plot_bounds, write_diet_csv
-from .solve import solve
+from .solve import explain_shadow_prices, solve
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="diet-opt")
     sub = parser.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("optimize", help="solve the LP and emit optimum_diet.csv + optimized_diet.png")
+    opt = sub.add_parser("optimize", help="solve the LP and emit optimum_diet.csv + optimized_diet.png")
+    opt.add_argument("--sensitivity", action="store_true", help="also print shadow prices (uses simplex, not exact)")
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
 
@@ -34,12 +35,18 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "optimize":
         model, _vars, _cons = build_model(food_info, food_matches, nutrition)
-        objective, primals, constraint_values = solve(model)
+        objective, primals, constraint_values, shadows = solve(
+            model, extract_duals=args.sensitivity
+        )
         write_diet_csv(primals)
         plot_bounds(constraint_values, nutrition)
         print(f"objective = ${objective:.2f}/day")
         for food, amount in sorted(primals.items(), key=lambda kv: -kv[1]):
             print(f"  {food:30s} {int(amount * 100)} g")
+        if shadows:
+            print("\nBinding constraints (shadow prices):")
+            for line in explain_shadow_prices(shadows, nutrition):
+                print(f"  {line}")
         return 0
 
     return 0
