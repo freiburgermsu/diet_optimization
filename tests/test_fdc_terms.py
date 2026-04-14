@@ -10,15 +10,35 @@ from fetch_prices import (  # noqa: E402
 )
 
 
-def test_first_segment_taken():
+def test_plain_category_no_qualifier():
+    # segment[1] = "raw" is a terminator → just "carrots"
     assert extract_search_term("Carrots, raw whole") == "carrots"
-    assert extract_search_term("Pinto beans, mature seeds, raw") == "pinto beans"
-    assert extract_search_term("Beef, round, eye of round") == "beef"
+
+
+def test_prepends_variety_qualifier():
+    # segment[1] = "pinto" is a variety → "pinto beans"
+    assert extract_search_term("Beans, pinto, mature seeds, raw") == "pinto beans"
+    assert extract_search_term("Rice, brown, long-grain, raw") == "brown rice"
+    assert extract_search_term("Beef, ground, 85% lean, raw") == "ground beef"
+    assert extract_search_term("Chicken, breast, raw") == "breast chicken"  # inversion artifact
+
+
+def test_multi_word_qualifier_skipped_if_too_long():
+    # "broilers or fryers" → 3 words, don't prepend → just "chicken"
+    assert extract_search_term("Chicken, broilers or fryers, meat only") == "chicken"
 
 
 def test_long_fdc_research_description():
+    # segment[1] = "round" (cut name, 1 word, alpha) → "round beef"
     desc = 'Beef, round, eye of round, roast, separable lean only, trimmed to 1/8" fat, all grades, raw'
-    assert extract_search_term(desc) == "beef"
+    assert extract_search_term(desc) == "round beef"
+
+
+def test_nutrient_headed_rows_skipped():
+    assert extract_search_term("Total Fat, Ground turkey, 93% lean, raw (NY1)") is None
+    assert extract_search_term("Niacin, Chicken breast, raw") is None
+    assert extract_search_term("Cholesterol, Pork, belly, raw") is None
+    assert extract_search_term("Amino Acids, Chicken, dark meat") is None
 
 
 def test_empty_returns_none():
@@ -44,14 +64,18 @@ def test_load_from_live_file_has_many_terms():
         import pytest
         pytest.skip("live FDC JSON absent")
     terms = load_terms_from_fdc_descriptions(p)
-    assert 200 < len(terms) < 500   # currently 386, give room for future refinements
+    # Enhanced extraction yields ~700-800 terms (vs 386 with first-segment-only)
+    assert 500 < len(terms) < 1000
     assert "carrots" in terms or "carrot" in terms
     assert "beef" in terms
-    # FDC describes pinto beans as "Beans, pinto, mature seeds, raw" so the
-    # first-segment extraction captures "beans" (pinto is too specific for
-    # a retailer search anyway — Kroger's own search will surface the most
-    # relevant bean product).
-    assert "beans" in terms
+    # Variety qualifiers now land as precise search terms
+    assert "pinto beans" in terms
+    assert "brown rice" in terms
+    assert "black beans" in terms
+    assert "kidney beans" in terms
+    # And nutrient-analysis rows don't leak through
+    assert not any(t.startswith("total fat") for t in terms)
+    assert not any(t.startswith("niacin ") for t in terms)
 
 
 def test_load_normalizes_plural_duplicates(tmp_path: Path):
@@ -69,8 +93,9 @@ def test_load_normalizes_plural_duplicates(tmp_path: Path):
 
 
 def test_load_without_plural_normalization(tmp_path: Path):
+    # With enhanced extraction, "Apples, Gala" → "gala apples" (not "apples")
     p = tmp_path / "test.json"
-    p.write_text(json.dumps({"Apple, raw": {}, "Apples, Gala": {}}))
+    p.write_text(json.dumps({"Apples, raw": {}, "Apples, Gala": {}}))
     terms = load_terms_from_fdc_descriptions(p, normalize_plurals=False)
-    assert "apple" in terms
     assert "apples" in terms
+    assert "gala apples" in terms

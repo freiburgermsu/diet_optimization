@@ -101,30 +101,66 @@ def load_terms_from_food_info(path: str) -> list[str]:
         return list(json.load(f).keys())
 
 
-# Skip keys that are FDC analysis products (amino-acid reference panels,
-# vitamin-composition studies, etc.) or ambiguous one-letter/number tokens.
-_SKIP_PREFIXES = ("amino acids",)
+# FDC research sub-sample rows start with a nutrient name rather than the
+# food category. These aren't foods — they're lab-analysis panels we need
+# to skip.
+_NUTRIENT_HEADERS = {
+    "amino acids",
+    "total fat", "saturated fat", "trans fat",
+    "cholesterol", "sugars", "total sugars", "added sugars",
+    "carbohydrate", "protein", "fiber",
+    "calcium", "iron", "magnesium", "phosphorus", "potassium",
+    "sodium", "zinc", "copper", "manganese", "selenium", "fluoride",
+    "vitamin a", "vitamin c", "vitamin d", "vitamin e", "vitamin k",
+    "vitamin b-6", "vitamin b6", "vitamin b-12", "vitamin b12",
+    "thiamin", "riboflavin", "niacin", "folate", "pantothenic acid",
+    "choline", "water", "ash", "energy", "carbohydrates",
+    "fatty acids",
+}
 _SKIP_EXACT = {"b12", "b-12", "b6", "b-6"}
+
+# Terminators: if segment[1] is one of these, don't prepend it to segment[0].
+# These are processing/state descriptors, not variety qualifiers.
+_SEGMENT_TERMINATORS = {
+    "raw", "cooked", "boiled", "roasted", "grilled", "fried", "baked",
+    "steamed", "stewed", "broiled", "sauteed",
+    "mature", "dry", "dried", "fresh", "frozen", "canned",
+    "whole", "sliced", "chopped", "diced",
+    "prepared", "unprepared",
+}
 
 
 def extract_search_term(fdc_description: str) -> str | None:
     """Turn an FDC description into a retailer-friendly search term.
 
-    Rules (in order):
-      1. Take the segment before the first comma.
-      2. Strip, lowercase.
-      3. Drop if it matches `_SKIP_PREFIXES` / `_SKIP_EXACT` (FDC analysis rows, not foods).
-      4. Return None for empties.
+    Inverts FDC's "category, qualifier" ordering:
+      "Beans, pinto, mature seeds, raw" → "pinto beans"
+      "Rice, brown, long-grain, raw"    → "brown rice"
+      "Carrots, raw whole"              → "carrots"
+      "Total Fat, Ground turkey, ..."   → None (nutrient analysis row)
 
-    Does NOT dedupe — callers that want uniqueness call `load_terms_from_fdc_descriptions`.
+    Returns None for FDC analysis rows (nutrient-headed descriptions) and
+    empty strings.
     """
     if not fdc_description:
         return None
-    head = fdc_description.split(",")[0].strip().lower()
-    if not head or head in _SKIP_EXACT:
+    segments = [s.strip().lower() for s in fdc_description.split(",")]
+    if not segments or not segments[0]:
         return None
-    if any(head.startswith(p) for p in _SKIP_PREFIXES):
+    head = segments[0]
+    if head in _NUTRIENT_HEADERS or head in _SKIP_EXACT:
         return None
+
+    # Try prepending a variety qualifier from segment[1].
+    if len(segments) >= 2:
+        q = segments[1]
+        words = q.split()
+        if (1 <= len(words) <= 2
+                and all(w.isalpha() and 3 <= len(w) <= 15 for w in words)
+                and q not in _SEGMENT_TERMINATORS
+                and words[0] not in _SEGMENT_TERMINATORS):
+            return f"{q} {head}"
+
     return head
 
 
