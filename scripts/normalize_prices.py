@@ -87,22 +87,44 @@ def price_per_100g_edible(
     return gross_per_100g / yield_factor
 
 
+def term_words_in_description(term: str, description: str) -> bool:
+    """Relevance guard: every word of the search term must appear in description.
+
+    Kroger cross-sells unrelated products (searching "broccoli" returns
+    "Cauliflower"). Without this guard, the cheapest cross-sell wins.
+    Singular/plural is naively handled by stripping trailing 's'.
+    """
+    d = (description or "").lower()
+    for word in (term or "").lower().split():
+        w = word.strip(",.")
+        if not w:
+            continue
+        # Accept plural ↔ singular ("carrots" matches "carrot")
+        stem = w[:-1] if w.endswith("s") else w
+        if w not in d and stem not in d:
+            return False
+    return True
+
+
 def select_winner_per_term(
     products: list[dict],
     filter_simple: bool = True,
+    require_term_match: bool = True,
     yields_by_term: dict[str, float] | None = None,
 ) -> dict[str, dict]:
     """Return {search_term: winning_product_with_price_per_100g}.
 
-    Selection: lowest $/100g edible among simple products; ties broken
-    by description simplicity. Search terms that have zero simple
-    products are omitted (with a diagnostic).
+    Selection: lowest $/100g edible among simple, on-topic products;
+    ties broken by description simplicity.
     """
     yields = yields_by_term or {}
     by_term: dict[str, list[dict]] = {}
     for p in products:
         term = p.get("search_term", "")
-        if filter_simple and not is_simple_product(p.get("description", "")):
+        description = p.get("description", "")
+        if filter_simple and not is_simple_product(description):
+            continue
+        if require_term_match and not term_words_in_description(term, description):
             continue
         try:
             ppg = price_per_100g_edible(
@@ -112,7 +134,7 @@ def select_winner_per_term(
             continue
         p = dict(p)  # don't mutate input
         p["price_per_100g"] = ppg
-        p["simplicity_score"] = description_simplicity_score(p.get("description", ""))
+        p["simplicity_score"] = description_simplicity_score(description)
         by_term.setdefault(term, []).append(p)
 
     winners: dict[str, dict] = {}
@@ -126,9 +148,14 @@ def select_winner_per_term(
 def build_prices_by_term(
     raw: dict,
     filter_simple: bool = True,
+    require_term_match: bool = True,
 ) -> dict[str, dict]:
     """Produce a term-keyed price table (no FDC ID join)."""
-    winners = select_winner_per_term(raw.get("products", []), filter_simple)
+    winners = select_winner_per_term(
+        raw.get("products", []),
+        filter_simple=filter_simple,
+        require_term_match=require_term_match,
+    )
     out: dict[str, dict] = {}
     fetched_at = raw.get("fetched_at")
     for term, winner in winners.items():
@@ -160,10 +187,21 @@ def main() -> int:
         action="store_true",
         help="skip the simple-product filter (for debugging only)",
     )
+    parser.add_argument(
+        "--no-term-check",
+        action="store_true",
+        help="skip the relevance check (search-term words must appear in description). "
+             "For debugging only — disabling lets cross-sells like 'Cauliflower' "
+             "win a 'broccoli' search.",
+    )
     args = parser.parse_args()
 
     raw = json.loads(Path(args.raw).read_text())
-    prices = build_prices_by_term(raw, filter_simple=not args.no_filter)
+    prices = build_prices_by_term(
+        raw,
+        filter_simple=not args.no_filter,
+        require_term_match=not args.no_term_check,
+    )
 
     total_terms = len(raw.get("terms", []))
     dropped = diagnose_dropped_terms(raw, prices)

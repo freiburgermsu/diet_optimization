@@ -9,6 +9,7 @@ from normalize_prices import (  # noqa: E402
     diagnose_dropped_terms,
     is_simple_product,
     select_winner_per_term,
+    term_words_in_description,
 )
 
 
@@ -116,6 +117,51 @@ def test_build_prices_by_term_end_to_end():
     assert out["carrots"]["raw_description"] == "Fresh Carrots"
     assert out["carrots"]["price_source"] == "kroger"
     assert abs(out["broccoli"]["price_per_100g"] - 0.50) < 0.01
+
+
+# --- Relevance (term-in-description) check ---
+
+def test_term_in_description_basic():
+    assert term_words_in_description("broccoli", "Kroger Fresh Broccoli")
+    assert not term_words_in_description("broccoli", "Kroger Cauliflower")
+
+
+def test_term_in_description_plural_singular():
+    assert term_words_in_description("carrots", "Fresh Carrot")
+    assert term_words_in_description("carrot", "Kroger Carrots")
+
+
+def test_term_in_description_multi_word():
+    assert term_words_in_description("pinto beans", "Kroger Pinto Beans")
+    assert not term_words_in_description("pinto beans", "Black Beans")   # pinto missing
+
+
+def test_term_in_description_case_insensitive():
+    assert term_words_in_description("BROCCOLI", "kroger broccoli crown")
+
+
+def test_cauliflower_does_not_win_broccoli_search():
+    """Exact bug from the user's dry-run."""
+    products = [
+        {"search_term": "broccoli", "description": "Cauliflower",
+         "price": 2.00, "package_size_g": 454},
+        {"search_term": "broccoli", "description": "Kroger Broccoli Crown",
+         "price": 3.00, "package_size_g": 454},
+    ]
+    winners = select_winner_per_term(products)
+    assert "broccoli" in winners
+    assert "Broccoli" in winners["broccoli"]["description"]
+
+
+def test_term_check_disabled_lets_crosssells_win():
+    products = [
+        {"search_term": "broccoli", "description": "Cauliflower",
+         "price": 2.00, "package_size_g": 454},
+        {"search_term": "broccoli", "description": "Kroger Broccoli Crown",
+         "price": 3.00, "package_size_g": 454},
+    ]
+    winners = select_winner_per_term(products, require_term_match=False)
+    assert winners["broccoli"]["description"] == "Cauliflower"
 
 
 def test_diagnose_flags_terms_with_results_but_no_winner():
