@@ -221,13 +221,33 @@ def main() -> int:
     find = sub.add_parser("find-location", help="look up store IDs near a zip code")
     find.add_argument("--zip", required=True, help="5-digit US zip code")
     find.add_argument("--radius", type=int, default=10, help="miles")
+    find.add_argument(
+        "--top",
+        action="store_true",
+        help="print only the nearest store's locationId (one line, no other output). "
+             "Useful for scripting: --location-id \"$(... find-location --zip X --top)\"",
+    )
 
     args = parser.parse_args()
 
     if args.cmd == "find-location":
         cfg = load_config(location_id="_ignored_for_location_lookup_")
         token = get_access_token(cfg)
-        for loc in find_locations(token, args.zip, args.radius):
+        locations = find_locations(token, args.zip, args.radius)
+        if not locations:
+            print(f"no Kroger stores within {args.radius} miles of {args.zip}", file=sys.stderr)
+            return 2
+        if args.top:
+            top = locations[0]
+            addr = top.get("address", {})
+            print(top.get("locationId"))
+            print(
+                f"# picked: {top.get('name')} at {addr.get('addressLine1')}, "
+                f"{addr.get('city')} {addr.get('state')} {addr.get('zipCode')}",
+                file=sys.stderr,
+            )
+            return 0
+        for loc in locations:
             addr = loc.get("address", {})
             print(
                 f"  {loc.get('locationId')}  {loc.get('name')}  "
