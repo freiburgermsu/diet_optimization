@@ -1,5 +1,9 @@
 
 food.csv
+data/raw/*.xlsx
+data/raw/*.pdf
+data/raw/*.zip
+.DS_Store
 
 # Python
 __pycache__/
