@@ -1,0 +1,57 @@
+# Indispensable amino acid DRI values (IOM 2005).
+# Units: mg / kg body weight / day.
+#
+# Met+Cys and Phe+Tyr are paired in the DRI tables — implemented as sum
+# constraints, not individual. That's 7 constraints total, not 9.
+#
+# Source: Institute of Medicine, Dietary Reference Intakes for Energy,
+# Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and
+# Amino Acids (2005), Table 10-19.
+#
+# FDC nutrient IDs referenced in the `fdc_nutrient_ids` list so that the
+# unified-schema build (#4) can pull these directly.
+
+histidine:
+  mg_per_kg_bw: 14
+  fdc_nutrient_ids: [1221]
+  fdc_name: "Histidine"
+
+isoleucine:
+  mg_per_kg_bw: 19
+  fdc_nutrient_ids: [1212]
+  fdc_name: "Isoleucine"
+
+leucine:
+  mg_per_kg_bw: 42
+  fdc_nutrient_ids: [1213]
+  fdc_name: "Leucine"
+
+lysine:
+  mg_per_kg_bw: 38
+  fdc_nutrient_ids: [1214]
+  fdc_name: "Lysine"
+
+methionine_cysteine:
+  mg_per_kg_bw: 19
+  fdc_nutrient_ids: [1215, 1216]   # Methionine + Cystine
+  fdc_name: "Methionine + Cystine"
+
+phenylalanine_tyrosine:
+  mg_per_kg_bw: 33
+  fdc_nutrient_ids: [1217, 1218]   # Phenylalanine + Tyrosine
+  fdc_name: "Phenylalanine + Tyrosine"
+
+threonine:
+  mg_per_kg_bw: 20
+  fdc_nutrient_ids: [1211]
+  fdc_name: "Threonine"
+
+tryptophan:
+  mg_per_kg_bw: 5
+  fdc_nutrient_ids: [1210]
+  fdc_name: "Tryptophan"
+
+valine:
+  mg_per_kg_bw: 24
+  fdc_nutrient_ids: [1219]
+  fdc_name: "Valine"
