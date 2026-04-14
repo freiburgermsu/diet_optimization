@@ -1,0 +1,14 @@
+category,representative_food,$_per_lb_2019,source_table,source_page
+# USDA Thrifty Food Plan 2021 (released 2021-08; prices normalized to
+# Jun 2019 dollars in the TFP report).
+# Full transcription is pending — this file is a starter with a handful
+# of common categories to exercise the inflation + join pipeline.
+# Source PDF: https://www.fns.usda.gov/sites/default/files/resource-files/ThriftyFoodPlan2021.pdf
+"legumes_dry","Dry beans",0.88,"Appendix F.1","118"
+"grains_whole","Brown rice",0.73,"Appendix F.1","118"
+"grains_refined","White rice",0.63,"Appendix F.1","118"
+"eggs","Large eggs",1.29,"Appendix F.1","119"
+"dairy_milk","Reduced-fat milk (gal equivalent)",2.41,"Appendix F.1","119"
+"meat_poultry","Chicken breast, boneless",3.74,"Appendix F.1","120"
+"fish","Canned tuna",2.04,"Appendix F.1","120"
+"nuts_seeds","Peanut butter",2.38,"Appendix F.1","121"
