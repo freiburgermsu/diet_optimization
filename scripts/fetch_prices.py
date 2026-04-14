@@ -101,6 +101,57 @@ def load_terms_from_food_info(path: str) -> list[str]:
         return list(json.load(f).keys())
 
 
+# Skip keys that are FDC analysis products (amino-acid reference panels,
+# vitamin-composition studies, etc.) or ambiguous one-letter/number tokens.
+_SKIP_PREFIXES = ("amino acids",)
+_SKIP_EXACT = {"b12", "b-12", "b6", "b-6"}
+
+
+def extract_search_term(fdc_description: str) -> str | None:
+    """Turn an FDC description into a retailer-friendly search term.
+
+    Rules (in order):
+      1. Take the segment before the first comma.
+      2. Strip, lowercase.
+      3. Drop if it matches `_SKIP_PREFIXES` / `_SKIP_EXACT` (FDC analysis rows, not foods).
+      4. Return None for empties.
+
+    Does NOT dedupe — callers that want uniqueness call `load_terms_from_fdc_descriptions`.
+    """
+    if not fdc_description:
+        return None
+    head = fdc_description.split(",")[0].strip().lower()
+    if not head or head in _SKIP_EXACT:
+        return None
+    if any(head.startswith(p) for p in _SKIP_PREFIXES):
+        return None
+    return head
+
+
+def load_terms_from_fdc_descriptions(
+    path: str,
+    normalize_plurals: bool = True,
+) -> list[str]:
+    """Extract unique Kroger-friendly search terms from a JSON file whose
+    keys are FDC descriptions (e.g. fresh_foods_nutrients_names_physiology.json).
+
+    When `normalize_plurals=True`, collapses "apple" / "apples" by preferring
+    the singular form (simpler for Kroger's search to match).
+    """
+    with open(path) as f:
+        keys = list(json.load(f).keys())
+    terms: set[str] = set()
+    for k in keys:
+        t = extract_search_term(k)
+        if t is not None:
+            terms.add(t)
+    if normalize_plurals:
+        # If both "apple" and "apples" present, keep singular.
+        drop = {t for t in terms if t.endswith("s") and t[:-1] in terms}
+        terms -= drop
+    return sorted(terms)
+
+
 def get_access_token(cfg: RetailerConfig) -> str:
     """OAuth2 client-credentials flow with the `product.compact` scope."""
     import base64
@@ -207,8 +258,15 @@ def main() -> int:
     group.add_argument("--terms", help="comma-separated search terms")
     group.add_argument(
         "--terms-from-food-info",
-        help="path to food_info.json; uses its keys as search terms (covers all "
-             "foods with nutrition data)",
+        help="path to food_info.json; uses its keys as search terms (covers the "
+             "69 foods with ERS prices; small set)",
+    )
+    group.add_argument(
+        "--terms-from-fdc-descriptions",
+        help="path to a JSON whose keys are FDC descriptions "
+             "(e.g. fresh_foods_nutrients_names_physiology.json — 2,254 foods). "
+             "Extracts the first-comma segment, dedupes, and normalizes plurals "
+             "to ~300-400 retailer-friendly terms.",
     )
     fetch.add_argument(
         "--location-id",
@@ -261,6 +319,13 @@ def main() -> int:
     if args.terms_from_food_info:
         terms = load_terms_from_food_info(args.terms_from_food_info)
         print(f"loaded {len(terms)} terms from {args.terms_from_food_info}", file=sys.stderr)
+    elif args.terms_from_fdc_descriptions:
+        terms = load_terms_from_fdc_descriptions(args.terms_from_fdc_descriptions)
+        print(
+            f"extracted {len(terms)} unique search terms from "
+            f"{args.terms_from_fdc_descriptions}",
+            file=sys.stderr,
+        )
     else:
         terms = [t.strip() for t in args.terms.split(",") if t.strip()]
 
