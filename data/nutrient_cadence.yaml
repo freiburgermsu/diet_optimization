@@ -1,0 +1,55 @@
+# Per-nutrient decision: does this constraint apply daily or does the
+# weekly average suffice? Sodium, energy, saturated fat, cholesterol, and
+# sugar are per-day (can't accumulate without harm). Fiber, most vitamins,
+# and most minerals are OK averaged across the week.
+#
+# Protein and amino acids are intentionally marked `daily` despite the
+# issue's example — muscle protein synthesis is daily, not weekly.
+#
+# Default for unlisted nutrients: `weekly`.
+
+Energy:      daily      # can't trade Tuesday's calories against Sunday's
+Sodium:      daily      # cumulative within-day effect
+Saturated fatty acids: daily
+"Dietary Cholesterol": daily
+Carbohydrate: daily
+
+Protein:     daily      # muscle protein synthesis is daily
+# EAAs not yet in the model (see #10) but all should be `daily`
+
+Fat:         daily
+Linoleic Acid: daily
+Linolenic Acid: daily
+Total Water: daily
+Total Fiber: weekly
+
+# Vitamins — all weekly unless noted
+"Vitamin C":    weekly
+"Vitamin A":    weekly
+"Vitamin B6":   weekly
+"Vitamin B12":  weekly
+"Vitamin D":    weekly
+"Vitamin E":    weekly
+"Vitamin K":    weekly
+Folate:        weekly
+Thiamin:       weekly
+Riboflavin:    weekly
+Niacin:        weekly
+"Pantothenic Acid": weekly
+Choline:       weekly
+Biotin:        weekly
+
+# Minerals — all weekly except sodium (above)
+Iron:          weekly
+Calcium:       weekly
+Magnesium:     weekly
+Potassium:     weekly
+Zinc:          weekly
+Copper:        weekly
+Manganese:     weekly
+Selenium:      weekly
+Phosophorous:  weekly
+Iodine:        weekly
+Molybdenum:    weekly
+Chromium:      weekly
+Carotenoids:   weekly
