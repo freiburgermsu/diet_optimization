@@ -1,0 +1,54 @@
+food_name,category,kg_co2e_per_kg,source
+# Food-level carbon footprint (kg CO2-equivalent per kg of food).
+# Source: Poore & Nemecek 2018, Science 360(6392):987-992.
+# Values are global mean post-farm + retail (cradle to retail).
+#
+# Resolution is food-category in the P&N dataset, not per-FDC-ID — the
+# mapping is intentionally coarse. Where FDC foods share a category
+# (e.g. "Pinto Beans" and "Black Beans" both map to "Pulses"), they
+# receive the same kg CO2e/kg.
+#
+# Add rows as food coverage grows. Values rounded to 2 decimals; the
+# P&N dataset's 10-90 percentile spread is wide, so precision beyond
+# this is spurious.
+Beef,beef_herd,99.48,PN2018
+Chicken Breast,poultry,9.87,PN2018
+Pork,pig_meat,12.31,PN2018
+Eggs,eggs,4.67,PN2018
+Cheese,cheese,23.88,PN2018
+Milk,milk,3.15,PN2018
+Yogurt,milk,3.15,PN2018
+Tofu,tofu,3.16,PN2018
+Pinto Beans,pulses,1.79,PN2018
+Black Beans,pulses,1.79,PN2018
+Lentils,pulses,0.90,PN2018
+Chickpeas,pulses,1.79,PN2018
+Peanuts,groundnuts,2.88,PN2018
+Almonds,nuts,0.43,PN2018
+Walnuts,nuts,0.43,PN2018
+Flax seeds,oilseeds,2.88,PN2018
+Brown Rice,rice,4.45,PN2018
+White Rice,rice,4.45,PN2018
+Oats,oatmeal,2.50,PN2018
+Whole Wheat,wheat_rye_bread,1.57,PN2018
+Potatoes,potatoes,0.46,PN2018
+Carrots,root_vegetables,0.43,PN2018
+Beets,root_vegetables,0.43,PN2018
+Onions,root_vegetables,0.43,PN2018
+Sweet Potatoes,root_vegetables,0.43,PN2018
+Tomatoes,tomatoes,2.09,PN2018
+Bell Peppers,vegetables_other,0.53,PN2018
+Broccoli,vegetables_brassica,2.00,PN2018
+Cauliflower,vegetables_brassica,2.00,PN2018
+Kale,vegetables_leafy,2.00,PN2018
+Spinach,vegetables_leafy,2.00,PN2018
+Romaine Lettuce,vegetables_leafy,2.00,PN2018
+Cabbage,vegetables_brassica,2.00,PN2018
+Red Cabbage,vegetables_brassica,2.00,PN2018
+Celery,vegetables_other,0.53,PN2018
+Cucumbers,vegetables_other,0.53,PN2018
+Apples,apples,0.43,PN2018
+Bananas,bananas,0.86,PN2018
+Oranges,citrus_fruit,0.39,PN2018
+Blueberries,berries_grapes,1.53,PN2018
+Strawberries,berries_grapes,1.53,PN2018
