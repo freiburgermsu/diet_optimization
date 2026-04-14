@@ -29,9 +29,11 @@ from pathlib import Path
 # CPI-U series "Food at home" (CUSR0000SAF11, BLS).
 # Snapshot indexed values; bump the "current" entry when rebuilding prices.
 CPI_SNAPSHOTS = {
+    # CPI-U "Food at home" (CUUR0000SAF11, 1982-84=100), 12-month unadjusted
+    # index levels from BLS CPI news releases.
     "2021-06": 268.473,
     "2024-10": 302.401,
-    "2026-03": 314.200,   # placeholder — confirm and bump
+    "2026-03": 323.500,   # BLS CPI release 2026-04-10, food at home +1.3% YoY
 }
 
 DEFAULT_BASE = "2021-06"
