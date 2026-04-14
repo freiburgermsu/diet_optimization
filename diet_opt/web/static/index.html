@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>diet-opt</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+h1 { font-size: 1.4rem; }
+fieldset { border: 1px solid #ddd; padding: 1rem; margin: 1rem 0; }
+label { display: block; margin: 0.5rem 0; }
+input, select { font: inherit; padding: 0.3rem; width: 100%; box-sizing: border-box; }
+button { font: inherit; padding: 0.6rem 1.2rem; background: #2d6a4f; color: white; border: 0; cursor: pointer; }
+button:hover { background: #1b4332; }
+#result { margin-top: 2rem; }
+table { border-collapse: collapse; width: 100%; }
+td, th { border: 1px solid #ccc; padding: 0.4rem 0.6rem; text-align: left; }
+.note { background: #fff8e1; padding: 0.5rem; border-left: 3px solid #f9a825; margin: 0.5rem 0; }
+.error { color: #b00020; }
+</style>
+</head>
+<body>
+<h1>Cost-minimizing nutritional diet</h1>
+<form id="f">
+  <fieldset>
+    <legend>About you</legend>
+    <label>Age <input type="number" name="age" value="28" min="1" max="120" required></label>
+    <label>Sex
+      <select name="sex">
+        <option value="male">male</option>
+        <option value="female">female</option>
+      </select>
+    </label>
+    <label>Weight (kg) <input type="number" name="weight_kg" value="68" step="0.5" min="20" max="300" required></label>
+    <label>Activity level
+      <select name="activity_level">
+        <option>sedentary</option>
+        <option selected>moderate</option>
+        <option>active</option>
+      </select>
+    </label>
+    <label>Budget ceiling ($/day, optional) <input type="number" name="budget_ceiling" step="0.10" min="0"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Foods to avoid (comma-separated)</legend>
+    <input type="text" name="blacklist" placeholder="Broccoli, Mushrooms">
+  </fieldset>
+
+  <fieldset>
+    <legend>Foods you require (comma-separated)</legend>
+    <input type="text" name="whitelist" placeholder="Blueberries">
+  </fieldset>
+
+  <button type="submit">Optimize</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+const form = document.getElementById("f");
+const result = document.getElementById("result");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  result.innerHTML = "Solving…";
+  const fd = new FormData(form);
+  const toList = s => s ? s.split(",").map(x => x.trim()).filter(Boolean) : [];
+  const body = {
+    age: +fd.get("age"),
+    sex: fd.get("sex"),
+    weight_kg: +fd.get("weight_kg"),
+    activity_level: fd.get("activity_level"),
+    budget_ceiling: fd.get("budget_ceiling") ? +fd.get("budget_ceiling") : null,
+    blacklist: toList(fd.get("blacklist")),
+    whitelist: toList(fd.get("whitelist")),
+  };
+  const res = await fetch("/optimize", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    result.innerHTML = `<p class="error">${res.status}: ${await res.text()}</p>`;
+    return;
+  }
+  const data = await res.json();
+  let html = `<h2>$${data.cost_per_day.toFixed(2)}/day</h2>`;
+  for (const n of data.notes) html += `<div class="note">${n}</div>`;
+  html += "<table><tr><th>Food</th><th>Grams</th><th>Cost</th></tr>";
+  for (const row of data.shopping_list) {
+    html += `<tr><td>${row.food}</td><td>${row.grams}</td><td>$${row.cost.toFixed(2)}</td></tr>`;
+  }
+  html += "</table>";
+  result.innerHTML = html;
+});
+</script>
+</body>
+</html>
