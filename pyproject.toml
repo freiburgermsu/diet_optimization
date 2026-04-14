@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diet_opt"
+version = "0.1.0"
+description = "Cost-minimizing diet LP over USDA FoodData Central"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "matplotlib>=3.7",
+    "optlang>=1.7",
+    "pyyaml>=6.0",
+    "modelseedpy",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.1"]
+
+[project.scripts]
+diet-opt = "diet_opt.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["diet_opt*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
