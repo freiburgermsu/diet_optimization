@@ -6,6 +6,7 @@ import sys
 
 from .data import load_pipeline_inputs, validate_bounds
 from .model import build_model
+from .overrides import apply_overrides, load_overrides
 from .report import plot_bounds, write_diet_csv
 from .solve import solve
 
@@ -18,6 +19,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     food_info, food_matches, nutrition = load_pipeline_inputs()
+    try:
+        nutrition = apply_overrides(nutrition, load_overrides())
+    except FileNotFoundError:
+        pass
 
     if args.cmd == "validate":
         violations = validate_bounds(nutrition)
