@@ -1,0 +1,59 @@
+# Food-group tags used by the variety constraint (#11) and, eventually,
+# by group-diversity constraints in the weekly model (#12).
+#
+# One food can only belong to one primary group. Migrate to fdc_id keys
+# once #4 lands.
+
+leafy_green:
+  - Spinach
+  - Kale
+  - Romaine Lettuce
+  - Collard Greens
+  - Cabbage
+
+root_veg:
+  - Carrots
+  - Beets
+  - Sweet Potatoes
+  - Potatoes
+  - Radishes
+  - Turnips
+
+cruciferous:
+  - Broccoli
+  - Cauliflower
+  - Brussels Sprouts
+
+legume:
+  - Pinto Beans
+  - Black Beans
+  - Kidney Beans
+  - Lentils
+  - Chickpeas
+
+grain:
+  - Brown Rice
+  - Oats
+  - Quinoa
+  - Whole Wheat
+
+nut_seed:
+  - Almonds
+  - Walnuts
+  - Flax seeds
+  - Pumpkin Seeds
+  - Chia Seeds
+
+fruit:
+  - Apples
+  - Bananas
+  - Oranges
+  - Blueberries
+  - Strawberries
+
+other_veg:
+  - Celery
+  - Bell Peppers
+  - Tomatoes
+  - Cucumbers
+  - Onions
