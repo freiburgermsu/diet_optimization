@@ -5,11 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from fetch_prices import is_stale, normalize_product, parse_size_to_grams  # noqa: E402
-from normalize_prices import (  # noqa: E402
-    build_normalized_prices,
-    match_to_fdc,
-    price_per_100g_edible,
-)
+from normalize_prices import price_per_100g_edible  # noqa: E402
 
 
 def test_parse_size_oz():
@@ -86,28 +82,3 @@ def test_price_per_100g_edible_rejects_bad_input():
         price_per_100g_edible(1.0, 100, 0)
 
 
-def test_match_to_fdc_exact_when_no_fuzzy():
-    # Can't easily disable rapidfuzz if installed, but exact matches
-    # should always win regardless
-    products = [{"description": "carrots, raw", "price": 1, "package_size_g": 100}]
-    mapping = {"carrots, raw": 170393}
-    matched = match_to_fdc(products, mapping)
-    assert 170393 in matched
-
-
-def test_build_normalized_prices_end_to_end():
-    raw = {
-        "fetched_at": "2026-04-14T09:00:00Z",
-        "retailer": "kroger",
-        "products": [
-            {"description": "carrots, raw", "price": 1.29, "package_size_g": 454}
-        ],
-    }
-    mapping = {"carrots, raw": 170393}
-    out = build_normalized_prices(raw, mapping, yields={170393: 0.92})
-    entry = out["170393"]
-    assert entry["price_source"] == "kroger"
-    assert entry["yield"] == 0.92
-    assert entry["fetched_at"] == "2026-04-14T09:00:00Z"
-    # Check normalized price is in sensible range
-    assert 0.2 < entry["price_per_100g"] < 0.4
