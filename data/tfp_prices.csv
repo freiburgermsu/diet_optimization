@@ -1,14 +1,3073 @@
-category,representative_food,$_per_lb_2019,source_table,source_page
-# USDA Thrifty Food Plan 2021 (released 2021-08; prices normalized to
-# Jun 2019 dollars in the TFP report).
-# Full transcription is pending — this file is a starter with a handful
-# of common categories to exercise the inflation + join pipeline.
-# Source PDF: https://www.fns.usda.gov/sites/default/files/resource-files/ThriftyFoodPlan2021.pdf
-"legumes_dry","Dry beans",0.88,"Appendix F.1","118"
-"grains_whole","Brown rice",0.73,"Appendix F.1","118"
-"grains_refined","White rice",0.63,"Appendix F.1","118"
-"eggs","Large eggs",1.29,"Appendix F.1","119"
-"dairy_milk","Reduced-fat milk (gal equivalent)",2.41,"Appendix F.1","119"
-"meat_poultry","Chicken breast, boneless",3.74,"Appendix F.1","120"
-"fish","Canned tuna",2.04,"Appendix F.1","120"
-"nuts_seeds","Peanut butter",2.38,"Appendix F.1","121"
+fndds_code,tfp_category,pricing_method,price_per_100g_2021
+11100000,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",4,0.1084644035
+11111000,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.1084854434
+11112110,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.1012077579
+11112210,"Milk and yogurt, higher nutrient density for all ages",1,0.1005407653
+11113000,"Milk and yogurt, higher nutrient density for all ages",1,0.1041384535
+11114300,"Milk and yogurt, higher nutrient density for all ages",1,0.2236878858
+11114320,"Milk and yogurt, higher nutrient density for all ages",1,0.2174129242
+11114330,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.2181155799
+11114350,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.2101663667
+11115000,"Milk and yogurt, higher nutrient density for all ages",1,0.2158526276
+11115100,"Milk and yogurt, higher nutrient density for all ages",1,0.1882608776
+11115200,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.2571355966
+11115300,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.1946904781
+11115400,"Milk and yogurt, higher nutrient density for all ages",1,0.3875242305
+11116000,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.4830660939
+11121100,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",2,0.0951139534
+11210050,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.2943893332
+11211050,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.3150517273
+11211400,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.3805746579
+11220000,"Milk and yogurt, lower nutrient density for all ages",1,0.4067530988
+11320000,"Milk and yogurt, higher nutrient density for all ages",1,0.1803057048
+11320100,"Milk and yogurt, higher nutrient density for all ages",1,0.1409779703
+11321000,"Milk and yogurt, lower nutrient density for all ages",1,0.1901032706
+11350000,"Milk substitutes, nutritional beverages, and smoothies",1,0.174492802
+11350010,"Milk substitutes, nutritional beverages, and smoothies",1,0.1852026679
+11350020,"Milk substitutes, nutritional beverages, and smoothies",1,0.1312753097
+11360000,"Milk substitutes, nutritional beverages, and smoothies",1,0.2235178287
+11370000,"Milk substitutes, nutritional beverages, and smoothies",2,0.2714781602
+11400000,"Milk and yogurt, lower nutrient density for 1-year-olds, higher nutrient density for 2+",2,0.5391106051
+11411010,"Milk and yogurt, higher nutrient density for all ages",1,0.4086800518
+11411100,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.4315423396
+11411200,"Milk and yogurt, higher nutrient density for all ages",1,0.3535552715
+11411300,"Milk and yogurt, higher nutrient density for all ages",1,0.3550017567
+11411390,"Milk and yogurt, higher nutrient density for all ages",1,0.6375867471
+11411400,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.6431905098
+11411410,"Milk and yogurt, higher nutrient density for all ages",1,0.7604376441
+11411420,"Milk and yogurt, higher nutrient density for all ages",1,0.6865435314
+11430000,"Milk and yogurt, lower nutrient density for all ages",1,0.4270425169
+11431000,"Milk and yogurt, lower nutrient density for all ages",1,0.9370848305
+11432000,"Milk and yogurt, lower nutrient density for all ages",1,0.4146643944
+11433000,"Milk and yogurt, lower nutrient density for all ages",1,0.3773538333
+11433990,"Milk and yogurt, lower nutrient density for all ages",1,0.6850792136
+11434000,"Milk and yogurt, lower nutrient density for all ages",1,0.7466520264
+11434010,"Milk and yogurt, lower nutrient density for all ages",1,0.7375932676
+11434020,"Milk and yogurt, lower nutrient density for all ages",1,0.7023641996
+11434090,"Milk and yogurt, lower nutrient density for all ages",1,0.3883482826
+11434100,"Milk and yogurt, lower nutrient density for all ages",1,0.7238814806
+11434200,"Milk and yogurt, lower nutrient density for all ages",2,0.3809244614
+11434300,"Milk and yogurt, lower nutrient density for all ages",1,0.3809244614
+11435000,"Milk and yogurt, lower nutrient density for all ages",1,0.6436912314
+11435010,"Milk and yogurt, lower nutrient density for all ages",1,0.9851672664
+11435020,"Milk and yogurt, lower nutrient density for all ages",1,0.4860703743
+11435030,"Milk and yogurt, lower nutrient density for all ages",1,0.6698643006
+11435100,"Milk and yogurt, lower nutrient density for all ages",1,0.7993027411
+11436000,"Milk and yogurt, lower nutrient density for all ages",1,0.458843208
+11440010,Condiments and Sauces,1,1.0598067082
+11440040,Condiments and Sauces,1,1.0462554587
+11440050,Condiments and Sauces,1,0.9106382731
+11440060,Condiments and Sauces,1,1.1478633288
+11440070,Condiments and Sauces,1,1.2305204129
+11446000,"Milk and yogurt, lower nutrient density for all ages",1,0.9449338419
+11459990,Other Desserts,2,0.5126705461
+11460000,Other Desserts,2,0.3832936403
+11460100,Other Desserts,2,0.3366050222
+11460160,Other Desserts,1,0.3189882229
+11460170,Other Desserts,1,0.5126705461
+11460250,Other Desserts,1,0.8417791895
+11461000,Other Desserts,1,1.1251873619
+11511000,"Milk and yogurt, lower nutrient density for all ages",2,0.1832841504
+11511100,"Milk and yogurt, lower nutrient density for all ages",1,0.2544436551
+11511200,"Milk and yogurt, lower nutrient density for all ages",1,0.2160083774
+11511300,"Milk and yogurt, lower nutrient density for all ages",1,0.1599880498
+11511400,"Milk and yogurt, lower nutrient density for all ages",1,0.1471731016
+11511550,"Milk and yogurt, lower nutrient density for all ages",2,0.1830473688
+11511600,"Milk and yogurt, lower nutrient density for all ages",1,0.3035778684
+11511700,"Milk and yogurt, lower nutrient density for all ages",2,0.3035778684
+11512010,"Milk and yogurt, lower nutrient density for all ages",2,0.1659372209
+11512100,"Milk and yogurt, lower nutrient density for all ages",4,0.1807458661
+11513381,"Milk and yogurt, lower nutrient density for all ages",4,0.176723715
+11513382,"Milk and yogurt, lower nutrient density for all ages",4,0.1711882586
+11513500,"Milk and yogurt, lower nutrient density for all ages",4,0.145914218
+11513550,"Milk and yogurt, lower nutrient density for all ages",4,0.1422204527
+11513600,"Milk and yogurt, lower nutrient density for all ages",4,0.1393808928
+11514100,"Milk and yogurt, lower nutrient density for all ages",4,0.14760405
+11514110,"Milk and yogurt, lower nutrient density for all ages",4,0.235960001
+11514120,"Milk and yogurt, lower nutrient density for all ages",4,0.2324516752
+11514310,"Milk and yogurt, lower nutrient density for 1-year-olds, higher nutrient density for 2+",3,0.1317778712
+11519040,"Milk and yogurt, lower nutrient density for all ages",1,0.240832017
+11519050,"Milk and yogurt, lower nutrient density for all ages",4,0.1723619473
+11519105,"Milk and yogurt, lower nutrient density for all ages",1,0.2764907321
+11519200,"Milk and yogurt, lower nutrient density for all ages",1,0.3737066618
+11519205,"Milk and yogurt, lower nutrient density for all ages",1,0.2079705696
+11526000,"Milk and yogurt, lower nutrient density for all ages",4,0.1575027828
+11531000,"Milk and yogurt, lower nutrient density for all ages",1,0.2555011694
+11541110,"Milk and yogurt, lower nutrient density for all ages",4,0.2577706166
+11541120,"Milk and yogurt, lower nutrient density for all ages",4,0.2537452623
+11542100,"Milk and yogurt, lower nutrient density for all ages",1,1.0733041523
+11542200,"Milk and yogurt, lower nutrient density for all ages",1,1.0484158878
+11543010,"Milk and yogurt, lower nutrient density for all ages",1,0.4306889708
+11551050,"Milk substitutes, nutritional beverages, and smoothies",4,0.2047143654
+11553110,"Milk substitutes, nutritional beverages, and smoothies",4,0.4219010687
+11553120,"Milk substitutes, nutritional beverages, and smoothies",4,0.5195155733
+11553130,"Milk substitutes, nutritional beverages, and smoothies",2,0.4778812146
+11560000,"Milk and yogurt, lower nutrient density for all ages",1,0.1619804264
+12100100,"Margarine, oils, cream, cream substitutes",2,0.3809714014
+12110100,"Margarine, oils, cream, cream substitutes",2,0.4722433766
+12120100,"Margarine, oils, cream, cream substitutes",2,0.3097069727
+12120110,"Margarine, oils, cream, cream substitutes",2,0.3080546093
+12140000,"Margarine, oils, cream, cream substitutes",2,0.6502601382
+12200100,"Margarine, oils, cream, cream substitutes",2,0.3305277931
+12210200,"Margarine, oils, cream, cream substitutes",2,0.3304976898
+12210210,"Margarine, oils, cream, cream substitutes",2,0.3531885249
+12210260,"Margarine, oils, cream, cream substitutes",2,1.0717825131
+12210270,"Margarine, oils, cream, cream substitutes",1,1.0796089966
+12210280,"Margarine, oils, cream, cream substitutes",2,0.3531885249
+12210310,"Margarine, oils, cream, cream substitutes",2,0.3531885249
+12210400,"Margarine, oils, cream, cream substitutes",2,0.5362851008
+12210420,"Margarine, oils, cream, cream substitutes",2,0.9604354653
+12210430,"Margarine, oils, cream, cream substitutes",1,0.7293639329
+12210505,"Margarine, oils, cream, cream substitutes",2,0.9604354653
+12210520,"Margarine, oils, cream, cream substitutes",1,0.4616551413
+12220200,"Margarine, oils, cream, cream substitutes",1,0.6308732416
+12220270,"Margarine, oils, cream, cream substitutes",2,0.6514537653
+12220280,"Margarine, oils, cream, cream substitutes",2,0.6486698796
+12310100,"Margarine, oils, cream, cream substitutes",2,0.4459753566
+12310300,"Margarine, oils, cream, cream substitutes",2,0.3872711461
+12310350,"Margarine, oils, cream, cream substitutes",2,0.484996129
+12310370,"Margarine, oils, cream, cream substitutes",2,0.3842516347
+12350010,Condiments and Sauces,1,0.7029982042
+12350200,Condiments and Sauces,1,0.616705088
+12350210,Condiments and Sauces,1,0.9009129565
+12350220,Condiments and Sauces,1,0.5621541491
+12350230,Condiments and Sauces,1,0.8067844643
+12350240,Condiments and Sauces,1,0.8905024383
+12350250,Condiments and Sauces,1,0.5196982074
+13110100,Other Desserts,1,0.3944109519
+13110110,Other Desserts,1,0.3928972777
+13110120,Other Desserts,1,1.3743518393
+13110130,Other Desserts,1,1.3804894061
+13110200,Other Desserts,2,0.3944109519
+13110320,Other Desserts,2,0.3944109519
+13120050,Other Desserts,1,0.4589713922
+13120100,Other Desserts,1,0.5939292316
+13120110,Other Desserts,1,0.8960634204
+13120120,Other Desserts,1,0.6661932657
+13120121,Other Desserts,1,0.786183736
+13120130,Other Desserts,1,0.5912839776
+13120140,Other Desserts,1,0.4841377068
+13120300,Other Desserts,1,0.7790632837
+13120400,Other Desserts,1,0.5088155975
+13120500,Other Desserts,1,0.4134190316
+13120550,Other Desserts,1,0.723892995
+13120710,Other Desserts,1,0.8284621884
+13120720,Other Desserts,2,0.8284621884
+13120730,Other Desserts,1,0.3214467992
+13120770,Other Desserts,2,0.3214467992
+13120790,Other Desserts,1,0.6316165314
+13120800,"Milk and yogurt, lower nutrient density for all ages",4,0.1991253272
+13127000,Other Desserts,1,1.7553592781
+13127010,Other Desserts,1,3.6605204871
+13130300,Other Desserts,1,0.3633642904
+13130310,Other Desserts,1,0.3489227008
+13130330,Other Desserts,2,0.3633642904
+13130600,Other Desserts,2,0.3633642904
+13130620,Other Desserts,2,0.5557017657
+13130700,Other Desserts,2,0.3633642904
+13135000,Other Desserts,1,0.7193863465
+13135010,Other Desserts,1,1.0168616633
+13140100,Other Desserts,1,0.5245714416
+13140500,Other Desserts,1,0.5557017657
+13140700,Other Desserts,1,0.4550004918
+13140900,Other Desserts,1,0.4639958768
+13150000,Other Desserts,1,0.315885828
+13160400,Other Desserts,1,0.3381142241
+13160410,Other Desserts,1,0.3832126244
+13161630,Other Desserts,1,1.0186031011
+13210110,Other Desserts,1,0.9110640438
+13210280,Other Desserts,2,0.363384035
+13210300,Other Desserts,1,1.9519078225
+13210350,Other Desserts,1,0.5725090735
+13210410,Other Desserts,1,0.5066936013
+13210520,Other Desserts,2,0.4930160476
+13220110,Other Desserts,2,0.363384035
+13220120,Other Desserts,2,0.3723124162
+13230110,Other Desserts,1,0.363384035
+13230130,Other Desserts,1,0.3723124162
+13230200,Other Desserts,1,0.3337088337
+13230500,Other Desserts,1,0.4930160476
+13241000,Other Desserts,1,1.6156615577
+13250000,Other Desserts,1,0.9739943922
+13252200,Other Desserts,1,1.6403551954
+13252600,Sweet bakery products,1,1.7903782079
+13411000,Condiments and Sauces,1,0.4212697628
+13412000,Condiments and Sauces,2,0.514596381
+14010000,Cheese,4,1.0920318443
+14101010,Cheese,1,2.7666510438
+14102010,Cheese,1,1.9153291907
+14103020,Cheese,2,2.6217119411
+14104100,Cheese,2,1.1553233707
+14104110,Cheese,2,1.3086924047
+14104200,Cheese,2,1.3108949345
+14104250,Cheese,1,1.2111592507
+14104400,Cheese,2,2.0921687394
+14104600,Cheese,2,2.5827203067
+14104700,Cheese,1,3.4989736152
+14105010,Cheese,2,2.0804285734
+14106200,Cheese,2,1.1500027964
+14106500,Cheese,2,1.4687741744
+14107010,Cheese,2,1.1397398097
+14107030,Cheese,2,1.1308512271
+14107200,Cheese,2,1.3834678468
+14108010,Cheese,2,1.8750725853
+14108015,Cheese,1,1.7648439782
+14108020,Cheese,2,2.0529609579
+14108400,Cheese,2,1.4909377714
+14108420,Cheese,2,1.5177590093
+14109010,Cheese,2,1.7790122467
+14109030,Cheese,2,1.4981424014
+14120010,Cheese,2,1.0547275778
+14120020,Cheese,2,1.1613356188
+14131000,Cheese,2,1.0998178427
+14131500,Cheese,2,1.0998178427
+14133000,Cheese,2,0.9991054361
+14134000,Cheese,2,1.3144792149
+14200100,Cheese,2,0.4918231678
+14201010,Cheese,2,0.4665332601
+14201200,Cheese,1,1.3697684118
+14201500,Cheese,1,0.5544555852
+14203020,Cheese,1,1.1587328892
+14204010,Cheese,1,0.5192008659
+14204020,Cheese,1,0.7623790577
+14301010,"Margarine, oils, cream, cream substitutes",2,0.8546801853
+14303010,"Margarine, oils, cream, cream substitutes",1,0.8807021108
+14410100,Cheese,1,1.0199762734
+14410110,Cheese,1,0.9692378946
+14410120,Cheese,2,1.1396759846
+14410130,Cheese,2,0.9728060067
+14410330,Cheese,1,0.9236147154
+14410380,Cheese,1,0.9088854469
+14410500,Cheese,1,1.070240378
+14410600,Cheese,1,1.1245984078
+14410620,Cheese,1,1.5403496259
+14420100,Cheese,1,1.1071465565
+14420160,Cheese,1,1.9376294862
+14420200,"Margarine, oils, cream, cream substitutes",1,1.1434467072
+14420210,"Margarine, oils, cream, cream substitutes",1,1.1755499014
+14420300,Cheese,1,1.8108087791
+14502000,Cheese,1,0.7876706155
+14610520,Cheese,1,1.6137210383
+14620110,Condiments and Sauces,1,1.5718179289
+14620115,Condiments and Sauces,1,1.3385759427
+14620130,Condiments and Sauces,1,1.4050479732
+14620150,Condiments and Sauces,1,0.8629093229
+14620200,Condiments and Sauces,1,1.0322713498
+14640002,Mixed Dishes - Sandwiches - lower nutrient density,4,0.6371175174
+14640008,Mixed Dishes - Sandwiches - higher nutrient density,4,0.7155208699
+14640012,Mixed Dishes - Sandwiches - higher nutrient density,4,0.7371940797
+14640105,Mixed Dishes - Sandwiches - lower nutrient density,4,0.6303889944
+14640110,Mixed Dishes - Sandwiches - lower nutrient density,4,0.649358573
+14640115,Mixed Dishes - Sandwiches - lower nutrient density,4,0.649358573
+14640125,Mixed Dishes - Sandwiches - higher nutrient density,4,0.6993237609
+14640130,Mixed Dishes - Sandwiches - higher nutrient density,4,0.7183759872
+14640135,Mixed Dishes - Sandwiches - higher nutrient density,4,0.7183759872
+14650100,Condiments and Sauces,2,0.4044145152
+14650160,Condiments and Sauces,1,0.5333650915
+14660200,Cheese,1,0.8720359973
+14710100,Soups - lower nutrient density,1,0.9447127084
+20000000,"Meat, higher nutrient density",2,2.1104813268
+21000100,"Meat, higher nutrient density",2,2.0785461204
+21000120,"Meat, higher nutrient density",2,2.0785461204
+21101000,"Meat, higher nutrient density",2,2.1757330076
+21101020,"Meat, higher nutrient density",2,2.5759307635
+21101110,"Meat, higher nutrient density",2,2.5759307635
+21101120,"Meat, lower nutrient density",2,2.1694078205
+21101130,"Meat, higher nutrient density",2,2.5759307635
+21102120,"Meat, lower nutrient density",2,2.1533370354
+21102130,"Meat, higher nutrient density",2,2.556447459
+21103130,"Meat, lower nutrient density",4,1.3362535747
+21104110,"Meat, higher nutrient density",4,1.0815722317
+21105120,"Meat, lower nutrient density",2,2.5735341547
+21105130,"Meat, higher nutrient density",2,2.5738274917
+21301000,"Meat, lower nutrient density",2,1.8373439626
+21304110,"Meat, lower nutrient density",2,3.0559742666
+21304120,"Meat, lower nutrient density",2,3.2180559287
+21401000,"Meat, higher nutrient density",2,1.9033576406
+21401110,"Meat, higher nutrient density",2,1.8100952698
+21401120,"Meat, higher nutrient density",2,1.9018642053
+21407000,"Meat, lower nutrient density",1,1.2077793536
+21407120,"Meat, lower nutrient density",2,1.9033576406
+21416000,Cured meat,2,1.8899422129
+21416150,Cured meat,1,1.4742808613
+21417100,"Meat, higher nutrient density",1,2.0300037315
+21417120,"Meat, higher nutrient density",2,1.4218603018
+21420100,"Meat, lower nutrient density",1,1.7321642767
+21500100,"Meat, lower nutrient density",2,1.568094251
+21500310,"Meat, lower nutrient density",2,1.5675653623
+21601000,Cured meat,2,2.0150999512
+21601010,Cured meat,2,2.9285504458
+21602100,Cured meat,1,4.9944321196
+22000100,"Meat, higher nutrient density",2,1.2049998069
+22000120,"Meat, higher nutrient density",4,0.7982228402
+22000210,"Meat, higher nutrient density",2,1.1978800751
+22002000,"Meat, lower nutrient density",2,1.1126491369
+22002800,Cured meat,1,4.3008676748
+22101110,"Meat, higher nutrient density",2,1.2257466115
+22101120,"Meat, higher nutrient density",2,1.2526814359
+22101150,"Meat, lower nutrient density",4,0.7648347413
+22101210,"Meat, higher nutrient density",2,1.218471152
+22101220,"Meat, higher nutrient density",2,1.2452039629
+22101310,"Meat, lower nutrient density",4,0.6923799549
+22101320,"Meat, lower nutrient density",4,0.7341381859
+22101510,"Meat, higher nutrient density",2,1.2257466115
+22101520,"Meat, higher nutrient density",2,1.2526814359
+22107010,Cured meat,1,2.9334735233
+22201110,"Meat, lower nutrient density",2,0.9494441473
+22201120,"Meat, higher nutrient density",2,1.0080838633
+22201220,"Meat, higher nutrient density",2,1.0024432128
+22210350,"Meat, higher nutrient density",1,1.870613413
+22210400,"Meat, higher nutrient density",2,1.5417248572
+22300140,Cured meat,2,1.0953987562
+22311000,Cured meat,2,1.0953987562
+22311010,Cured meat,2,0.9650687603
+22311020,Cured meat,2,1.0953987562
+22311450,Cured meat,1,3.6742228269
+22400100,"Meat, lower nutrient density",1,1.9362756179
+22400110,"Meat, lower nutrient density",1,1.3557654376
+22400120,"Meat, higher nutrient density",2,1.129273815
+22421000,Cured meat,2,1.5900971452
+22421010,Cured meat,2,1.5900971452
+22421020,Cured meat,2,1.0953987562
+22501010,Cured meat,1,2.4825712876
+22600100,Cured meat,2,3.88576001
+22600200,Cured meat,2,3.8881180436
+22600210,Cured meat,2,3.88576001
+22602010,Cured meat,2,2.9285504458
+22701000,"Meat, lower nutrient density",1,1.7989087631
+22701010,"Meat, lower nutrient density",2,1.5543502277
+22701020,"Meat, higher nutrient density",2,1.6538393453
+22701030,"Meat, lower nutrient density",1,1.4129736941
+22701040,"Meat, lower nutrient density",2,1.5359023642
+22701050,"Meat, lower nutrient density",2,1.5359023642
+22706010,"Meat, higher nutrient density",1,1.400481442
+22708010,"Meat, lower nutrient density",1,2.6940324094
+22709010,"Meat, lower nutrient density",1,1.8561045869
+23000100,"Meat, lower nutrient density",2,2.8924945275
+23101010,"Meat, lower nutrient density",2,2.8924945275
+23321200,"Meat, higher nutrient density",2,2.8924945275
+23321900,Cured meat,1,4.7954918121
+23322100,Cured meat,1,1.3873386974
+24100000,"Poultry, higher nutrient density",2,0.9047555445
+24100020,"Poultry, higher nutrient density",2,0.9047555445
+24102000,"Poultry, higher nutrient density",2,0.9047555445
+24102010,"Poultry, higher nutrient density",2,0.8825874316
+24102020,"Poultry, higher nutrient density",2,0.9047555445
+24102050,"Poultry, higher nutrient density",1,1.9162264607
+24102070,"Poultry, higher nutrient density",2,0.9047555445
+24103050,"Poultry, higher nutrient density",1,1.3563118253
+24103060,"Poultry, higher nutrient density",2,0.9047555445
+24103070,"Poultry, lower nutrient density",1,1.2360789658
+24104051,"Poultry, higher nutrient density",2,0.9047555445
+24107070,"Poultry, higher nutrient density",1,1.08051372
+24120110,"Poultry, higher nutrient density",2,1.8843972858
+24120120,"Poultry, higher nutrient density",2,0.932976888
+24122130,"Poultry, higher nutrient density",2,0.8379018337
+24122131,"Poultry, higher nutrient density",2,0.9371153558
+24122140,"Poultry, higher nutrient density",2,0.8343586711
+24122141,"Poultry, higher nutrient density",2,0.932976888
+24122151,"Poultry, higher nutrient density",2,0.932976888
+24122161,"Poultry, higher nutrient density",2,0.932976888
+24122170,"Poultry, higher nutrient density",2,0.8343586711
+24122171,"Poultry, higher nutrient density",2,0.932976888
+24123120,"Poultry, higher nutrient density",2,0.9371153558
+24123300,"Poultry, higher nutrient density",2,0.8343586711
+24123301,"Poultry, higher nutrient density",2,0.932976888
+24123310,"Poultry, lower nutrient density",1,1.2796660683
+24123311,"Poultry, lower nutrient density",2,0.932976888
+24124200,"Poultry, higher nutrient density",2,0.8343586711
+24124201,"Poultry, higher nutrient density",2,0.932976888
+24127200,"Poultry, higher nutrient density",2,0.800172937
+24127202,"Poultry, higher nutrient density",2,0.800172937
+24127210,"Poultry, higher nutrient density",2,0.800172937
+24127211,"Poultry, higher nutrient density",2,0.800172937
+24127220,"Poultry, higher nutrient density",2,0.800172937
+24127221,"Poultry, higher nutrient density",2,0.800172937
+24127500,"Poultry, higher nutrient density",2,0.800172937
+24127501,"Poultry, higher nutrient density",2,0.800172937
+24132230,"Poultry, higher nutrient density",2,0.3125680135
+24132231,"Poultry, higher nutrient density",2,0.3552797867
+24134100,"Poultry, higher nutrient density",1,2.2598261613
+24134151,"Poultry, lower nutrient density",2,0.3546276196
+24137300,"Poultry, higher nutrient density",2,0.3121721073
+24140210,"Poultry, higher nutrient density",2,0.4874729348
+24142300,"Poultry, higher nutrient density",2,0.48892408
+24142301,"Poultry, higher nutrient density",2,0.5556211111
+24142310,"Poultry, higher nutrient density",2,0.4874729348
+24142311,"Poultry, higher nutrient density",2,0.5537697827
+24142501,"Poultry, higher nutrient density",2,0.5562431972
+24142510,"Poultry, lower nutrient density",2,0.4874729348
+24142511,"Poultry, lower nutrient density",2,0.5537697827
+24143210,"Poultry, higher nutrient density",2,0.4894116959
+24143220,"Poultry, higher nutrient density",2,0.5562431972
+24144300,"Poultry, higher nutrient density",2,0.4894116959
+24144301,"Poultry, higher nutrient density",2,0.5562431972
+24147300,"Poultry, higher nutrient density",2,1.08051372
+24147301,"Poultry, higher nutrient density",2,1.2274621336
+24147310,"Poultry, higher nutrient density",2,1.08051372
+24147320,"Poultry, higher nutrient density",2,1.08051372
+24147321,"Poultry, higher nutrient density",2,1.2274621336
+24147400,"Poultry, higher nutrient density",2,1.08051372
+24150210,"Poultry, higher nutrient density",2,0.894086211
+24152230,"Poultry, higher nutrient density",2,0.8979897995
+24152231,"Poultry, higher nutrient density",2,0.8979897995
+24152241,"Poultry, higher nutrient density",2,0.894086211
+24153210,"Poultry, higher nutrient density",2,0.8993014921
+24153220,"Poultry, higher nutrient density",2,0.8993014921
+24154010,"Poultry, higher nutrient density",2,0.856048681
+24154011,"Poultry, higher nutrient density",2,0.8993014921
+24154020,"Poultry, lower nutrient density",2,0.8511794228
+24154021,"Poultry, lower nutrient density",2,0.894086211
+24154300,"Poultry, higher nutrient density",2,0.856048681
+24154301,"Poultry, higher nutrient density",2,0.8993014921
+24157300,"Poultry, higher nutrient density",2,1.08051372
+24157310,"Poultry, higher nutrient density",2,1.08051372
+24157320,"Poultry, lower nutrient density",2,1.08051372
+24157400,"Poultry, higher nutrient density",2,1.08051372
+24160110,"Poultry, lower nutrient density",2,1.6783537916
+24162130,"Poultry, lower nutrient density",2,1.6898944194
+24162140,"Poultry, lower nutrient density",2,1.6783537916
+24162150,"Poultry, lower nutrient density",2,1.6783537916
+24163110,"Poultry, lower nutrient density",2,1.6898944194
+24164000,"Poultry, lower nutrient density",2,1.6898944194
+24164010,"Poultry, lower nutrient density",2,1.6783537916
+24164200,"Poultry, lower nutrient density",2,1.6898944194
+24167200,"Poultry, lower nutrient density",2,2.6712652304
+24167210,"Poultry, lower nutrient density",2,2.6712652304
+24167220,"Poultry, lower nutrient density",2,2.6712652304
+24167230,"Poultry, lower nutrient density",2,2.6712652304
+24167300,"Poultry, lower nutrient density",2,2.6712652304
+24168000,"Poultry, lower nutrient density",2,1.4721532631
+24168001,"Poultry, lower nutrient density",2,1.2758081334
+24168002,"Poultry, lower nutrient density",2,1.1821662716
+24168010,"Poultry, lower nutrient density",1,1.4721532631
+24168011,"Poultry, lower nutrient density",1,1.2758081334
+24168012,"Poultry, lower nutrient density",1,1.1821662716
+24168021,"Poultry, lower nutrient density",2,1.2758081334
+24168030,"Poultry, lower nutrient density",2,1.1959386318
+24168031,"Poultry, lower nutrient density",1,1.1959386318
+24198570,"Poultry, higher nutrient density",2,0.9284265147
+24198671,"Poultry, higher nutrient density",2,0.7365078029
+24198677,"Poultry, higher nutrient density",1,1.2998200366
+24198683,"Poultry, higher nutrient density",1,1.233881355
+24198720,"Poultry, higher nutrient density",1,1.8238244847
+24198731,"Poultry, higher nutrient density",2,0.8291405691
+24198732,"Poultry, higher nutrient density",2,0.8291405691
+24198735,"Poultry, higher nutrient density",2,0.8291405691
+24198736,"Poultry, higher nutrient density",2,0.8291405691
+24198737,"Poultry, higher nutrient density",2,0.8291405691
+24198739,"Poultry, higher nutrient density",2,1.0220560586
+24198741,"Poultry, higher nutrient density",2,1.0206228967
+24198742,"Poultry, higher nutrient density",2,1.0206228967
+24198745,"Poultry, higher nutrient density",1,1.092404829
+24198746,"Poultry, higher nutrient density",2,1.0206228967
+24198747,"Poultry, higher nutrient density",2,1.0206228967
+24201000,"Poultry, higher nutrient density",2,0.9868207928
+24201020,"Poultry, higher nutrient density",2,1.6620173437
+24201120,"Poultry, higher nutrient density",2,1.6620173437
+24201130,"Poultry, higher nutrient density",2,1.6221901769
+24201320,"Poultry, higher nutrient density",2,0.9868207928
+24201330,"Poultry, higher nutrient density",1,1.5087843109
+24207000,"Poultry, higher nutrient density",2,1.6106194816
+24208500,Cured meat,2,3.7733490803
+24208510,Cured meat,2,3.7733490803
+24209000,"Poultry, lower nutrient density",1,1.5489809346
+25110140,"Meat, higher nutrient density",2,1.0351012831
+25112200,"Meat, higher nutrient density",1,3.3613782578
+25170420,"Meat, higher nutrient density",2,0.6097453458
+25210110,Cured meat,2,0.6699396929
+25210210,Cured meat,2,1.1163574902
+25210220,Cured meat,2,0.4378129358
+25210280,Cured meat,2,0.4451699548
+25210310,Cured meat,2,0.3863823729
+25210410,Cured meat,2,0.6254637575
+25220105,Cured meat,1,1.0402616486
+25220350,Cured meat,2,0.9057524108
+25220360,Cured meat,1,0.8279707499
+25220410,Cured meat,2,0.6864930219000001
+25220425,Cured meat,1,1.3039561435
+25220710,Cured meat,1,1.0300295627
+25221210,Cured meat,2,2.0126022813
+25221215,Cured meat,2,2.1785422434
+25221250,Cured meat,1,2.0411793313
+25221310,Cured meat,2,0.8662410163
+25221350,Cured meat,1,0.9375278989
+25221400,Cured meat,2,0.9217553258
+25221405,Cured meat,2,0.9666274475
+25221450,Cured meat,1,1.1452331584
+25221460,Cured meat,1,0.8387764279
+25221500,Cured meat,1,1.8019578005
+25221610,Cured meat,1,0.9392635701
+25221810,Cured meat,2,1.2747756461
+25221830,Cured meat,1,1.0900632737
+25221870,Cured meat,1,0.8077620748
+25221875,Cured meat,1,0.718275893
+25221910,Cured meat,2,0.5613798811
+25221950,Cured meat,1,1.0094440418
+25230110,Cured meat,2,1.4603006758
+25230210,Cured meat,1,1.3819346437
+25230220,Cured meat,1,2.0373505397
+25230320,Cured meat,1,1.6854281067
+25230420,Cured meat,1,0.8186582624
+25230530,Cured meat,1,0.8875970625
+25230540,Cured meat,1,0.9281673131
+25230560,Cured meat,1,0.9861684794
+25230610,Cured meat,1,1.1046971908
+25230780,Cured meat,1,1.4696141735
+25230785,Cured meat,1,2.3846445708
+25230800,Cured meat,1,0.8698760703
+25231110,Cured meat,1,2.4085407785
+25240000,Cured meat,2,1.1415692199
+25240110,Cured meat,1,1.4996596482
+25240220,Cured meat,1,1.2881243034
+26100110,Seafood,4,1.5962182903
+26100120,Seafood,4,1.5962182903
+26100130,Seafood,1,1.2149674941
+26100140,Seafood,4,1.312306681
+26100180,Seafood,2,1.0861190118
+26100260,Seafood,2,0.5853129533
+26100270,Seafood,2,0.6278665702
+26101110,Seafood,2,4.5888908434
+26101180,Seafood,2,4.5888908434
+26107120,Seafood,4,1.1416708683
+26107140,Seafood,4,0.976916785
+26109120,Seafood,4,1.6140246133
+26109130,Seafood,1,1.2925191879
+26109140,Seafood,4,1.3251814905
+26109160,Seafood,3,1.6489746021
+26115140,Seafood,1,1.4452198786
+26117140,Seafood,1,1.2488838435
+26119110,Seafood,1,1.4612878661
+26121180,Seafood,2,0.6015338326
+26127140,Seafood,4,1.5121427013
+26137100,Seafood,2,1.9819988064
+26137110,Seafood,4,1.9739396649
+26137120,Seafood,4,1.9739396649
+26137123,Seafood,4,2.0183934665
+26137130,Seafood,4,1.5255613169
+26137140,Seafood,1,2.4552303548
+26137190,Seafood,1,4.9698492813
+26139110,Seafood,2,1.4335740872
+26139180,Seafood,2,1.6629455935
+26151190,Seafood,1,4.2487693728
+26153100,Seafood,2,2.5118617729
+26155110,Seafood,2,1.3022237582
+26157110,Seafood,1,0.8640799314
+26157140,Seafood,1,0.9119989816
+26158000,Seafood,1,1.2369918461
+26158010,Seafood,4,1.0578457719
+26158013,Seafood,4,1.0752695172
+26158020,Seafood,1,1.8798054466
+26158030,Seafood,4,0.9150759629
+26205160,Seafood,1,2.6230363379
+26211100,Seafood,2,16.03119237
+26213140,Seafood,1,2.4830964883
+26213160,Seafood,1,1.2856195963
+26213190,Seafood,1,2.6057849362
+26303110,Seafood,1,7.64487128
+26303140,Seafood,1,2.2897354441
+26303160,Seafood,1,1.5315404497
+26305110,Seafood,1,13.868436982
+26305120,Seafood,1,25.377807722
+26305130,Seafood,1,2.2859986074
+26305160,Seafood,2,9.8293838345
+26309160,Seafood,1,2.3404030634
+26311110,Seafood,1,6.4815830411
+26313100,Seafood,2,1.8717026788
+26313160,Seafood,1,2.5773815024
+26317110,Seafood,1,2.4934942088
+26317120,Seafood,1,7.7967858683
+26317140,Seafood,1,2.032548226
+26319110,Seafood,4,2.2939903279
+26319120,Seafood,4,2.8443898132
+26319123,Seafood,4,2.9145229239
+26319130,Seafood,1,2.8981151702
+26319140,Seafood,4,2.2328452213
+26319145,Seafood,2,2.1572655253
+26319160,Seafood,1,1.7243938636
+26321110,Seafood,1,5.2126916798
+27111000,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,1.4270879611
+27111300,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.901754717
+27111310,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.8565210833
+27111400,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.8789802318
+27111405,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",2,0.4095899261
+27111406,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.5430458073
+27111407,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",2,0.4095899261
+27111410,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.4009854242
+27111420,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.4798040726
+27111500,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",5,0.756313814
+27113100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.9478624563
+27113200,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0110308284
+27115100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,4.6328078204
+27116100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.6519474057
+27116200,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,1.4785962497
+27120030,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.1241828925
+27120100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.8298921292
+27120120,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.4123666868
+27120150,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.4255655448
+27121000,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.6670707321
+27130100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.7150063518
+27141000,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",5,0.6007875585
+27141050,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.3851162039
+27141500,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.5555151277
+27144000,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.6978461924
+27145000,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.8662911743
+27146011,"Poultry, lower nutrient density",4,0.7403109217
+27146100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",2,0.7855236587
+27146110,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",2,0.9504989706
+27146150,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4734388183
+27146160,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.8383287904
+27146250,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.4550386015
+27146300,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.583057283
+27146350,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0006033769
+27146360,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",2,1.0562969418
+27150110,Seafood,1,2.543120576
+27150170,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.9733595356
+27150210,Condiments and Sauces,2,1.4054242796
+27150230,Seafood,4,3.1711566394
+27151030,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",2,2.3985714902
+27162040,Mixed Dishes - Vegetables - lower nutrient density,1,0.2684186922
+27211000,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.9606713733
+27211400,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.6144758048
+27211500,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.0120719509
+27212000,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.6732599691
+27212050,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",5,0.4636964487
+27212100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4416197431
+27212120,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.9581953517
+27212350,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",5,0.6527460305
+27213000,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4028336487
+27213100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.7997546403
+27214100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.947600874
+27214110,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.780643211
+27220010,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.824744828
+27220080,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.8271457428
+27242000,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.3274695397
+27242300,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.8253927032
+27242310,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.6988570472
+27243000,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.2167574964
+27243100,Mixed Dishes - Grain based - higher nutrient density,1,1.7736704782
+27243500,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.2448576926
+27246100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",5,0.601798861
+27246500,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.9708912905
+27246505,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.8301544878
+27250030,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.6041055206
+27250040,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.1578942479
+27250050,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.2368285679
+27250070,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.3582604541
+27250126,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.1055927691
+27250520,Seafood,1,1.0083376832
+27250610,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.9226234545
+27260010,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.9474084995
+27260080,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.8925164212
+27260100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.4887062287
+27260110,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.5848611565
+27311110,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.5925162839
+27311310,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4932124973
+27311410,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4215447295
+27311510,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.5494708527
+27313110,Mixed Dishes - Grain based - lower nutrient density,2,0.8366348576
+27313160,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.8766308152
+27315250,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0435001199
+27315510,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.7460440849
+27317010,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.6123490712
+27320040,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.6772956685
+27330170,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,2.6247442308
+27341010,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.9130169649
+27343010,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.8843785718
+27343020,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4173958114
+27343910,Mixed Dishes - Grain based - lower nutrient density,1,0.8366348576
+27343950,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.6879449762
+27345010,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.2994587688
+27345020,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.3109094787
+27345310,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.5185931582
+27345410,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.9558774148
+27345440,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.8287899958
+27345520,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.2885792315
+27347100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.6861269328
+27347240,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.9567079161
+27350050,Mixed Dishes - Grain based - lower nutrient density,1,0.9573605951
+27350060,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.160524752
+27363000,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.4630287248
+27363100,Mixed Dishes - Grain based - higher nutrient density,4,0.5145754181
+27410210,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.8279382817
+27410220,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.7490992201
+27411100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.6595215147
+27411200,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.6279830247
+27415100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.9492377145
+27415110,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.3410299756
+27415200,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.0489337593
+27416150,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.9496273942
+27416300,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,1.0002066624
+27416500,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.5356973308
+27420020,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.722771025
+27420060,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.5721108769
+27420350,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.5352923953
+27420510,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",5,0.7138546254
+27440110,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4633524598
+27440120,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4394508942
+27443110,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.7467562921
+27443120,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.5613112938
+27445110,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.1288784223
+27445120,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.6170128252
+27445125,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4215858028
+27445130,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.4371287606
+27445150,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0417178753
+27445220,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",2,1.1338796411
+27446100,Mixed Dishes - Grain based - higher nutrient density,1,0.3395722337
+27446200,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.6573922318
+27446205,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,0.7510190903
+27446220,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.6464213997
+27446230,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.656456543
+27450010,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0767691453
+27450060,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.759184391
+27450062,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.7591178989
+27450070,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.1224726949
+27450080,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.2778665499
+27450100,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",4,0.7396738013
+27450130,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.419624188
+27450400,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,1.3760861952
+27450405,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,1.3721717295
+27450410,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",4,1.3875679966
+27460510,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.7557737656
+27500050,Mixed Dishes - Sandwiches - lower nutrient density,1,1.3399399024
+27500300,Mixed Dishes - Sandwiches - higher nutrient density,1,1.8764457424
+27510140,Mixed Dishes - Sandwiches - higher nutrient density,1,1.6949921418
+27510165,Mixed Dishes - Sandwiches - lower nutrient density,2,1.1359341877
+27510170,Mixed Dishes - Sandwiches - lower nutrient density,2,1.1359341877
+27510172,Mixed Dishes - Sandwiches - lower nutrient density,2,1.1359341877
+27510174,Mixed Dishes - Sandwiches - lower nutrient density,2,1.1359341877
+27510190,Mixed Dishes - Sandwiches - higher nutrient density,2,1.1228673475
+27510215,Mixed Dishes - Sandwiches - higher nutrient density,2,1.1228673475
+27510225,Mixed Dishes - Sandwiches - lower nutrient density,2,1.1228673475
+27510232,Mixed Dishes - Sandwiches - lower nutrient density,2,1.1228673475
+27510251,Mixed Dishes - Sandwiches - higher nutrient density,2,1.1228673475
+27510252,Mixed Dishes - Sandwiches - higher nutrient density,2,1.1228673475
+27510276,Mixed Dishes - Sandwiches - lower nutrient density,2,1.4713827236
+27510281,Mixed Dishes - Sandwiches - lower nutrient density,2,1.4713827236
+27510312,Mixed Dishes - Sandwiches - lower nutrient density,1,1.4713827236
+27510346,Mixed Dishes - Sandwiches - higher nutrient density,2,1.4713827236
+27510387,Mixed Dishes - Sandwiches - lower nutrient density,2,1.9811571186
+27510388,Mixed Dishes - Sandwiches - lower nutrient density,2,1.9811571186
+27510389,Mixed Dishes - Sandwiches - higher nutrient density,2,1.9811571186
+27510401,Mixed Dishes - Sandwiches - higher nutrient density,2,1.9811571186
+27510406,Mixed Dishes - Sandwiches - lower nutrient density,2,1.9811571186
+27510451,Mixed Dishes - Sandwiches - higher nutrient density,1,1.9811571186
+27510536,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510552,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510553,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510565,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510601,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510606,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510615,Mixed Dishes - Sandwiches - higher nutrient density,2,1.6862751381
+27510631,Mixed Dishes - Sandwiches - higher nutrient density,1,1.0909034355
+27510641,Mixed Dishes - Sandwiches - higher nutrient density,1,1.741403234
+27510700,Mixed Dishes - Sandwiches - higher nutrient density,2,1.5474140523
+27510950,Mixed Dishes - Sandwiches - lower nutrient density,1,2.5587517096
+27513010,Mixed Dishes - Sandwiches - lower nutrient density,1,1.5508093708
+27513040,Mixed Dishes - Sandwiches - higher nutrient density,1,1.5474140523
+27513041,Mixed Dishes - Sandwiches - higher nutrient density,1,1.165207495
+27513050,Mixed Dishes - Sandwiches - higher nutrient density,1,1.8228122843
+27515020,Mixed Dishes - Sandwiches - higher nutrient density,1,1.2513125674
+27515080,Mixed Dishes - Sandwiches - lower nutrient density,1,0.984543563
+27516010,Mixed Dishes - Sandwiches - higher nutrient density,1,1.1548537283
+27520135,Mixed Dishes - Sandwiches - lower nutrient density,1,1.1586114606
+27520320,Mixed Dishes - Sandwiches - lower nutrient density,1,1.9690495679
+27520350,Mixed Dishes - Sandwiches - lower nutrient density,1,1.9696745345
+27520390,Mixed Dishes - Sandwiches - higher nutrient density,1,1.7432359845
+27520500,Mixed Dishes - Sandwiches - higher nutrient density,1,1.0087728393
+27540110,Mixed Dishes - Sandwiches - higher nutrient density,1,1.0061901769
+27540140,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0100914409
+27540145,Mixed Dishes - Sandwiches - lower nutrient density,2,1.2948941855
+27540150,Mixed Dishes - Sandwiches - lower nutrient density,2,1.0100914409
+27540180,Mixed Dishes - Sandwiches - lower nutrient density,1,1.2948941855
+27540190,Mixed Dishes - Sandwiches - lower nutrient density,2,1.2948941855
+27540235,Mixed Dishes - Sandwiches - higher nutrient density,1,1.6189004356
+27540285,Mixed Dishes - Sandwiches - lower nutrient density,1,1.3431532272
+27540291,Mixed Dishes - Sandwiches - higher nutrient density,1,1.6361006376
+27540350,Mixed Dishes - Sandwiches - higher nutrient density,1,1.9112126876
+27550000,Mixed Dishes - Sandwiches - lower nutrient density,1,0.8549088149
+27550100,Mixed Dishes - Sandwiches - higher nutrient density,2,0.8549088149
+27550750,Mixed Dishes - Sandwiches - higher nutrient density,2,1.967896761
+27550751,Mixed Dishes - Sandwiches - higher nutrient density,2,1.967896761
+27560300,Mixed Dishes - Sandwiches - lower nutrient density,1,0.7776344574
+27560350,Mixed Dishes - Sandwiches - lower nutrient density,4,0.6338009664
+27560500,Mixed Dishes - Sandwiches - higher nutrient density,4,0.7015020649
+27560650,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0532796775
+27560660,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0993608751
+27560670,Mixed Dishes - Sandwiches - lower nutrient density,1,1.2399447903
+27560710,Mixed Dishes - Sandwiches - lower nutrient density,1,1.1269790748
+27560910,Mixed Dishes - Sandwiches - lower nutrient density,1,1.6068857654
+27564000,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5517304932
+27564060,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5517304932
+27564070,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5251075573
+27564120,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5517304932
+27564130,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5251075573
+27564180,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5517304932
+27564190,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5251075573
+27564240,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5517304932
+27564440,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5164422071
+27564450,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0665457395
+28110220,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.7025286326
+28110270,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.4445107024
+28110310,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.5744162366
+28110380,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.8517085437
+28110390,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.9239573091
+28110510,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.7622191909
+28110660,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.0248201372
+28140320,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.5824261
+28140740,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0393337196
+28141010,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.7809097515
+28141050,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.0285136065
+28141201,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.9773194813
+28141610,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.3547275797
+28143020,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.4016636398
+28143080,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.0246849526
+28143130,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,0.7350539014
+28143150,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.1043598843
+28143170,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.8088211103
+28145100,"Mixed Dishes - Meat, Poultry, Seafood - higher nutrient density",1,1.0680417808
+28145210,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.756337051
+28150510,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.1149149187
+28160310,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.8095296767
+28310110,Soups - lower nutrient density,2,0.2670247
+28310230,Soups - higher nutrient density,1,0.3461971277
+28310330,Soups - lower nutrient density,4,0.5200849364
+28311010,Soups - higher nutrient density,2,0.2379317044
+28311030,Soups - lower nutrient density,1,0.4146023911
+28315050,Soups - lower nutrient density,1,0.356405428
+28315140,Soups - lower nutrient density,2,0.3461971277
+28315150,Soups - higher nutrient density,1,0.447244358
+28315160,Soups - lower nutrient density,1,0.3696225596
+28317010,Soups - lower nutrient density,2,0.6971943383
+28320160,Soups - higher nutrient density,4,0.4228523244
+28320300,Soups - lower nutrient density,4,0.6325355235
+28340120,Soups - higher nutrient density,2,0.1614212397
+28340310,Soups - lower nutrient density,1,0.343596385
+28340510,Soups - higher nutrient density,2,0.3308742927
+28340600,Soups - higher nutrient density,2,0.3478496643
+28340630,Soups - lower nutrient density,1,0.4494833355
+28340640,Soups - lower nutrient density,1,0.3308742927
+28340660,Soups - higher nutrient density,2,0.3493928014
+28340670,Soups - higher nutrient density,2,0.4346018851
+28340680,Soups - higher nutrient density,4,0.2999240041
+28345110,Soups - lower nutrient density,1,0.365299677
+28350050,Soups - higher nutrient density,1,1.2216915956
+28350220,Soups - lower nutrient density,2,0.3358059922
+28355110,Soups - higher nutrient density,2,0.367746529
+28355210,Soups - higher nutrient density,1,0.7067012057
+28355250,Soups - lower nutrient density,1,1.0261976746
+28355410,Soups - lower nutrient density,1,0.7144528634
+28355450,Soups - higher nutrient density,4,0.53335133
+28355470,Soups - higher nutrient density,2,0.4510211593
+28355480,Soups - higher nutrient density,4,0.5547799556
+28500000,Condiments and Sauces,1,0.4550588549
+28500040,Condiments and Sauces,1,0.5088696776
+28500050,Condiments and Sauces,1,0.862763629
+28500070,Condiments and Sauces,2,0.5085869926
+28500080,Condiments and Sauces,2,0.4494277843
+28500100,Condiments and Sauces,1,0.514596381
+28520100,Condiments and Sauces,2,0.8990506497
+28522000,Condiments and Sauces,1,0.7532103135
+28522050,Condiments and Sauces,1,0.9112058767
+31102000,Eggs,4,0.3764956734
+31103010,Eggs,3,0.382922398
+31105005,Eggs,4,0.3853797216
+31105010,Eggs,3,0.382922398
+31105020,Eggs,4,0.3810938616
+31105030,Eggs,4,0.3814582152
+31105040,Eggs,4,0.4057326165
+31105060,Eggs,3,0.400116098
+31105080,Eggs,3,0.3889883404
+31105090,Eggs,2,1.3443442402
+31108100,Eggs,4,0.3853797216
+31108110,Eggs,3,0.382922398
+31111010,Eggs,3,0.382922398
+31111020,Eggs,4,0.3814578187
+32102000,Mixed Dishes - Eggs - higher nutrient density,4,0.4296635822
+32103000,Mixed Dishes - Eggs - higher nutrient density,4,0.4270302258
+32129990,Eggs,4,0.3245758997
+32130000,Eggs,4,0.3164110734
+32130010,Eggs,4,0.3165633691
+32130020,Eggs,4,0.3356157029
+32130060,Eggs,4,0.31929359
+32130065,Eggs,4,0.3245758997
+32130070,Eggs,4,0.3143191018
+32130080,Eggs,2,1.3443442402
+32130100,Mixed Dishes - Eggs - higher nutrient density,4,0.39133854
+32130110,Mixed Dishes - Eggs - higher nutrient density,4,0.3916104426
+32130120,Mixed Dishes - Eggs - higher nutrient density,4,0.4082456181
+32130160,Mixed Dishes - Eggs - higher nutrient density,4,0.3971507879
+32130170,Mixed Dishes - Eggs - higher nutrient density,4,0.3931131104
+32130190,Mixed Dishes - Eggs - lower nutrient density,4,0.5853798058
+32130210,Mixed Dishes - Eggs - lower nutrient density,4,0.5892930585
+32130265,Mixed Dishes - Eggs - lower nutrient density,1,1.1827477688
+32130270,Mixed Dishes - Eggs - lower nutrient density,4,0.5973771801
+32130290,Mixed Dishes - Eggs - lower nutrient density,4,0.6167937849
+32130310,Mixed Dishes - Eggs - lower nutrient density,4,0.6214167977
+32130370,Mixed Dishes - Eggs - lower nutrient density,4,0.629856977
+32130400,Mixed Dishes - Eggs - higher nutrient density,4,0.3735569382
+32130430,Mixed Dishes - Eggs - higher nutrient density,4,0.3759446807
+32130490,Mixed Dishes - Eggs - higher nutrient density,4,0.3357440792
+32130510,Mixed Dishes - Eggs - higher nutrient density,1,0.8375537812
+32130630,Mixed Dishes - Eggs - higher nutrient density,4,0.4344668654
+32130690,Mixed Dishes - Eggs - higher nutrient density,4,0.388057616
+32130800,Mixed Dishes - Eggs - higher nutrient density,4,0.4860813757
+32130890,Mixed Dishes - Eggs - lower nutrient density,4,0.4781073807
+32130910,Mixed Dishes - Eggs - lower nutrient density,1,1.5449174489
+32131090,Mixed Dishes - Eggs - lower nutrient density,4,0.5181516661
+32131110,Mixed Dishes - Eggs - lower nutrient density,4,0.5181516661
+32131200,Mixed Dishes - Eggs - higher nutrient density,4,0.2862474135
+32131220,Mixed Dishes - Eggs - higher nutrient density,1,1.0374686997
+32202010,Mixed Dishes - Sandwiches - lower nutrient density,1,1.1651300141
+32202030,Mixed Dishes - Sandwiches - higher nutrient density,1,1.0769237096
+32202050,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0376825491
+32202055,Mixed Dishes - Sandwiches - lower nutrient density,1,1.7442713023
+32202070,Mixed Dishes - Sandwiches - lower nutrient density,1,1.3319421639
+32202075,Mixed Dishes - Sandwiches - lower nutrient density,1,1.6644766897
+32202080,Mixed Dishes - Sandwiches - lower nutrient density,1,1.1557220153
+32202085,Mixed Dishes - Sandwiches - higher nutrient density,1,1.3550001246
+32202090,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0001420492
+32202120,Mixed Dishes - Sandwiches - higher nutrient density,1,1.1894884275
+32300100,Soups - lower nutrient density,2,1.6507810741
+32400065,Eggs,4,0.3814578187
+32400070,Eggs,4,0.4057326165
+32400075,Eggs,4,0.3889883404
+32400080,Eggs,4,0.382922398
+32400300,Mixed Dishes - Eggs - higher nutrient density,4,0.3797524985
+33000990,Eggs,4,0.5263883762
+41101000,"Beans, peas, lentils",4,0.3001388966
+41101010,"Beans, peas, lentils",2,0.3171216113
+41101020,"Beans, peas, lentils",2,0.3171216113
+41101120,"Beans, peas, lentils",2,0.3397689217
+41102000,"Beans, peas, lentils",4,0.3309359563
+41102011,"Beans, peas, lentils",4,0.3311085169
+41102020,"Beans, peas, lentils",2,0.3282661905
+41102050,"Beans, peas, lentils",2,0.3271545972
+41102080,"Beans, peas, lentils",2,0.3271545972
+41103060,"Beans, peas, lentils",1,0.2921874645
+41104000,"Beans, peas, lentils",4,0.2993058018
+41104011,"Beans, peas, lentils",4,0.2993058018
+41104012,"Beans, peas, lentils",4,0.3217366474
+41104020,"Beans, peas, lentils",2,0.2919858893
+41104050,"Beans, peas, lentils",2,0.2919858893
+41104080,"Beans, peas, lentils",2,0.2919858893
+41106000,"Beans, peas, lentils",4,0.3195306235
+41106011,"Beans, peas, lentils",4,0.3195306235
+41106020,"Beans, peas, lentils",2,0.3145064601
+41106511,"Beans, peas, lentils",4,0.1724252641
+41107000,"Beans, peas, lentils",1,0.9561497043
+41201010,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",2,0.2653648667
+41201020,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",2,0.2882565046
+41202020,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",1,0.2619643256
+41202505,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",4,0.295051451
+41202510,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",4,0.3017349733
+41203030,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",1,0.932502594
+41204020,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",1,0.268719584
+41205010,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",2,0.2698471616
+41205011,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",2,0.2698471616
+41205015,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",2,0.2698471616
+41205016,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",2,0.2698471616
+41205017,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",2,0.2698471616
+41205050,Mixed Dishes - Vegetables - lower nutrient density,1,1.0964787197
+41205055,Mixed Dishes - Vegetables - lower nutrient density,1,0.7250006478
+41205070,Mixed Dishes - Vegetables - higher nutrient density,1,1.2016996824
+41205075,Mixed Dishes - Vegetables - lower nutrient density,1,1.2021479861
+41205100,Condiments and Sauces,1,1.504267408
+41206030,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",1,0.5184488538
+41207030,"Mixed Dishes - Beans, peas, lentils - higher nutrient density",4,0.4979208078
+41208030,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",2,0.2300288984
+41209000,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",1,2.2645481442
+41221020,"Mixed Dishes - Beans, peas, lentils - lower nutrient density",1,0.507186073
+41301020,"Beans, peas, lentils",1,0.338755196
+41302000,"Beans, peas, lentils",2,0.3346238069
+41302011,"Beans, peas, lentils",4,0.3383788324
+41302020,"Beans, peas, lentils",1,0.3346238069
+41304000,Pretzels/snack mix,1,1.590160814
+41304991,"Beans, peas, lentils",4,0.1705504044
+41305000,"Beans, peas, lentils",1,0.5000712269
+41310900,"Tortilla, corn, other chips",1,1.7453086721
+41410010,Pretzels/snack mix,1,1.8504313943
+41420010,Processed soy products,2,0.6490398773
+41420020,"Beans, peas, lentils",2,0.6458816311
+41420100,Condiments and Sauces,1,1.5405976936
+41420110,Condiments and Sauces,1,3.6884548691
+41420250,Condiments and Sauces,2,0.9894104755
+41420300,Condiments and Sauces,1,0.5904314135
+41420350,Condiments and Sauces,2,0.6122945737
+41420380,"Milk and yogurt, higher nutrient density for 1-year-olds, lower nutrient density for 2+",1,0.9242778707
+41420400,Condiments and Sauces,2,0.7803330352
+41420450,Condiments and Sauces,1,0.6580253639
+41601010,Soups - lower nutrient density,2,0.3320164421
+41601020,Soups - lower nutrient density,1,0.3465579517
+41601070,Soups - lower nutrient density,1,1.99041283
+41601090,Soups - higher nutrient density,4,0.2714154469
+41601130,Soups - higher nutrient density,1,0.3482523917
+41601140,Soups - higher nutrient density,2,0.3320164421
+41601180,Soups - lower nutrient density,2,0.3465579517
+41602030,Soups - higher nutrient density,1,0.3050168593
+41602050,Soups - lower nutrient density,1,0.4936792978
+41603010,Soups - higher nutrient density,1,0.4596402303
+41810200,Processed soy products,1,2.8381194264
+41810250,Cured meat,2,2.2169214619
+41810400,Processed soy products,1,1.0992945869
+41810600,Processed soy products,1,1.4158510753
+41810610,Processed soy products,2,1.5048367302
+41811400,Processed soy products,1,1.2416450197
+41811800,Processed soy products,1,2.1429171597
+41811890,Processed soy products,1,1.4700716723
+41812450,Processed soy products,1,0.5876590496
+41812500,Mixed Dishes - Vegetables - higher nutrient density,4,0.5436274129
+41812900,Processed soy products,1,1.4185824057
+42100050,"Nuts & Seeds, higher nutrient density",2,1.3053343641
+42100100,"Nuts & Seeds, higher nutrient density",2,2.0442389676
+42101000,"Nuts & Seeds, higher nutrient density",1,2.2112279347
+42101110,"Nuts & Seeds, higher nutrient density",1,1.901930151
+42101120,"Nuts & Seeds, higher nutrient density",1,1.7302811891
+42101130,"Nuts & Seeds, higher nutrient density",2,2.4742932244
+42101300,"Nuts & Seeds, higher nutrient density",1,2.1155430772
+42101350,"Nuts & Seeds, lower nutrient density",1,2.4641807883
+42102000,"Nuts & Seeds, higher nutrient density",2,1.8615553955
+42104000,"Nuts & Seeds, higher nutrient density",2,1.8208379917
+42104050,"Nuts & Seeds, higher nutrient density",1,2.4952614041
+42104100,"Nuts & Seeds, higher nutrient density",1,1.7161689663
+42104105,"Nuts & Seeds, higher nutrient density",2,1.8059771688
+42104110,"Nuts & Seeds, higher nutrient density",1,1.7769960899
+42104500,"Nuts & Seeds, lower nutrient density",1,2.0548390539
+42105000,"Nuts & Seeds, higher nutrient density",2,1.5155305189
+42106000,"Nuts & Seeds, higher nutrient density",2,0.7931941958
+42106020,"Nuts & Seeds, lower nutrient density",2,0.9090809536
+42107000,"Nuts & Seeds, higher nutrient density",2,2.3943196302
+42109100,"Nuts & Seeds, higher nutrient density",1,3.4654026069
+42110000,"Nuts & Seeds, higher nutrient density",1,2.0879830551
+42110100,"Nuts & Seeds, higher nutrient density",1,1.4539902216
+42110110,"Nuts & Seeds, higher nutrient density",1,2.1567693709
+42110120,"Nuts & Seeds, higher nutrient density",1,1.4683467372
+42110150,"Nuts & Seeds, higher nutrient density",1,2.0960844396
+42110160,"Nuts & Seeds, higher nutrient density",1,1.9067648444
+42110300,"Nuts & Seeds, lower nutrient density",1,2.0791773887
+42111000,"Nuts & Seeds, higher nutrient density",2,0.6049900971
+42111030,"Nuts & Seeds, higher nutrient density",2,0.3128970484
+42111040,"Nuts & Seeds, higher nutrient density",2,0.4823711066
+42111100,"Nuts & Seeds, higher nutrient density",1,0.561461424
+42111110,"Nuts & Seeds, higher nutrient density",2,0.6148021504
+42111200,"Nuts & Seeds, higher nutrient density",2,0.6687322066
+42111205,"Nuts & Seeds, higher nutrient density",2,0.6687322066
+42111210,"Nuts & Seeds, higher nutrient density",2,0.6503513449
+42111500,"Nuts & Seeds, lower nutrient density",1,0.7638487826
+42112000,"Nuts & Seeds, higher nutrient density",2,2.4900508374
+42112100,"Nuts & Seeds, higher nutrient density",2,2.4900508374
+42112200,"Nuts & Seeds, higher nutrient density",1,2.9322439366
+42112210,"Nuts & Seeds, higher nutrient density",2,2.4900508374
+42113000,"Nuts & Seeds, higher nutrient density",2,6.2179438593
+42114130,"Nuts & Seeds, higher nutrient density",1,2.309562065
+42114140,"Nuts & Seeds, higher nutrient density",1,2.2142919086
+42114145,"Nuts & Seeds, higher nutrient density",1,2.206368341
+42116000,"Nuts & Seeds, higher nutrient density",2,1.9967436413
+42116050,"Nuts & Seeds, higher nutrient density",2,1.9733919658
+42116100,"Nuts & Seeds, lower nutrient density",1,2.9927886387
+42200500,Nut & seed butters,2,1.6803853059
+42200600,"Nuts & Seeds, lower nutrient density",2,1.3470817834
+42201000,Nut & seed butters,2,2.188882899
+42202000,Nut & seed butters,1,0.5268095583
+42202010,Nut & seed butters,2,0.5268095583
+42202150,Nut & seed butters,2,0.5268095583
+42203000,Sugars,1,0.6389780388
+42204050,Condiments and Sauces,2,1.254781438
+42204100,Condiments and Sauces,1,2.0109629432
+42301015,Mixed Dishes - Sandwiches - higher nutrient density,3,0.4354214474
+42301020,Mixed Dishes - Sandwiches - higher nutrient density,3,0.4593720723
+42301025,Mixed Dishes - Sandwiches - higher nutrient density,3,0.4593720723
+42302015,Mixed Dishes - Sandwiches - higher nutrient density,3,0.418662288
+42302020,Mixed Dishes - Sandwiches - higher nutrient density,3,0.4383388133
+42302025,Mixed Dishes - Sandwiches - higher nutrient density,3,0.4383388133
+42302105,Mixed Dishes - Sandwiches - higher nutrient density,4,0.4595190903
+42302110,Mixed Dishes - Sandwiches - higher nutrient density,4,0.479205017
+42302115,Mixed Dishes - Sandwiches - higher nutrient density,4,0.479205017
+42303100,Mixed Dishes - Sandwiches - higher nutrient density,3,0.418662288
+42401010,"Milk substitutes, nutritional beverages, and smoothies",2,0.2713705965
+42402010,"Milk substitutes, nutritional beverages, and smoothies",2,0.564398872
+42403010,Fruit drinks - higher nutrient density,1,0.4746335112
+42404010,Fruit drinks - lower nutrient density,1,0.4003321652
+42500000,"Nuts & Seeds, lower nutrient density",2,1.4127241936
+42500100,"Nuts & Seeds, higher nutrient density",1,1.5158118117
+42501000,"Nuts & Seeds, higher nutrient density",1,1.4127241936
+42501500,"Nuts & Seeds, lower nutrient density",1,1.2958504776
+42502100,"Nuts & Seeds, lower nutrient density",2,1.3862068914
+43101100,"Nuts & Seeds, higher nutrient density",2,1.0045940237
+43101150,"Nuts & Seeds, higher nutrient density",2,1.0045940237
+43102000,"Nuts & Seeds, higher nutrient density",1,1.1322755148
+43102100,"Nuts & Seeds, higher nutrient density",1,1.5386059248
+43102300,"Nuts & Seeds, lower nutrient density",1,1.0382944223
+43103000,"Nuts & Seeds, higher nutrient density",1,4.4292983358
+43103300,Nut & seed butters,1,1.6559668331
+43104000,"Nuts & Seeds, higher nutrient density",2,0.8784036363
+43107000,"Nuts & Seeds, higher nutrient density",1,1.0045940237
+43108010,"Nuts & Seeds, higher nutrient density",2,0.8784036363
+51000100,Staple grains - lower nutrient density,1,0.4826409508
+51000110,Staple grains - lower nutrient density,2,0.5304218353
+51000200,Staple grains - lower nutrient density,1,1.0215674284
+51000300,Staple grains - lower nutrient density,1,0.4878808993
+51101000,Staple grains - lower nutrient density,1,0.3700536917
+51101010,Staple grains - lower nutrient density,2,0.4066893214
+51101050,Staple grains - lower nutrient density,2,0.3833459769
+51101060,Staple grains - lower nutrient density,2,0.4066893214
+51105010,Staple grains - lower nutrient density,1,0.6463687003
+51107010,Staple grains - lower nutrient density,1,0.5732903312
+51108010,Staple grains - lower nutrient density,1,0.8195179119
+51108100,Staple grains - higher nutrient density,2,1.1483414529
+51109010,Staple grains - lower nutrient density,1,0.4817507487
+51109100,Staple grains - lower nutrient density,1,0.6482852987
+51111010,Staple grains - lower nutrient density,1,0.8797138318
+51113010,Staple grains - lower nutrient density,1,0.7146211109
+51113100,Staple grains - lower nutrient density,2,0.785368958
+51119010,Staple grains - lower nutrient density,1,0.8828715975
+51121015,Staple grains - lower nutrient density,2,0.7558321749
+51121025,Staple grains - lower nutrient density,2,0.7558321749
+51121035,Staple grains - lower nutrient density,2,0.7558321749
+51121055,Staple grains - lower nutrient density,2,0.7558321749
+51121075,Staple grains - lower nutrient density,2,0.7558321749
+51127010,Staple grains - lower nutrient density,1,0.5013815475
+51129010,Staple grains - lower nutrient density,1,0.6937824694
+51129020,Staple grains - lower nutrient density,2,0.7624671423
+51133010,Staple grains - lower nutrient density,1,0.5737244479
+51133020,Staple grains - lower nutrient density,2,0.6305232757
+51135000,Staple grains - lower nutrient density,1,0.790390139
+51150000,Staple grains - lower nutrient density,1,0.671664952
+51153000,Staple grains - lower nutrient density,1,0.6882178145
+51154010,Staple grains - lower nutrient density,1,0.5069775827
+51154100,Staple grains - lower nutrient density,1,0.458152405
+51154550,Staple grains - lower nutrient density,1,0.7636414235
+51154600,Staple grains - lower nutrient density,1,1.2357157446
+51155000,Staple grains - lower nutrient density,1,0.7718049645
+51156500,Staple grains - lower nutrient density,1,1.0363611615
+51157000,Staple grains - lower nutrient density,1,0.6610176387
+51158100,Staple grains - lower nutrient density,1,0.3509543459
+51159000,Staple grains - lower nutrient density,1,0.6836730007
+51160000,Sweet bakery products,1,0.8407257735
+51160100,Sweet bakery products,1,0.7326254819
+51160110,Sweet bakery products,2,0.6179107584
+51161000,Sweet bakery products,1,1.1189210331
+51161020,Sweet bakery products,1,0.6917951397
+51161050,Sweet bakery products,1,1.1479940801
+51161250,Sweet bakery products,1,0.9498178137
+51161270,Sweet bakery products,1,0.737837742
+51166000,Sweet bakery products,1,1.0281353261
+51166100,Sweet bakery products,1,1.4184008306
+51166200,Sweet bakery products,1,1.4239235883
+51167000,Sweet bakery products,1,0.7832442314
+51180010,Staple grains - lower nutrient density,1,0.553878697
+51180030,Staple grains - lower nutrient density,1,0.5369316299
+51180080,Staple grains - lower nutrient density,1,0.491295663
+51182010,Mixed Dishes - Grain based - lower nutrient density,4,0.2692944171
+51183990,Staple grains - lower nutrient density,2,1.0025957634
+51184000,"Crackers, lower nutrient density",1,1.9032995643
+51184200,Staple grains - lower nutrient density,2,1.0025957634
+51184210,Staple grains - lower nutrient density,1,1.0025957634
+51184220,Staple grains - lower nutrient density,1,0.8915074533
+51184230,Staple grains - lower nutrient density,2,0.8272523473
+51184240,Staple grains - lower nutrient density,1,0.8272523473
+51185000,"Crackers, lower nutrient density",2,1.0114111982
+51186010,Staple grains - lower nutrient density,1,0.6863725735
+51186100,Staple grains - lower nutrient density,1,0.7265456519
+51186160,Staple grains - lower nutrient density,1,0.8152920136
+51187000,"Crackers, lower nutrient density",1,1.3083026027
+51188100,Sweet bakery products,1,0.8287668749
+51300050,Staple grains - higher nutrient density,1,0.4110754561
+51300060,Staple grains - higher nutrient density,2,0.4517710489
+51300100,Staple grains - higher nutrient density,2,0.628179898
+51300110,Staple grains - higher nutrient density,1,0.4849916678
+51300120,Staple grains - higher nutrient density,2,0.5330068588
+51300140,Staple grains - higher nutrient density,2,0.5096581689
+51300150,Staple grains - higher nutrient density,2,0.5330068588
+51300175,Staple grains - higher nutrient density,2,0.982024928
+51300185,Staple grains - higher nutrient density,1,0.5721282991
+51300210,Staple grains - higher nutrient density,1,0.8127096668
+51300300,Staple grains - lower nutrient density,1,0.7165425845
+51301010,Staple grains - lower nutrient density,1,0.406113907
+51301020,Staple grains - lower nutrient density,2,0.4463193125
+51301040,Staple grains - lower nutrient density,2,0.4229601794
+51301050,Staple grains - lower nutrient density,2,0.4463193125
+51301510,Staple grains - lower nutrient density,1,0.5912049782
+51301600,Staple grains - higher nutrient density,1,0.8337872681
+51301620,Staple grains - higher nutrient density,1,0.982024928
+51301700,Staple grains - lower nutrient density,1,0.5526689047
+51301750,Staple grains - lower nutrient density,1,0.628179898
+51301800,Staple grains - lower nutrient density,1,0.3393788107
+51303010,Staple grains - lower nutrient density,1,0.7005549129
+51303030,Staple grains - lower nutrient density,1,0.818785941
+51320010,Staple grains - lower nutrient density,1,0.7602358342
+51320060,Staple grains - lower nutrient density,1,0.7147568794
+51320070,Staple grains - lower nutrient density,1,0.603722756
+51320500,Staple grains - lower nutrient density,1,0.8086348674
+51320550,Staple grains - higher nutrient density,1,0.7060189009
+51320560,Staple grains - higher nutrient density,1,0.6382098801
+51320700,Staple grains - higher nutrient density,1,0.5365035848
+51320710,Staple grains - higher nutrient density,1,0.7948035026
+51320720,Staple grains - higher nutrient density,1,0.8167459571
+51401010,Staple grains - lower nutrient density,1,0.6987823459
+51401020,Staple grains - lower nutrient density,2,0.7679596683
+51404010,Staple grains - lower nutrient density,1,0.7478277616
+51501010,Staple grains - lower nutrient density,1,0.4786697752
+51501040,Staple grains - lower nutrient density,1,0.4054674105
+51601010,Staple grains - higher nutrient density,2,0.5626001827
+51601020,Staple grains - higher nutrient density,1,0.5119198316
+51601210,Staple grains - lower nutrient density,1,0.9108622879
+51620000,Staple grains - lower nutrient density,1,0.9115716862
+51620030,Staple grains - lower nutrient density,1,0.7726845229
+51630000,Staple grains - lower nutrient density,1,0.4675382471
+51630200,Staple grains - lower nutrient density,1,0.8777643719
+51806010,Staple grains - lower nutrient density,1,1.0967287918
+51807000,Staple grains - higher nutrient density,1,1.3729409826
+51808000,Staple grains - higher nutrient density,1,1.3270879542
+51808100,Staple grains - higher nutrient density,1,1.4105273584
+52101000,"Biscuits, muffins, quick breads",1,0.4077602885
+52101100,"Biscuits, muffins, quick breads",2,0.4077602885
+52102040,"Biscuits, muffins, quick breads",1,0.4295138282
+52103000,"Biscuits, muffins, quick breads",1,0.7109603374
+52104010,"Biscuits, muffins, quick breads",2,0.4077602885
+52104040,"Biscuits, muffins, quick breads",1,0.388039751
+52104100,"Biscuits, muffins, quick breads",1,1.1144970243
+52105100,"Biscuits, muffins, quick breads",1,1.0293570451
+52105200,"Biscuits, muffins, quick breads",1,1.3695398477
+52201000,"Biscuits, muffins, quick breads",1,0.8578612527
+52202060,"Biscuits, muffins, quick breads",2,0.8578612527
+52204000,Mixed Dishes - Grain based - lower nutrient density,1,0.7167827858
+52206010,"Biscuits, muffins, quick breads",1,1.1758138643
+52206060,"Biscuits, muffins, quick breads",2,1.1758138643
+52208760,Staple grains - lower nutrient density,2,0.8115560354
+52209010,"Biscuits, muffins, quick breads",2,0.6258685162
+52215000,Staple grains - lower nutrient density,2,0.3697687966
+52215100,Staple grains - lower nutrient density,1,0.1971299944
+52215200,Staple grains - lower nutrient density,1,0.4661843431
+52215260,Staple grains - higher nutrient density,1,0.6901719241
+52215300,Staple grains - lower nutrient density,1,0.8984647417
+52215350,Staple grains - lower nutrient density,1,1.1160635277
+52301000,"Biscuits, muffins, quick breads",1,0.8228810551
+52302010,"Biscuits, muffins, quick breads",1,1.0543706249
+52302020,"Biscuits, muffins, quick breads",2,1.0543706249
+52302500,"Biscuits, muffins, quick breads",1,1.2062141539
+52302600,"Biscuits, muffins, quick breads",1,1.4301031323
+52304000,"Biscuits, muffins, quick breads",1,1.046864039
+52304010,"Biscuits, muffins, quick breads",1,0.9021875802
+52306010,"Biscuits, muffins, quick breads",1,1.0315717397
+52306500,"Biscuits, muffins, quick breads",1,1.0961763885
+52306700,"Biscuits, muffins, quick breads",1,1.0894625872
+52401000,"Biscuits, muffins, quick breads",1,0.6075753034
+52403000,"Biscuits, muffins, quick breads",1,0.331897637
+52404060,"Biscuits, muffins, quick breads",1,0.9009462889
+52405010,"Biscuits, muffins, quick breads",1,0.8423366272
+52407000,"Biscuits, muffins, quick breads",1,0.8491387972
+52408000,"Biscuits, muffins, quick breads",1,0.7511837741
+53100100,Sweet bakery products,1,1.2709548076
+53101100,Sweet bakery products,1,0.4373795317
+53101250,Sweet bakery products,1,1.4442240543
+53102100,Sweet bakery products,1,1.1400279289
+53102200,Sweet bakery products,1,0.9830314926
+53102700,Sweet bakery products,1,0.8698743746
+53104100,Sweet bakery products,1,1.6491865987
+53104260,Sweet bakery products,1,1.0238951564
+53104400,Sweet bakery products,1,0.6928344763
+53104500,Sweet bakery products,2,1.3696598531
+53104550,Sweet bakery products,1,1.1560666714
+53104600,Sweet bakery products,1,1.6643518325
+53105270,Sweet bakery products,1,1.0856911583
+53105275,Sweet bakery products,1,1.1825110662
+53105300,Sweet bakery products,1,0.9817023831
+53106500,Sweet bakery products,1,0.7985916901
+53108200,Sweet bakery products,1,0.7841965455
+53109200,Sweet bakery products,1,0.7438845236
+53110000,Sweet bakery products,1,1.0694895045
+53112000,Sweet bakery products,1,2.245064387
+53112100,Sweet bakery products,1,1.964699562
+53114000,Sweet bakery products,1,1.0977759553
+53114100,Sweet bakery products,1,0.7701590709
+53115100,Sweet bakery products,1,1.3215223924
+53115200,Sweet bakery products,1,1.3020794457
+53115310,Sweet bakery products,1,0.9467760639
+53115320,Sweet bakery products,1,0.9123083778
+53115450,Sweet bakery products,1,1.1935169002
+53116000,Sweet bakery products,1,1.2610103971
+53116020,Sweet bakery products,1,0.9064322529
+53116500,Sweet bakery products,1,1.3715413999
+53116510,Sweet bakery products,1,1.0459863771
+53117200,Sweet bakery products,1,1.5007763619
+53118100,Sweet bakery products,1,1.1825274495
+53118200,Sweet bakery products,1,1.3209812279
+53118300,Sweet bakery products,1,1.3932489844
+53118410,Sweet bakery products,1,0.8833071565
+53118500,Sweet bakery products,1,1.2968623348
+53118550,Sweet bakery products,1,1.1847627856
+53119000,Sweet bakery products,1,0.9912036571
+53120270,Sweet bakery products,1,1.308435478
+53120275,Sweet bakery products,1,1.3454139319
+53121270,Sweet bakery products,1,0.916800839
+53121275,Sweet bakery products,1,1.2744547026
+53123070,Sweet bakery products,1,1.400338531
+53123080,Sweet bakery products,1,1.091099264
+53124110,Sweet bakery products,1,0.9676843083
+53201000,Sweet bakery products,2,0.7903790459
+53202000,Sweet bakery products,1,0.6730457012
+53203000,Sweet bakery products,1,0.6623582445
+53203500,Sweet bakery products,1,1.580030959
+53204010,Sweet bakery products,1,0.9957377669
+53204100,Sweet bakery products,1,0.6146219303
+53204840,Sweet bakery products,1,2.3799852746
+53205260,Sweet bakery products,1,1.423779547
+53206000,Sweet bakery products,1,0.7656527653
+53206020,Sweet bakery products,2,0.7656527653
+53206030,Sweet bakery products,2,2.4350323354
+53206100,Sweet bakery products,2,0.9254369738
+53206500,Sweet bakery products,2,0.5293501717
+53207000,Sweet bakery products,1,0.8929217394
+53208200,Sweet bakery products,1,0.8088135
+53209005,Sweet bakery products,2,0.8834678101
+53209010,Sweet bakery products,2,1.6860177932
+53209015,Sweet bakery products,2,0.78493235
+53209020,Sweet bakery products,2,2.2516858442
+53209100,Sweet bakery products,2,0.7028569056
+53209500,Sweet bakery products,1,0.3932369926
+53210900,Sweet bakery products,4,0.9685583551
+53215500,Sweet bakery products,1,0.6542778606
+53220000,Sweet bakery products,1,0.8181486624
+53220030,Sweet bakery products,2,0.8007393913
+53220040,Sweet bakery products,2,0.8007393913
+53222010,Sweet bakery products,2,1.9894236957
+53222020,Sweet bakery products,2,1.8664596368
+53223000,Sweet bakery products,2,0.7557926464
+53224000,Sweet bakery products,1,1.3579974524
+53224250,Sweet bakery products,1,1.9744265954
+53225000,Sweet bakery products,1,1.1854819327
+53226000,Sweet bakery products,1,0.6437786765
+53226500,Sweet bakery products,1,1.1369743771
+53226550,Sweet bakery products,2,1.1369743771
+53230000,Sweet bakery products,1,1.0059959311
+53231400,Sweet bakery products,1,1.5867960694
+53233000,Sweet bakery products,2,0.6483794455
+53233010,Sweet bakery products,1,0.6483794455
+53233050,Sweet bakery products,1,0.4017096573
+53233060,Sweet bakery products,1,0.7073792306
+53234000,Sweet bakery products,1,0.7647700519
+53234100,Sweet bakery products,1,0.7865140829
+53234250,Sweet bakery products,2,1.1369743771
+53235000,Sweet bakery products,2,0.8203326699
+53235500,Sweet bakery products,2,0.5743510174
+53236100,Sweet bakery products,1,0.7585758968
+53237000,Sweet bakery products,1,1.1897995899
+53238000,Sweet bakery products,1,0.9559420948
+53239000,Sweet bakery products,1,0.8603314843
+53239010,Sweet bakery products,2,2.1392597065
+53239050,Sweet bakery products,1,1.1427754953
+53239100,Sweet bakery products,1,3.2323203349
+53240000,Sweet bakery products,2,0.4858823237
+53241500,Sweet bakery products,2,0.9260227419
+53241510,Sweet bakery products,2,1.0724196929
+53241600,Sweet bakery products,1,0.7526177364
+53242000,Sweet bakery products,2,0.7518524179
+53243000,Sweet bakery products,2,0.5711315632
+53243050,Sweet bakery products,2,2.7720620359
+53244010,Sweet bakery products,2,1.3411867626
+53244020,Sweet bakery products,1,1.0168474037
+53247000,Sweet bakery products,1,0.9480515732
+53260030,Sweet bakery products,1,1.8232908539
+53260200,Sweet bakery products,1,1.8789335734
+53260300,Sweet bakery products,1,1.5218041194
+53260400,Sweet bakery products,1,1.8301010479
+53260500,Sweet bakery products,2,1.1788265793
+53260600,Sweet bakery products,2,1.7654736996
+53261000,Sweet bakery products,2,1.9234117251
+53300100,Sweet bakery products,1,0.9564859627
+53300170,Sweet bakery products,1,0.9506744496
+53301000,Sweet bakery products,1,0.5681242851
+53301070,Sweet bakery products,1,0.8030080883
+53301500,Sweet bakery products,1,0.8005564822
+53303000,Sweet bakery products,1,0.6132925922
+53303500,Sweet bakery products,1,0.7167193831
+53304000,Sweet bakery products,1,0.7668955597
+53305000,Sweet bakery products,1,0.6120655715
+53305010,Sweet bakery products,1,0.8500863744
+53305700,Sweet bakery products,1,0.8404162564
+53307000,Sweet bakery products,1,0.6144244221
+53307050,Sweet bakery products,1,1.0118906481
+53310050,Sweet bakery products,1,0.5804691214
+53312000,Sweet bakery products,1,1.1750203957
+53314000,Sweet bakery products,1,1.7257476272
+53341000,Sweet bakery products,1,0.6282315636
+53341750,Sweet bakery products,1,1.1679599468
+53342000,Sweet bakery products,1,0.9102251749
+53343000,Sweet bakery products,1,0.6686296089
+53344200,Sweet bakery products,1,1.7732973644
+53346000,Sweet bakery products,1,0.8724712727
+53347000,Sweet bakery products,1,0.6085263417
+53348000,Sweet bakery products,1,0.9435493725
+53360000,Sweet bakery products,1,0.6036510916
+53381000,Sweet bakery products,1,0.8215499713
+53385000,Sweet bakery products,1,0.8680498608
+53391000,Sweet bakery products,2,1.0306072317
+53391100,Sweet bakery products,2,1.0457974034
+53400200,"Biscuits, muffins, quick breads",1,1.3487456907
+53410100,Sweet bakery products,1,0.6877160571000001
+53410500,Sweet bakery products,1,0.5102622565
+53410800,Sweet bakery products,1,0.6950392207
+53415100,Sweet bakery products,1,0.9459908209
+53415120,Sweet bakery products,1,0.7792253615
+53415220,Sweet bakery products,1,0.6479295476
+53420100,Sweet bakery products,1,0.9030169623
+53420200,Sweet bakery products,1,1.194176603
+53440000,Sweet bakery products,1,1.0278583143
+53440300,Sweet bakery products,1,1.3446121701
+53441110,Sweet bakery products,1,1.4672426337
+53450000,Sweet bakery products,1,1.1340874402
+53451500,Sweet bakery products,1,1.0953123701
+53452100,Sweet bakery products,1,0.907802387
+53452200,Sweet bakery products,1,2.447530185
+53452400,Sweet bakery products,1,0.956950883
+53452420,Sweet bakery products,1,1.2569233184
+53452500,Sweet bakery products,1,1.255423502
+53510000,Sweet bakery products,1,0.9075643579
+53510100,Sweet bakery products,1,0.7330457096
+53511000,Sweet bakery products,1,0.9155169331
+53520000,Sweet bakery products,1,0.8170489883
+53520110,Sweet bakery products,1,0.7977632247
+53520120,Sweet bakery products,1,0.7551440992
+53520140,Sweet bakery products,1,0.9381534747
+53520200,Sweet bakery products,1,1.1444828292
+53520600,Sweet bakery products,1,0.9003811208
+53521100,Sweet bakery products,2,1.9573644028
+53521110,Sweet bakery products,1,0.5022633876
+53521120,Sweet bakery products,1,1.9573644028
+53521130,Sweet bakery products,2,0.5022633876
+53521140,Sweet bakery products,1,0.8824831472
+53521210,Sweet bakery products,1,0.8859367589
+53521230,Sweet bakery products,2,0.8859367589
+53530000,Sweet bakery products,2,0.4840286776
+53530010,Sweet bakery products,2,0.4840286776
+53610100,Sweet bakery products,1,1.099045549
+53610170,Sweet bakery products,1,0.943807402
+53610200,Sweet bakery products,1,1.0830851149
+53710400,Snack Bars,1,1.6106906555
+53710500,Snack Bars,1,0.9140523538
+53710504,Snack Bars,1,1.1137707655
+53710600,Snack Bars,1,1.5346248749
+53710700,Snack Bars,1,2.0784175002
+53710800,Snack Bars,1,1.4832307196
+53710900,Snack Bars,1,1.1262019739
+53710902,Snack Bars,1,1.3968959576
+53710904,Snack Bars,1,1.2065136542
+53710906,Snack Bars,1,1.0429316901
+53711000,Snack Bars,1,1.0385757541
+53711002,Snack Bars,2,1.0385757541
+53711006,Snack Bars,1,1.0022004626
+53712000,Snack Bars,1,1.2572154092
+53712100,Snack Bars,2,1.3088332962
+53712200,Snack Bars,2,1.2669776487
+53714200,Snack Bars,1,1.2078893832
+53714250,Snack Bars,1,1.5972337797
+53714300,Snack Bars,1,2.2175685569
+53714500,Snack Bars,2,0.8821343223
+53714520,Snack Bars,2,0.9073259084
+53720100,Snack Bars,2,2.0891806289
+53720200,Snack Bars,2,1.7265618557
+53720210,Snack Bars,2,1.7265618557
+53720300,Snack Bars,2,2.0302368725
+53720500,Snack Bars,2,2.0738443721
+53720610,Snack Bars,2,1.9712404737
+53720800,Snack Bars,1,1.989081404
+53729000,Snack Bars,2,1.9414155858
+54001000,"Crackers, lower nutrient density",2,0.8776876849
+54102010,Sweet bakery products,1,0.7879331078
+54102015,Sweet bakery products,1,1.1815182546
+54102020,Sweet bakery products,1,0.4082836921
+54102200,Sweet bakery products,1,1.3069262675
+54103000,"Crackers, lower nutrient density",1,1.160071346
+54200100,"Crackers, higher nutrient density",1,0.6802745796
+54202020,"Crackers, lower nutrient density",2,6.1205092678
+54204020,"Crackers, higher nutrient density",1,0.9830629319
+54204030,"Crackers, higher nutrient density",1,1.0170342359
+54301010,"Crackers, lower nutrient density",1,0.8017477849
+54301020,"Crackers, lower nutrient density",1,1.6627246201
+54301030,"Crackers, lower nutrient density",1,0.6928275457
+54301100,"Crackers, lower nutrient density",2,0.8017477849
+54304000,"Crackers, lower nutrient density",1,1.0134789575
+54304005,"Crackers, lower nutrient density",1,0.900691825
+54304020,"Crackers, lower nutrient density",1,1.029217211
+54304100,"Crackers, lower nutrient density",2,1.0134789575
+54304150,"Crackers, lower nutrient density",1,0.9900038652
+54305010,"Crackers, higher nutrient density",1,1.5684397554
+54305020,"Crackers, higher nutrient density",1,1.0706022782
+54313000,"Crackers, lower nutrient density",1,0.7805419075
+54318000,"Tortilla, corn, other chips",1,1.6596396186
+54318500,"Crackers, higher nutrient density",1,1.6073600447
+54319000,"Crackers, lower nutrient density",1,2.401547113
+54319005,"Crackers, lower nutrient density",1,2.5797051659
+54319020,"Crackers, higher nutrient density",1,1.471218008
+54319500,"Crackers, lower nutrient density",1,1.1063293741
+54325000,"Crackers, lower nutrient density",2,0.5453935717
+54325010,"Crackers, lower nutrient density",2,0.5453935717
+54325060,"Crackers, higher nutrient density",1,0.4335378482
+54326000,"Crackers, lower nutrient density",1,1.1051900642
+54328000,"Crackers, lower nutrient density",2,0.8187140542
+54328100,"Crackers, lower nutrient density",1,0.6963875911
+54328105,"Crackers, lower nutrient density",1,0.938040414
+54328120,"Crackers, lower nutrient density",1,0.7746537322
+54328200,"Crackers, lower nutrient density",1,0.876657185
+54328210,"Crackers, lower nutrient density",1,1.1259412898
+54336000,"Crackers, lower nutrient density",1,2.2991503527
+54336100,"Crackers, lower nutrient density",1,2.0477158388
+54337010,"Crackers, lower nutrient density",1,1.2837955289
+54337020,"Crackers, lower nutrient density",1,1.0718287441
+54337030,"Crackers, lower nutrient density",1,1.0100064941
+54338000,"Crackers, higher nutrient density",1,0.8205239693
+54338010,"Crackers, lower nutrient density",1,0.9973733722
+54338020,"Crackers, lower nutrient density",1,1.0868871245
+54340100,"Crackers, higher nutrient density",1,2.6880612834
+54340110,"Crackers, higher nutrient density",1,2.634841065
+54401011,"Tortilla, corn, other chips",1,1.1304104404
+54401021,"Tortilla, corn, other chips",1,0.8264056373
+54401026,"Tortilla, corn, other chips",1,1.010894769
+54401031,"Tortilla, corn, other chips",1,0.9310702561
+54401035,"Tortilla, corn, other chips",1,1.0114606751
+54401055,"Tortilla, corn, other chips",1,1.0564607542
+54401065,"Tortilla, corn, other chips",1,1.2242198231
+54401075,"Tortilla, corn, other chips",1,0.7907762619
+54401081,"Tortilla, corn, other chips",1,1.1084574861
+54401085,"Tortilla, corn, other chips",1,0.9479133048
+54401090,"Tortilla, corn, other chips",2,0.8264056373
+54401110,"Tortilla, corn, other chips",1,0.9799447479
+54401111,"Tortilla, corn, other chips",1,0.98305932
+54401112,"Tortilla, corn, other chips",1,1.0535479979
+54401121,"Tortilla, corn, other chips",1,1.523318482
+54401122,"Tortilla, corn, other chips",1,1.2379652948
+54402080,"Tortilla, corn, other chips",2,0.7907762619
+54402200,Pretzels/snack mix,1,1.0922044297
+54402700,"Crackers, lower nutrient density",1,1.2360258704
+54403001,"Popcorn, lower nutrient density",2,0.6260569527
+54403005,"Popcorn, lower nutrient density",2,0.6484090014
+54403006,"Popcorn, lower nutrient density",2,0.9821058706
+54403010,"Popcorn, higher nutrient density",1,0.4552746797
+54403040,"Popcorn, lower nutrient density",1,1.552018927
+54403045,"Popcorn, higher nutrient density",2,0.9821058706
+54403046,"Popcorn, lower nutrient density",2,0.6484090014
+54403051,"Popcorn, lower nutrient density",2,0.6260569527
+54403052,"Popcorn, lower nutrient density",1,0.8419785525
+54403053,"Popcorn, higher nutrient density",1,0.9056506677
+54403054,"Popcorn, higher nutrient density",1,0.8251182315
+54403056,"Popcorn, lower nutrient density",1,0.6260569527
+54403057,"Popcorn, higher nutrient density",1,0.7750121879
+54403058,"Popcorn, lower nutrient density",1,0.7421774935
+54403059,"Popcorn, higher nutrient density",1,0.642382894
+54403062,"Popcorn, lower nutrient density",1,0.9035177098
+54403080,"Popcorn, higher nutrient density",2,1.1510169226
+54403081,"Popcorn, higher nutrient density",1,1.9294618245
+54403082,"Popcorn, higher nutrient density",1,2.6933227063
+54403083,"Popcorn, higher nutrient density",2,1.9294618245
+54403085,"Popcorn, higher nutrient density",1,1.1510169226
+54403087,"Popcorn, higher nutrient density",1,1.5601255028
+54403088,"Popcorn, higher nutrient density",2,1.5601255028
+54403089,"Popcorn, lower nutrient density",1,1.3662822669
+54403092,"Popcorn, higher nutrient density",1,1.6491088336
+54403110,"Popcorn, lower nutrient density",1,0.9661651318
+54403120,"Popcorn, lower nutrient density",1,1.5648014727
+54403160,"Popcorn, lower nutrient density",1,1.8434579813
+54404010,"Tortilla, corn, other chips",1,1.6097404885
+54406010,"Tortilla, corn, other chips",1,1.9560036051
+54408000,Pretzels/snack mix,1,0.7407732349
+54408016,Pretzels/snack mix,1,0.664847636
+54408017,Pretzels/snack mix,2,0.664847636
+54408030,Pretzels/snack mix,2,0.664847636
+54408035,Pretzels/snack mix,1,0.954282125
+54408070,Pretzels/snack mix,1,0.8141759539
+54408081,Pretzels/snack mix,1,1.4714580348
+54408105,Pretzels/snack mix,1,1.2239595754
+54408110,Pretzels/snack mix,1,1.1846982582
+54408190,Pretzels/snack mix,1,1.272164569
+54408200,Candy,1,1.7001157723
+54408250,Candy,1,1.3637852547
+54408300,Pretzels/snack mix,1,1.1610574813
+54408310,Pretzels/snack mix,1,0.9409934661
+54408415,Pretzels/snack mix,2,0.5951208466
+54408416,Pretzels/snack mix,2,0.9831288796
+54408456,Pretzels/snack mix,2,0.9831288796
+54408470,Pretzels/snack mix,1,1.0612149495
+54420210,"Tortilla, corn, other chips",1,1.4189046273
+54420220,Pretzels/snack mix,1,0.8183316832
+54440010,"Crackers, lower nutrient density",1,1.4352710949
+54440020,"Tortilla, corn, other chips",1,1.5580276242
+55100010,"Biscuits, muffins, quick breads",1,0.5548279699
+55100020,"Biscuits, muffins, quick breads",1,0.5225641797
+55100025,"Biscuits, muffins, quick breads",1,0.6446682965
+55100050,"Biscuits, muffins, quick breads",2,0.5551122041
+55100080,"Biscuits, muffins, quick breads",2,0.5551122041
+55101000,"Biscuits, muffins, quick breads",1,0.6100904124
+55101015,"Biscuits, muffins, quick breads",2,0.5551122041
+55103000,"Biscuits, muffins, quick breads",2,0.5225641797
+55103100,"Biscuits, muffins, quick breads",4,0.4287199401
+55105200,"Biscuits, muffins, quick breads",4,0.3351717761
+55105205,"Biscuits, muffins, quick breads",2,0.5551122041
+55106000,"Biscuits, muffins, quick breads",2,0.5551122041
+55200010,"Biscuits, muffins, quick breads",2,0.7297806968
+55200020,"Biscuits, muffins, quick breads",1,0.7297806968
+55200040,"Biscuits, muffins, quick breads",1,0.790013202
+55200050,"Biscuits, muffins, quick breads",1,0.7303113
+55200060,"Biscuits, muffins, quick breads",1,0.9488099379
+55200100,"Biscuits, muffins, quick breads",2,0.7299470885
+55200200,"Biscuits, muffins, quick breads",2,0.7299470885
+55201000,"Biscuits, muffins, quick breads",1,0.824223483
+55211050,"Biscuits, muffins, quick breads",1,0.5049087032
+55300020,"Biscuits, muffins, quick breads",1,0.7526755589
+55300050,"Biscuits, muffins, quick breads",2,0.7526755589
+55301000,"Biscuits, muffins, quick breads",2,0.7526755589
+55301015,"Biscuits, muffins, quick breads",2,0.7526755589
+55301031,"Biscuits, muffins, quick breads",1,0.6779332343
+55301048,"Biscuits, muffins, quick breads",2,1.057605233
+55301055,"Biscuits, muffins, quick breads",1,1.057605233
+55401000,"Biscuits, muffins, quick breads",1,3.8875828429
+55610300,"Biscuits, muffins, quick breads",1,0.6634634079
+55701000,Sweet bakery products,1,1.1550633452
+55702100,"Biscuits, muffins, quick breads",2,0.5551122041
+55801000,Sweet bakery products,2,0.7977632247
+56104000,Staple grains - lower nutrient density,1,0.668576275
+56112000,Staple grains - lower nutrient density,2,0.5189489833
+56113000,Staple grains - higher nutrient density,1,0.7230243259
+56116000,"Crackers, lower nutrient density",1,0.7170573742
+56117090,Staple grains - lower nutrient density,2,0.2762162599
+56130000,Staple grains - lower nutrient density,1,0.7076668654
+56132990,Staple grains - higher nutrient density,2,0.1355616238
+56140100,Staple grains - lower nutrient density,2,0.1149235217
+56201051,"Cereals, lower nutrient density",3,0.0277464457
+56201052,"Cereals, lower nutrient density",4,0.036938299
+56201057,"Cereals, lower nutrient density",4,0.1230439891
+56201210,"Cereals, lower nutrient density",3,0.1383064714
+56201220,"Cereals, lower nutrient density",4,0.1516696419
+56201515,"Cereals, lower nutrient density",1,0.6994026697
+56201516,"Cereals, lower nutrient density",3,0.0250552359
+56201600,"Cereals, lower nutrient density",1,0.1696077243
+56202960,"Cereals, higher nutrient density",4,0.0698770889
+56203000,"Cereals, higher nutrient density",3,0.0615597206
+56203056,"Cereals, higher nutrient density",3,0.0615597206
+56203057,"Cereals, higher nutrient density",4,0.0698770889
+56203066,"Cereals, higher nutrient density",4,0.1482797097
+56203067,"Cereals, higher nutrient density",4,0.1552633341
+56203076,"Cereals, higher nutrient density",4,0.2099589354
+56203086,"Cereals, higher nutrient density",3,0.1495208589
+56203096,"Cereals, higher nutrient density",4,0.231666771
+56203130,"Cereals, higher nutrient density",3,0.1831505495
+56203135,"Cereals, higher nutrient density",4,0.1939701921
+56203155,"Cereals, higher nutrient density",3,0.2554727938
+56203175,"Cereals, higher nutrient density",3,0.1831505495
+56203555,"Cereals, higher nutrient density",3,0.1660662751
+56203610,"Cereals, higher nutrient density",3,0.166601895
+56204000,Staple grains - higher nutrient density,4,0.4887729602
+56204005,Staple grains - higher nutrient density,2,0.4933027598
+56204010,Staple grains - higher nutrient density,4,0.4887729602
+56205000,Staple grains - lower nutrient density,2,0.1053686076
+56205001,Staple grains - lower nutrient density,1,0.7550364146
+56205002,Staple grains - lower nutrient density,4,0.0878693173
+56205004,Staple grains - lower nutrient density,4,0.1009140073
+56205006,Staple grains - lower nutrient density,4,0.0881758142
+56205008,Staple grains - lower nutrient density,2,0.0828679455
+56205011,Staple grains - higher nutrient density,2,0.2414299413
+56205012,Staple grains - higher nutrient density,4,0.2168028232
+56205014,Staple grains - higher nutrient density,4,0.2273114785
+56205018,Staple grains - higher nutrient density,1,0.7872893478
+56205130,Staple grains - lower nutrient density,2,0.8124373233
+56205150,Staple grains - lower nutrient density,3,0.132293662
+56205170,Staple grains - lower nutrient density,2,0.8124373233
+56205190,Staple grains - lower nutrient density,2,0.1870039014
+56205300,Staple grains - lower nutrient density,1,0.7923364913
+56207030,"Cereals, lower nutrient density",1,0.1603358737
+56207160,Staple grains - lower nutrient density,2,0.1140100927
+57000100,"Cereals, higher nutrient density",1,0.8194181762
+57100100,"Cereals, lower nutrient density",2,0.6791330818
+57103000,"Cereals, higher nutrient density",2,0.7821798915
+57103100,"Cereals, lower nutrient density",2,0.6961389613
+57104000,"Cereals, lower nutrient density",2,0.7461736143
+57117000,"Cereals, lower nutrient density",2,0.5845615344
+57119000,"Cereals, lower nutrient density",2,0.6146017966
+57123000,"Cereals, higher nutrient density",2,0.7513640739
+57124050,"Cereals, lower nutrient density",2,0.9184333864
+57124100,"Cereals, lower nutrient density",2,0.8504149207
+57124200,"Cereals, lower nutrient density",2,0.497857085
+57124300,"Cereals, lower nutrient density",2,0.7678061487
+57125000,"Cereals, lower nutrient density",2,0.6962998358
+57125010,"Cereals, lower nutrient density",2,1.9036745063
+57126000,"Cereals, lower nutrient density",2,0.6885982611
+57127000,"Cereals, lower nutrient density",2,0.6595816956
+57128000,"Cereals, lower nutrient density",2,0.708714498
+57130000,"Cereals, lower nutrient density",2,0.7291458147
+57132000,"Cereals, higher nutrient density",2,0.7803141928
+57134000,"Cereals, lower nutrient density",2,0.6224752052
+57135000,"Cereals, lower nutrient density",2,0.6224752052
+57137000,"Cereals, higher nutrient density",2,0.8700921217
+57143000,"Cereals, lower nutrient density",2,0.8737764334
+57148000,"Cereals, lower nutrient density",2,0.950372286
+57148500,"Cereals, lower nutrient density",1,0.6446575756
+57151000,"Cereals, lower nutrient density",1,0.6697654876
+57206700,"Cereals, higher nutrient density",2,0.8338119245
+57206710,"Cereals, higher nutrient density",2,0.9190543723
+57207000,"Cereals, higher nutrient density",2,0.664449942
+57208000,"Cereals, higher nutrient density",2,0.6963284966
+57213000,"Cereals, lower nutrient density",2,0.7303076189
+57213010,"Cereals, lower nutrient density",2,1.2372724784
+57213850,"Cereals, lower nutrient density",2,0.8786447024
+57214000,"Cereals, higher nutrient density",2,0.5757563718
+57218000,"Cereals, lower nutrient density",2,0.8354966303
+57221700,"Cereals, lower nutrient density",1,0.4365733397
+57223000,"Cereals, lower nutrient density",2,0.6529324459
+57224000,"Cereals, lower nutrient density",2,0.6892122742
+57227000,"Cereals, lower nutrient density",1,0.9432340398
+57228000,"Cereals, higher nutrient density",2,0.9432340398
+57230000,"Cereals, higher nutrient density",2,0.5768253005
+57231200,"Cereals, lower nutrient density",2,0.7353411607
+57237100,"Cereals, lower nutrient density",2,0.6378916275
+57237200,"Cereals, higher nutrient density",2,0.5970880892
+57237300,"Cereals, lower nutrient density",2,0.5970880892
+57240100,"Cereals, lower nutrient density",2,1.073000661
+57241000,"Cereals, lower nutrient density",2,0.6731764354
+57243000,"Cereals, lower nutrient density",2,0.7146780955
+57301500,"Cereals, higher nutrient density",2,1.3096641824
+57301510,"Cereals, lower nutrient density",2,0.8470489367
+57301511,"Cereals, lower nutrient density",2,0.7981878583
+57301530,"Cereals, higher nutrient density",2,0.9392553254
+57303100,"Cereals, higher nutrient density",2,0.8700921217
+57303105,"Cereals, higher nutrient density",2,0.9822579219
+57303200,"Cereals, lower nutrient density",1,0.8936068213
+57304100,"Cereals, higher nutrient density",2,0.6211479662
+57305100,"Cereals, lower nutrient density",2,0.735475337
+57305165,"Cereals, lower nutrient density",2,0.5324900399
+57305170,"Cereals, lower nutrient density",2,0.5324405123
+57305174,"Cereals, lower nutrient density",1,0.480432791
+57305175,"Cereals, lower nutrient density",2,0.5318041577
+57305200,"Cereals, lower nutrient density",1,0.4980596872
+57305210,"Cereals, lower nutrient density",2,0.4472170882
+57305300,"Cereals, lower nutrient density",2,0.540780893
+57305400,"Cereals, lower nutrient density",1,0.5771648749
+57305500,"Cereals, lower nutrient density",1,0.5370687216
+57306500,"Cereals, lower nutrient density",1,0.4740466678
+57306800,"Cereals, lower nutrient density",2,0.5424931949
+57307500,"Cereals, higher nutrient density",1,1.2376538345
+57308190,"Cereals, lower nutrient density",1,0.8284580838
+57308400,"Cereals, higher nutrient density",2,0.8921183326
+57309100,"Cereals, lower nutrient density",2,1.135003895
+57316380,"Cereals, lower nutrient density",2,0.6731764354
+57316385,"Cereals, lower nutrient density",1,0.851510955
+57316450,"Cereals, lower nutrient density",2,0.7871761829
+57316710,"Cereals, lower nutrient density",2,0.7622832883
+57320500,"Cereals, lower nutrient density",2,0.6703786259
+57321900,"Cereals, higher nutrient density",2,0.9264622749
+57327500,"Cereals, higher nutrient density",2,0.7452262975
+57329000,"Cereals, lower nutrient density",2,0.5431076825
+57330000,"Cereals, lower nutrient density",2,0.5451520988
+57330010,"Cereals, lower nutrient density",2,0.5754999333
+57332100,"Cereals, lower nutrient density",2,0.7995856248
+57335550,"Cereals, lower nutrient density",2,0.6676267664
+57336000,"Cereals, higher nutrient density",2,0.8398826826
+57339000,"Cereals, lower nutrient density",2,0.7912279387
+57339500,"Cereals, lower nutrient density",2,0.8962818621
+57344000,"Cereals, lower nutrient density",2,0.8350279852
+57344005,"Cereals, lower nutrient density",2,0.8167984736
+57344010,"Cereals, lower nutrient density",2,0.9155381906
+57344015,"Cereals, lower nutrient density",2,0.9155381906
+57344020,"Cereals, lower nutrient density",2,0.9155381906
+57344025,"Cereals, lower nutrient density",2,0.7590014683
+57347000,"Cereals, lower nutrient density",2,0.7428464457
+57348000,"Cereals, lower nutrient density",2,0.4427943886
+57349000,"Cereals, lower nutrient density",2,0.5898147863
+57355000,"Cereals, lower nutrient density",2,0.6274266528
+57401100,"Cereals, higher nutrient density",1,0.5337107583
+57407100,"Cereals, lower nutrient density",2,0.7876069373
+57411000,"Cereals, higher nutrient density",2,0.7503030142
+57412000,"Cereals, lower nutrient density",2,1.3040925366
+57416000,"Cereals, higher nutrient density",2,1.3139592683
+57416010,"Cereals, lower nutrient density",2,0.7146780955
+57417000,"Cereals, higher nutrient density",2,0.6442113098
+57418000,"Cereals, higher nutrient density",2,0.8220992409
+57601100,"Cereals, lower nutrient density",2,0.4622827978
+57602100,"Cereals, higher nutrient density",2,0.4292638464
+57602500,"Cereals, lower nutrient density",2,0.6230465311
+58100000,Mixed Dishes - Sandwiches - higher nutrient density,4,0.4966276418
+58100005,Mixed Dishes - Sandwiches - higher nutrient density,4,0.487224815
+58100010,Mixed Dishes - Sandwiches - lower nutrient density,4,0.5527127346
+58100013,Mixed Dishes - Sandwiches - lower nutrient density,2,0.9982624002
+58100015,Mixed Dishes - Sandwiches - higher nutrient density,1,0.786664032
+58100020,Mixed Dishes - Sandwiches - higher nutrient density,4,0.5029563627
+58100100,Mixed Dishes - Grain based - lower nutrient density,4,1.0538425279
+58100120,Mixed Dishes - Grain based - lower nutrient density,4,0.7892917448
+58100135,Mixed Dishes - Grain based - lower nutrient density,4,0.9717362415
+58100140,Mixed Dishes - Grain based - lower nutrient density,4,0.7447423965
+58100145,Mixed Dishes - Grain based - lower nutrient density,4,0.6598909519
+58100160,Mixed Dishes - Grain based - lower nutrient density,4,0.7422201517
+58100165,Mixed Dishes - Grain based - lower nutrient density,4,0.7062184155
+58100200,Mixed Dishes - Grain based - lower nutrient density,4,0.789668077
+58100220,Mixed Dishes - Grain based - lower nutrient density,4,0.6499214403
+58100255,Mixed Dishes - Grain based - lower nutrient density,4,0.6091231444
+58100260,Mixed Dishes - Grain based - lower nutrient density,4,0.5886618259
+58100300,Mixed Dishes - Grain based - lower nutrient density,1,1.7279511676
+58100320,Mixed Dishes - Grain based - lower nutrient density,4,0.5390789153
+58100325,Mixed Dishes - Grain based - lower nutrient density,2,0.5945291022
+58100520,Mixed Dishes - Grain based - higher nutrient density,1,1.060368962
+58100530,Mixed Dishes - Grain based - higher nutrient density,2,0.9812186577
+58100620,Mixed Dishes - Grain based - higher nutrient density,1,1.4144204244
+58100630,Mixed Dishes - Grain based - higher nutrient density,1,0.9812186577
+58100635,Mixed Dishes - Grain based - higher nutrient density,1,2.6504592522
+58100720,Mixed Dishes - Grain based - higher nutrient density,1,1.362514988
+58100800,Mixed Dishes - Grain based - lower nutrient density,2,2.5667285037
+58101320,Mixed Dishes - Grain based - lower nutrient density,4,0.8111284262
+58101323,Mixed Dishes - Grain based - lower nutrient density,2,0.9371903851
+58101325,Mixed Dishes - Grain based - lower nutrient density,4,0.7651355646
+58101345,Mixed Dishes - Grain based - lower nutrient density,4,0.6870393811
+58101347,Mixed Dishes - Grain based - lower nutrient density,2,0.9371903851
+58101350,Mixed Dishes - Grain based - lower nutrient density,4,0.6602974828
+58101450,Mixed Dishes - Grain based - lower nutrient density,4,0.6636162119
+58101460,Mixed Dishes - Grain based - lower nutrient density,4,0.6343399425
+58101520,Mixed Dishes - Grain based - lower nutrient density,4,0.8208929332
+58101555,Mixed Dishes - Grain based - lower nutrient density,4,0.9190953621
+58101610,Mixed Dishes - Grain based - lower nutrient density,4,0.420834517
+58101620,Mixed Dishes - Grain based - lower nutrient density,4,0.5450877197
+58101625,Mixed Dishes - Grain based - lower nutrient density,4,0.5204661787
+58101630,Mixed Dishes - Grain based - lower nutrient density,4,0.5355178914
+58101720,Mixed Dishes - Grain based - lower nutrient density,4,0.4984437681
+58101930,Mixed Dishes - Grain based - higher nutrient density,4,0.6856509733
+58101945,Mixed Dishes - Grain based - higher nutrient density,4,0.6582436025
+58101955,Mixed Dishes - Grain based - higher nutrient density,1,0.6006202752
+58103120,Mixed Dishes - Grain based - lower nutrient density,1,0.6831119172
+58103130,Mixed Dishes - Grain based - lower nutrient density,1,0.9401700783
+58103250,Mixed Dishes - Grain based - higher nutrient density,1,1.5801771713
+58104120,Mixed Dishes - Grain based - higher nutrient density,2,2.5667285037
+58104130,Mixed Dishes - Grain based - lower nutrient density,4,0.991125586
+58104150,Mixed Dishes - Grain based - higher nutrient density,4,0.8327124313
+58104260,Mixed Dishes - Grain based - lower nutrient density,1,2.1913906245
+58104290,Mixed Dishes - Grain based - lower nutrient density,4,0.6095397437
+58104500,Mixed Dishes - Grain based - lower nutrient density,1,0.5180414932
+58104530,Mixed Dishes - Grain based - lower nutrient density,1,0.7289223
+58104710,Mixed Dishes - Grain based - lower nutrient density,4,0.7147450051
+58104730,Mixed Dishes - Grain based - lower nutrient density,4,0.8483102665
+58104740,Mixed Dishes - Grain based - lower nutrient density,4,0.7319001516
+58104745,Mixed Dishes - Grain based - lower nutrient density,2,0.9548349163
+58104750,Mixed Dishes - Grain based - lower nutrient density,4,0.7021784288
+58104760,Mixed Dishes - Grain based - lower nutrient density,2,0.8128854455
+58104770,Mixed Dishes - Grain based - lower nutrient density,4,0.7169736205
+58104800,Mixed Dishes - Grain based - higher nutrient density,1,0.9245678035
+58104820,Mixed Dishes - Grain based - lower nutrient density,1,0.8283360388
+58104825,Mixed Dishes - Grain based - lower nutrient density,1,0.9091829903
+58104830,Mixed Dishes - Grain based - lower nutrient density,1,0.8642506395
+58104835,Mixed Dishes - Grain based - lower nutrient density,1,0.8890901771
+58105000,Mixed Dishes - Grain based - lower nutrient density,4,0.5560801712
+58105050,Mixed Dishes - Grain based - lower nutrient density,4,0.8614315368
+58105100,Mixed Dishes - Grain based - lower nutrient density,1,1.377535827
+58105105,Mixed Dishes - Grain based - higher nutrient density,1,2.2075236895
+58106200,Pizza - higher nutrient density,1,0.8473895226
+58106205,Pizza - higher nutrient density,1,1.0515503898
+58106220,Pizza - lower nutrient density,2,0.8473895226
+58106225,Pizza - lower nutrient density,2,0.8473895226
+58106230,Pizza - lower nutrient density,2,0.8473895226
+58106233,Pizza - lower nutrient density,1,1.3140062738
+58106234,Pizza - higher nutrient density,2,1.0515503898
+58106235,Pizza - higher nutrient density,2,0.8473895226
+58106250,Pizza - lower nutrient density,1,0.8785552067
+58106260,Pizza - lower nutrient density,1,0.7669562187
+58106300,Pizza - higher nutrient density,1,1.4483736639
+58106305,Pizza - higher nutrient density,1,0.8750428
+58106320,Pizza - lower nutrient density,2,1.4483736639
+58106325,Pizza - higher nutrient density,2,0.8750428
+58106330,Pizza - higher nutrient density,2,0.8750428
+58106512,Pizza - higher nutrient density,1,0.7355638568
+58106514,Pizza - higher nutrient density,1,0.933678338
+58106516,Pizza - lower nutrient density,1,0.8304960313
+58106550,Pizza - lower nutrient density,2,0.7355638568
+58106555,Pizza - lower nutrient density,2,0.933678338
+58106560,Pizza - lower nutrient density,2,0.8304960313
+58106565,Pizza - lower nutrient density,1,1.1573965055
+58106570,Pizza - higher nutrient density,2,3.2316351076
+58106578,Pizza - higher nutrient density,2,3.2316351076
+58106602,Pizza - higher nutrient density,1,0.8673139605
+58106604,Pizza - higher nutrient density,1,0.8459634807
+58106606,Pizza - lower nutrient density,1,0.7098970621
+58106620,Pizza - lower nutrient density,2,0.8673139605
+58106625,Pizza - lower nutrient density,2,0.8459634807
+58106630,Pizza - lower nutrient density,2,0.7098970621
+58106633,Pizza - lower nutrient density,1,1.1764166314
+58106634,Pizza - higher nutrient density,2,3.2316351076
+58106650,Pizza - lower nutrient density,1,0.6325047765
+58106655,Pizza - lower nutrient density,1,0.6924084603
+58106660,Pizza - lower nutrient density,1,0.7361315372
+58106700,Pizza - higher nutrient density,1,0.78216974
+58106702,Pizza - higher nutrient density,1,0.9467640997
+58106705,Pizza - lower nutrient density,1,0.6812972414
+58106720,Pizza - lower nutrient density,2,0.78216974
+58106725,Pizza - lower nutrient density,2,0.9467640997
+58106730,Pizza - higher nutrient density,2,0.6812972414
+58106736,Pizza - lower nutrient density,1,0.9999223694
+58106738,Pizza - higher nutrient density,2,0.9999223694
+58106750,Pizza - lower nutrient density,1,0.8443344557
+58106755,Pizza - lower nutrient density,1,0.9063630103
+58106760,Pizza - lower nutrient density,1,0.7767752343
+58107205,Pizza - higher nutrient density,1,1.5985398137
+58107212,Pizza - higher nutrient density,1,1.7580232403
+58107222,Pizza - lower nutrient density,1,0.9529618864
+58108000,Pizza - lower nutrient density,1,1.7618358474
+58108010,Pizza - higher nutrient density,1,1.2932122374
+58108050,Pizza - lower nutrient density,2,0.6302944575
+58109015,Pizza - higher nutrient density,2,0.8473895226
+58109030,Pizza - lower nutrient density,2,3.2316351076
+58109050,Pizza - higher nutrient density,1,1.8676970129
+58109120,Pizza - lower nutrient density,1,2.5173384839
+58109140,Pizza - higher nutrient density,1,2.9004950753
+58109210,Mixed Dishes - Sandwiches - higher nutrient density,4,0.8150542694
+58110110,Mixed Dishes - Grain based - lower nutrient density,1,1.0940183062
+58110120,Mixed Dishes - Grain based - lower nutrient density,1,1.1351047536
+58110130,Mixed Dishes - Grain based - lower nutrient density,1,0.7881962296
+58110170,Mixed Dishes - Grain based - lower nutrient density,1,0.9631454196
+58111110,Mixed Dishes - Grain based - lower nutrient density,1,1.4634719776
+58111120,Mixed Dishes - Grain based - lower nutrient density,1,1.8599845568
+58111130,Mixed Dishes - Grain based - lower nutrient density,1,0.8309232721
+58111200,Mixed Dishes - Grain based - lower nutrient density,1,2.6134226514
+58112510,Mixed Dishes - Grain based - lower nutrient density,1,1.2763632645
+58116120,Mixed Dishes - Grain based - lower nutrient density,1,1.0434042993
+58117110,"Biscuits, muffins, quick breads",1,0.7699122088
+58121510,Mixed Dishes - Grain based - lower nutrient density,1,0.9120880657
+58121610,Mixed Dishes - Grain based - lower nutrient density,1,0.46082832
+58121620,Mixed Dishes - Grain based - lower nutrient density,1,0.4870116656
+58122210,Mixed Dishes - Grain based - higher nutrient density,1,0.9117489021
+58122220,Mixed Dishes - Grain based - higher nutrient density,1,0.4846269732
+58123110,Mixed Dishes - Grain based - lower nutrient density,2,1.2463822489
+58123120,Sweet bakery products,2,0.976269961
+58124210,Sweet bakery products,1,0.976269961
+58124230,Mixed Dishes - Grain based - lower nutrient density,1,1.2463822489
+58124250,Mixed Dishes - Grain based - lower nutrient density,1,1.7668430704
+58124500,Mixed Dishes - Grain based - lower nutrient density,1,1.4222305244
+58125110,Mixed Dishes - Grain based - lower nutrient density,1,1.6699959682
+58125120,Mixed Dishes - Grain based - higher nutrient density,1,1.6978682085
+58126130,Mixed Dishes - Grain based - lower nutrient density,2,0.8014647759
+58126150,Mixed Dishes - Grain based - lower nutrient density,1,0.8003484957
+58126160,Mixed Dishes - Grain based - lower nutrient density,1,0.8747788732
+58126280,Mixed Dishes - Grain based - higher nutrient density,1,0.9294020219
+58126400,Mixed Dishes - Grain based - lower nutrient density,1,0.8681064325
+58127310,Mixed Dishes - Sandwiches - lower nutrient density,1,1.5986102283
+58127330,Mixed Dishes - Sandwiches - lower nutrient density,1,1.0183966258
+58127350,Mixed Dishes - Sandwiches - lower nutrient density,1,1.4563833393
+58127500,Mixed Dishes - Sandwiches - higher nutrient density,4,0.5863241029
+58128000,Mixed Dishes - Grain based - lower nutrient density,1,0.4803503526
+58128120,Mixed Dishes - Grain based - lower nutrient density,4,0.6644155884
+58128220,Mixed Dishes - Grain based - lower nutrient density,4,0.4410622556
+58130011,Mixed Dishes - Grain based - lower nutrient density,1,1.0367811372
+58130014,Mixed Dishes - Grain based - lower nutrient density,2,1.0367811372
+58130015,Mixed Dishes - Grain based - lower nutrient density,5,0.6739936638
+58130016,Mixed Dishes - Grain based - lower nutrient density,1,0.7301037743
+58130140,Mixed Dishes - Grain based - lower nutrient density,1,0.6041588121
+58130310,Mixed Dishes - Grain based - higher nutrient density,2,0.827474841
+58130320,Mixed Dishes - Grain based - lower nutrient density,2,0.827474841
+58131310,Mixed Dishes - Grain based - lower nutrient density,1,0.7184333105
+58131323,Mixed Dishes - Grain based - higher nutrient density,1,0.254321237
+58131510,Mixed Dishes - Grain based - lower nutrient density,1,0.565654099
+58131520,Mixed Dishes - Grain based - higher nutrient density,1,1.1174774813
+58131523,Mixed Dishes - Grain based - higher nutrient density,1,0.3250809575
+58131590,Mixed Dishes - Grain based - lower nutrient density,1,0.8355336818
+58131610,Mixed Dishes - Grain based - lower nutrient density,1,1.7471878007
+58133120,Mixed Dishes - Grain based - lower nutrient density,1,0.8234471734
+58134130,Mixed Dishes - Grain based - higher nutrient density,1,1.2070332257
+58134650,Mixed Dishes - Grain based - lower nutrient density,1,0.9291215617
+58134660,Mixed Dishes - Grain based - lower nutrient density,1,1.2436247681
+58134680,Mixed Dishes - Grain based - higher nutrient density,1,0.7959590681
+58134720,Mixed Dishes - Grain based - higher nutrient density,1,1.0556469939
+58136120,Mixed Dishes - Grain based - lower nutrient density,2,1.761020695
+58136130,Mixed Dishes - Grain based - lower nutrient density,1,1.298014728
+58136140,Mixed Dishes - Grain based - lower nutrient density,2,0.8842905625
+58136150,Mixed Dishes - Grain based - lower nutrient density,1,0.8842905625
+58136160,Mixed Dishes - Grain based - lower nutrient density,1,1.0667185517
+58137220,Mixed Dishes - Grain based - lower nutrient density,1,1.761020695
+58137230,Mixed Dishes - Grain based - lower nutrient density,1,1.5941765707
+58137240,Mixed Dishes - Grain based - lower nutrient density,1,1.5746924986
+58145110,Mixed Dishes - Grain based - lower nutrient density,1,0.7961736313
+58145111,Mixed Dishes - Grain based - lower nutrient density,2,0.7961736313
+58145112,Mixed Dishes - Grain based - higher nutrient density,4,0.2813943704
+58145117,Mixed Dishes - Grain based - higher nutrient density,2,0.7961736313
+58145135,Mixed Dishes - Grain based - higher nutrient density,4,1.0236551955
+58145136,Mixed Dishes - Grain based - higher nutrient density,4,0.461598249
+58145170,Mixed Dishes - Grain based - higher nutrient density,4,0.7411524131
+58145190,Mixed Dishes - Grain based - higher nutrient density,1,0.7542815785
+58146120,Mixed Dishes - Grain based - higher nutrient density,1,0.7620710195
+58146150,Mixed Dishes - Grain based - lower nutrient density,1,0.3561879568
+58146160,Mixed Dishes - Grain based - higher nutrient density,4,0.2307192466
+58146221,Mixed Dishes - Grain based - lower nutrient density,4,0.2253151721
+58146222,Mixed Dishes - Grain based - higher nutrient density,4,0.2096962819
+58146223,Mixed Dishes - Grain based - lower nutrient density,4,0.2138917595
+58146302,Mixed Dishes - Grain based - higher nutrient density,4,0.1897853872
+58146321,Mixed Dishes - Grain based - lower nutrient density,4,0.2064336915
+58146322,Mixed Dishes - Grain based - higher nutrient density,4,0.1897853872
+58146323,Mixed Dishes - Grain based - lower nutrient density,4,0.1943938532
+58146332,Mixed Dishes - Grain based - higher nutrient density,4,0.1897853872
+58146333,Mixed Dishes - Grain based - higher nutrient density,1,1.1324517134
+58146342,Mixed Dishes - Grain based - higher nutrient density,4,0.1897853872
+58146343,Mixed Dishes - Grain based - lower nutrient density,1,1.9815644361
+58146352,Mixed Dishes - Grain based - higher nutrient density,4,0.1897853872
+58146381,Mixed Dishes - Grain based - lower nutrient density,4,0.3272762106
+58146382,Mixed Dishes - Grain based - higher nutrient density,4,0.3200758262
+58146383,Mixed Dishes - Grain based - lower nutrient density,4,0.3218772058
+58146392,Mixed Dishes - Grain based - higher nutrient density,4,0.3200758262
+58146393,Mixed Dishes - Grain based - higher nutrient density,4,0.3218772058
+58146403,Mixed Dishes - Grain based - lower nutrient density,1,0.9355859959
+58146412,Mixed Dishes - Grain based - higher nutrient density,4,0.4276994204
+58146421,Mixed Dishes - Grain based - lower nutrient density,4,0.3848248237
+58146422,Mixed Dishes - Grain based - higher nutrient density,4,0.3824207907
+58146423,Mixed Dishes - Grain based - lower nutrient density,4,0.3828667639
+58146431,Mixed Dishes - Grain based - lower nutrient density,4,0.4051580295
+58146432,Mixed Dishes - Grain based - higher nutrient density,4,0.4044474643
+58146433,Mixed Dishes - Grain based - higher nutrient density,4,0.4044150948
+58146441,Mixed Dishes - Grain based - lower nutrient density,4,0.5725077344
+58146442,Mixed Dishes - Grain based - higher nutrient density,4,0.5857193387
+58146443,Mixed Dishes - Grain based - lower nutrient density,1,1.9715717672
+58146452,Mixed Dishes - Grain based - higher nutrient density,4,0.6080216164
+58146602,Mixed Dishes - Grain based - higher nutrient density,4,0.221169916
+58146622,Mixed Dishes - Grain based - higher nutrient density,4,0.2014433105
+58146623,Mixed Dishes - Grain based - lower nutrient density,1,1.0835651087
+58146632,Mixed Dishes - Grain based - higher nutrient density,4,0.2014433105
+58146683,Mixed Dishes - Grain based - lower nutrient density,4,0.3332149543
+58147510,Mixed Dishes - Grain based - higher nutrient density,4,0.1796524598
+58148110,Mixed Dishes - Grain based - higher nutrient density,4,0.2478182244
+58148120,Mixed Dishes - Grain based - higher nutrient density,4,0.2734103136
+58148170,Mixed Dishes - Grain based - higher nutrient density,1,1.4546887346
+58148180,Mixed Dishes - Grain based - higher nutrient density,4,0.3704742456
+58148550,Mixed Dishes - Grain based - lower nutrient density,4,0.3637244338
+58150110,Mixed Dishes - Grain based - lower nutrient density,1,0.9883131487
+58150320,Mixed Dishes - Grain based - lower nutrient density,1,0.8608053306
+58150330,Mixed Dishes - Grain based - higher nutrient density,2,0.8608053306
+58150340,Mixed Dishes - Grain based - higher nutrient density,2,0.8608053306
+58150510,Mixed Dishes - Grain based - lower nutrient density,1,0.8335925405
+58151100,Mixed Dishes - Grain based - lower nutrient density,2,3.3296500517
+58151170,Mixed Dishes - Grain based - lower nutrient density,1,3.5677694088
+58151180,Mixed Dishes - Grain based - lower nutrient density,1,2.7222147161
+58151190,Mixed Dishes - Grain based - lower nutrient density,1,2.713729681
+58151200,Mixed Dishes - Grain based - lower nutrient density,1,3.4202733063
+58151210,Mixed Dishes - Grain based - lower nutrient density,1,3.5325124331
+58151220,Mixed Dishes - Grain based - lower nutrient density,1,3.6149576633
+58151230,Mixed Dishes - Grain based - lower nutrient density,1,2.9620340375
+58151440,Mixed Dishes - Grain based - higher nutrient density,1,3.7185251919
+58160110,Mixed Dishes - Grain based - higher nutrient density,4,0.2734062561
+58160120,Mixed Dishes - Grain based - higher nutrient density,4,0.2678741044
+58160130,Mixed Dishes - Grain based - higher nutrient density,4,0.3679245467
+58160135,Mixed Dishes - Grain based - higher nutrient density,1,0.9757272295
+58160140,Mixed Dishes - Grain based - higher nutrient density,1,1.0568192215
+58160150,Mixed Dishes - Grain based - higher nutrient density,4,0.3999037156
+58160400,Mixed Dishes - Grain based - higher nutrient density,4,0.1821194578
+58160430,Mixed Dishes - Grain based - higher nutrient density,4,0.1712609013
+58160450,Mixed Dishes - Grain based - higher nutrient density,4,0.1712609013
+58160460,Mixed Dishes - Grain based - higher nutrient density,4,0.1661591517
+58160490,Mixed Dishes - Grain based - higher nutrient density,4,0.1440179769
+58160520,Mixed Dishes - Grain based - higher nutrient density,4,0.1432428209
+58160540,Mixed Dishes - Grain based - higher nutrient density,4,0.1432428209
+58160550,Mixed Dishes - Grain based - higher nutrient density,4,0.2105333191
+58160640,Mixed Dishes - Grain based - higher nutrient density,1,1.6272926949
+58160700,Mixed Dishes - Grain based - higher nutrient density,4,0.1675398164
+58160805,Mixed Dishes - Grain based - higher nutrient density,4,0.1852582019
+58161320,Mixed Dishes - Grain based - higher nutrient density,4,0.3179025874
+58161440,Mixed Dishes - Grain based - higher nutrient density,4,0.2393342341
+58161460,Mixed Dishes - Grain based - higher nutrient density,4,0.2298533049
+58161510,Mixed Dishes - Grain based - higher nutrient density,1,2.1460828201
+58161530,Mixed Dishes - Grain based - higher nutrient density,4,0.2599523123
+58162090,Mixed Dishes - Vegetables - lower nutrient density,1,1.8533398628
+58162110,Mixed Dishes - Vegetables - lower nutrient density,1,0.9395953466
+58162310,Mixed Dishes - Grain based - lower nutrient density,4,0.227952917
+58163130,Mixed Dishes - Grain based - higher nutrient density,4,0.2698846503
+58163310,Mixed Dishes - Grain based - higher nutrient density,1,0.2861715457
+58163330,Mixed Dishes - Grain based - lower nutrient density,1,0.5158648544
+58163380,Mixed Dishes - Grain based - lower nutrient density,4,0.171681045
+58163405,Mixed Dishes - Grain based - lower nutrient density,2,0.3930615581
+58163410,Mixed Dishes - Grain based - higher nutrient density,4,0.2893761626
+58163420,Mixed Dishes - Grain based - higher nutrient density,4,0.2870960486
+58163430,Mixed Dishes - Grain based - higher nutrient density,4,0.2890379694
+58165000,Mixed Dishes - Grain based - higher nutrient density,1,0.814116414
+58165060,Mixed Dishes - Grain based - lower nutrient density,1,1.6686876542
+58174100,Mixed Dishes - Grain based - higher nutrient density,1,0.5343116888
+58175110,Mixed Dishes - Grain based - lower nutrient density,1,1.3165076304
+58200250,Mixed Dishes - Sandwiches - higher nutrient density,1,2.3079624375
+58301050,Mixed Dishes - Grain based - higher nutrient density,1,0.9259695382
+58302000,Mixed Dishes - Grain based - higher nutrient density,1,1.1246535968
+58302080,Mixed Dishes - Grain based - higher nutrient density,1,1.063707959
+58304010,Mixed Dishes - Grain based - higher nutrient density,1,0.7266545652
+58304060,Mixed Dishes - Grain based - higher nutrient density,1,0.976042179
+58304200,Mixed Dishes - Grain based - lower nutrient density,1,1.1831174604
+58305250,Mixed Dishes - Grain based - higher nutrient density,1,0.9503270506
+58310310,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,0.959765036
+58400000,Soups - lower nutrient density,1,0.279664387
+58400100,Soups - higher nutrient density,2,0.1720713871
+58400200,Soups - lower nutrient density,2,0.3586558547
+58401010,Soups - higher nutrient density,1,0.3712892251
+58402010,Soups - lower nutrient density,1,0.1899282701
+58402100,Soups - lower nutrient density,2,0.2016336424
+58403010,Soups - lower nutrient density,2,0.2960548208
+58403040,Soups - lower nutrient density,2,0.2960548208
+58403060,Soups - higher nutrient density,2,0.2933018816
+58404030,Soups - lower nutrient density,2,0.3594131002
+58404520,Soups - higher nutrient density,1,0.3638062528
+58407010,Soups - higher nutrient density,2,0.1593669882
+58407030,Soups - higher nutrient density,2,0.0535997504
+58407035,Soups - higher nutrient density,2,0.0534531307
+58408010,Soups - lower nutrient density,2,1.6507810741
+58421010,Soups - lower nutrient density,2,0.6246321144
+58421020,Soups - higher nutrient density,2,0.6246321144
+58421060,Soups - lower nutrient density,2,0.6246321144
+58421080,Soups - higher nutrient density,4,0.3083233177
+59003000,Processed soy products,1,2.1745464718
+61101010,"Fruit, higher nutrient density",2,0.4800136726
+61113010,"Fruit, higher nutrient density",2,0.8842919115
+61116010,"Fruit, higher nutrient density",2,0.4157128975
+61119010,"Fruit, higher nutrient density",2,0.3675282553
+61122300,"Fruit, higher nutrient density",2,0.6601202242
+61122320,"Fruit, higher nutrient density",2,0.6746911197
+61122330,"Fruit, lower nutrient density",2,0.5884507082
+61122350,"Fruit, higher nutrient density",2,1.047614026
+61125000,"Fruit, higher nutrient density",1,0.4066332616
+61125010,"Fruit, higher nutrient density",2,0.4723039689
+61201010,100% juice,2,0.1867431206
+61201220,100% juice,1,0.1868748931
+61201225,100% juice,2,0.1867431206
+61204000,Condiments and Sauces,2,0.385518056
+61204010,Condiments and Sauces,2,0.385518056
+61204200,Condiments and Sauces,1,0.385518056
+61207000,Condiments and Sauces,2,0.6477631634
+61207010,Condiments and Sauces,2,0.6477631634
+61207200,Condiments and Sauces,1,0.6477631634
+61210000,100% juice,2,0.1850060141
+61210010,100% juice,2,0.1850060141
+61210220,100% juice,1,0.1850031501
+61210250,100% juice,2,0.185182314
+61210620,100% juice,2,0.1654291737
+61210820,100% juice,2,0.1654291737
+61213220,100% juice,1,0.2676498233
+61213800,100% juice,2,0.1883593668
+62101050,"Fruit, higher nutrient density",1,2.3658731655
+62105000,"Fruit, lower nutrient density",2,3.9889509429
+62107200,"Fruit, lower nutrient density",2,1.2181184497
+62108100,"Fruit, higher nutrient density",2,1.2847708312
+62109100,"Fruit, lower nutrient density",2,1.1585917224
+62110100,"Fruit, higher nutrient density",2,1.3491878339
+62113100,"Fruit, higher nutrient density",2,1.5051376879
+62120100,"Fruit, higher nutrient density",1,1.4521735823
+62122100,"Fruit, higher nutrient density",2,1.1537344318
+62122200,"Fruit, lower nutrient density",1,1.5122727324
+62125100,"Fruit, higher nutrient density",2,0.8611194132
+62126000,"Fruit, lower nutrient density",1,1.0494316463
+63100100,"Fruit, higher nutrient density",1,0.9745399753
+63101000,"Fruit, higher nutrient density",2,0.4348123136
+63101110,"Fruit, lower nutrient density",1,0.3522050972
+63101120,"Fruit, higher nutrient density",1,0.3200641188
+63101130,"Fruit, lower nutrient density",1,0.4356016869
+63101150,"Fruit, lower nutrient density",1,0.5053473938
+63103010,"Fruit, higher nutrient density",2,0.815888719
+63105010,Other vegetables + vegetable combinations,2,0.73012547
+63107010,"Fruit, higher nutrient density",2,0.2096834879
+63109010,"Fruit, higher nutrient density",2,0.3176421642
+63111010,"Fruit, lower nutrient density",2,1.1763177314
+63115010,"Fruit, higher nutrient density",2,0.829524191
+63115200,"Fruit, higher nutrient density",2,0.9533820587
+63119010,"Fruit, higher nutrient density",2,1.0726432186
+63123000,"Fruit, higher nutrient density",2,0.783068921
+63126500,"Fruit, higher nutrient density",2,0.7109484258
+63126510,"Fruit, higher nutrient density",1,1.1013983324
+63126700,"Fruit, higher nutrient density",1,1.174888946
+63127010,"Fruit, higher nutrient density",2,0.501180498
+63129010,"Fruit, higher nutrient density",2,0.5466887842
+63129030,"Fruit, higher nutrient density",1,0.8803281378
+63131010,"Fruit, higher nutrient density",2,0.5015466483
+63133010,"Fruit, higher nutrient density",2,0.5039684779
+63134010,"Fruit, higher nutrient density",2,0.8569688051
+63135010,"Fruit, higher nutrient density",2,0.4256181384
+63135110,"Fruit, lower nutrient density",2,0.3888062318
+63135140,"Fruit, lower nutrient density",2,0.3537134256
+63135150,"Fruit, lower nutrient density",2,0.6481401499
+63135170,"Fruit, higher nutrient density",2,0.4634347066
+63137010,"Fruit, higher nutrient density",2,0.399238761
+63137110,"Fruit, lower nutrient density",2,0.3826936446
+63137140,"Fruit, lower nutrient density",2,0.3499497443
+63137150,"Fruit, lower nutrient density",2,0.6379498442
+63139010,"Fruit, higher nutrient density",2,0.3883838365
+63141010,"Fruit, higher nutrient density",2,0.5061090703
+63141110,"Fruit, higher nutrient density",2,0.3022666815
+63141140,"Fruit, lower nutrient density",2,0.4903508628
+63141150,"Fruit, higher nutrient density",2,0.4796974503
+63141170,"Fruit, higher nutrient density",2,0.2996731126
+63143010,"Fruit, higher nutrient density",2,0.5108403555
+63145010,"Fruit, higher nutrient density",2,1.134694507
+63149010,"Fruit, higher nutrient density",2,0.235228734
+63200100,"Fruit, higher nutrient density",1,1.4254851316
+63200200,"Fruit, higher nutrient density",1,0.8991097484
+63201010,"Fruit, higher nutrient density",2,1.4724262188
+63203010,"Fruit, higher nutrient density",2,1.1709424944
+63203110,"Fruit, lower nutrient density",1,0.6318114958
+63203120,"Fruit, higher nutrient density",1,1.1645747292
+63203570,"Fruit, higher nutrient density",1,0.8681421575
+63203600,"Fruit, higher nutrient density",2,0.8681421575
+63207010,"Fruit, higher nutrient density",2,0.6474248745
+63207110,"Fruit, lower nutrient density",1,0.3763603935
+63219000,"Fruit, higher nutrient density",2,1.7149143612
+63219020,"Fruit, higher nutrient density",2,1.7149143612
+63219610,"Fruit, higher nutrient density",2,1.7149143612
+63223020,"Fruit, higher nutrient density",2,0.6516426882
+63223110,"Fruit, lower nutrient density",1,0.3598719044
+63223600,"Fruit, lower nutrient density",1,0.6386783866
+63223610,"Fruit, higher nutrient density",2,0.6580479211
+63223620,"Fruit, lower nutrient density",2,0.6386783866
+63311000,"Fruit, higher nutrient density",4,0.4451525381
+63311050,"Fruit, higher nutrient density",4,0.4288869109
+63311080,"Fruit, higher nutrient density",1,0.6168535714
+63311110,"Fruit, lower nutrient density",2,0.4312262626
+63311120,"Fruit, higher nutrient density",1,0.4553052092
+63311130,"Fruit, lower nutrient density",1,0.3080964365
+63311140,"Fruit, lower nutrient density",2,0.3719858872
+63311150,"Fruit, lower nutrient density",2,0.6438200608
+63311170,"Fruit, higher nutrient density",1,0.4986344579
+63401010,"Fruit, lower nutrient density",1,3.2682740498
+63401060,"Fruit, lower nutrient density",1,0.9525064295
+63401070,"Fruit, lower nutrient density",1,0.8496855615
+63401990,"Fruit, lower nutrient density",1,1.4465074533
+63402960,"Fruit, lower nutrient density",4,0.6032035693
+63409010,Mixed Dishes - Vegetables - higher nutrient density,1,1.3140387546
+63409015,Mixed Dishes - Vegetables - lower nutrient density,1,1.1514921875
+63409020,Condiments and Sauces,1,1.6818404793
+63420110,Other Desserts,1,0.6110371386
+63430100,Other Desserts,1,0.9024446631
+64100100,100% juice,2,0.2060073901
+64100110,100% juice,1,0.192154838
+64100200,100% juice,1,0.1660024013
+64100220,100% juice,2,0.195456246
+64101010,100% juice,1,0.1347931065
+64104010,100% juice,2,0.1496494558
+64104030,100% juice,2,0.1496494558
+64104600,100% juice,1,0.1949301943
+64105400,100% juice,1,0.195456246
+64116020,100% juice,1,0.1876595528
+64116060,100% juice,2,0.1876595528
+64120010,100% juice,1,0.4474334055
+64121000,100% juice,1,0.2613092355
+64124020,100% juice,1,0.2103419221
+64126000,100% juice,1,0.6805068802
+64132010,100% juice,1,0.2971923339
+64132500,100% juice,2,0.7387394398
+64133100,100% juice,1,0.8693206403
+64134015,"Milk substitutes, nutritional beverages, and smoothies",4,0.4523298741
+64134020,"Milk substitutes, nutritional beverages, and smoothies",4,0.527108862
+64134200,"Milk substitutes, nutritional beverages, and smoothies",1,0.4778801888
+64200100,Fruit drinks - lower nutrient density,1,0.1313914554
+64201010,Fruit drinks - lower nutrient density,1,0.2292237135
+64203020,Fruit drinks - lower nutrient density,1,0.1603529428
+64204010,Fruit drinks - lower nutrient density,1,0.1598631302
+64205010,Fruit drinks - lower nutrient density,1,0.1567137591
+64215010,Fruit drinks - lower nutrient density,1,0.1784735398
+64221010,Fruit drinks - lower nutrient density,2,0.182296821
+64401000,Condiments and Sauces,2,0.4878415931
+71000100,Starchy vegetables,2,0.2768078895
+71101000,Starchy vegetables,4,0.2828013855
+71102980,Starchy vegetables,2,0.276055528
+71103010,Starchy vegetables,1,0.34895526
+71103040,Starchy vegetables,4,0.3118340175
+71103125,Starchy vegetables,2,0.2756705499
+71104070,Starchy vegetables,4,0.2902299532
+71104200,Starchy vegetables,1,0.6847683783
+71200010,Fried Potato Products,2,1.1778114453
+71200100,Fried Potato Products,1,1.13871602
+71200110,Fried Potato Products,1,1.1110208209
+71200120,Fried Potato Products,1,1.0490767656
+71200130,Fried Potato Products,1,0.8700838926
+71200140,Fried Potato Products,1,1.3240335485
+71200200,Fried Potato Products,1,1.0500716218
+71200210,Fried Potato Products,1,1.2265506076
+71200220,Fried Potato Products,1,1.113168638
+71200230,Fried Potato Products,1,1.3340909378
+71200240,Fried Potato Products,1,1.3882980761
+71200300,Fried Potato Products,1,1.3088729213
+71200310,Fried Potato Products,1,1.0638049494
+71200400,Fried Potato Products,1,1.9356052158
+71200410,Fried Potato Products,1,1.8985833101
+71201050,Fried Potato Products,2,1.13871602
+71201200,Fried Potato Products,1,1.5876338683
+71201210,Fried Potato Products,2,1.5876338683
+71202500,Fried Potato Products,2,1.13871602
+71202510,Fried Potato Products,1,1.7383815496
+71203020,Fried Potato Products,1,2.6531283634
+71205020,Fried Potato Products,1,1.2146162666
+71205040,Fried Potato Products,1,1.2795190767
+71220000,"Tortilla, corn, other chips",1,1.4869321631
+71305015,Mixed Dishes - Vegetables - lower nutrient density,2,0.7857380971
+71305030,Mixed Dishes - Vegetables - lower nutrient density,4,0.44289217
+71305050,Mixed Dishes - Vegetables - lower nutrient density,4,0.4253715953
+71305070,Mixed Dishes - Vegetables - lower nutrient density,1,0.7520203422
+71401000,Fried Potato Products,2,0.4395162288
+71401010,Fried Potato Products,4,0.3153056487
+71401015,Fried Potato Products,4,0.3086450349
+71401020,Fried Potato Products,2,0.4395162288
+71401030,Fried Potato Products,2,0.4395162288
+71401031,Fried Potato Products,2,0.4395162288
+71401032,Fried Potato Products,2,0.4395162288
+71401033,Fried Potato Products,2,0.4395162288
+71401039,Mixed Dishes - Vegetables - lower nutrient density,3,0.4119055552
+71402500,Mixed Dishes - Vegetables - lower nutrient density,1,0.9070343726
+71403020,Fried Potato Products,2,0.5145339622
+71403030,Fried Potato Products,2,0.5126712697
+71403040,Fried Potato Products,4,0.3125125106
+71403050,Fried Potato Products,1,0.5126712697
+71403500,Mixed Dishes - Vegetables - higher nutrient density,4,0.3412656033
+71404010,Fried Potato Products,2,0.4511596552
+71404030,Fried Potato Products,2,0.4511596552
+71404050,Fried Potato Products,2,0.4511596552
+71405010,Fried Potato Products,4,0.313717723
+71405040,Fried Potato Products,2,0.4511586963
+71405050,Mixed Dishes - Vegetables - lower nutrient density,1,1.6878392323
+71411000,Mixed Dishes - Vegetables - lower nutrient density,1,1.4936429983
+71501000,Mixed Dishes - Vegetables - lower nutrient density,2,0.518492736
+71501005,Mixed Dishes - Vegetables - lower nutrient density,2,0.518492736
+71501006,Mixed Dishes - Vegetables - lower nutrient density,4,0.5062522742
+71501007,Mixed Dishes - Vegetables - lower nutrient density,2,0.5295029668
+71501010,Mixed Dishes - Vegetables - higher nutrient density,4,0.291055232
+71501011,Mixed Dishes - Vegetables - lower nutrient density,4,0.5906779424
+71501012,Mixed Dishes - Vegetables - higher nutrient density,4,0.5062522742
+71501013,Mixed Dishes - Vegetables - higher nutrient density,4,0.5180389275
+71501016,Mixed Dishes - Vegetables - lower nutrient density,2,0.518492736
+71501017,Mixed Dishes - Vegetables - lower nutrient density,4,0.5062522742
+71501018,Mixed Dishes - Vegetables - higher nutrient density,2,0.518492736
+71501035,Mixed Dishes - Vegetables - higher nutrient density,4,0.2284481356
+71501040,Mixed Dishes - Vegetables - higher nutrient density,4,0.2284481356
+71501045,Mixed Dishes - Vegetables - lower nutrient density,4,0.5906779424
+71501054,Mixed Dishes - Vegetables - lower nutrient density,4,0.5062522742
+71501061,Mixed Dishes - Vegetables - lower nutrient density,1,0.5295029668
+71501071,Mixed Dishes - Vegetables - lower nutrient density,4,0.5906779424
+71501075,Mixed Dishes - Vegetables - lower nutrient density,4,0.5062522742
+71505010,Fried Potato Products,2,0.4421631408
+71505020,Fried Potato Products,2,0.4421631408
+71505040,Fried Potato Products,2,0.4421631408
+71505050,Fried Potato Products,4,0.423968971
+71507005,Mixed Dishes - Vegetables - lower nutrient density,4,0.3062190579
+71507010,Mixed Dishes - Vegetables - higher nutrient density,4,0.3199526074
+71507020,Mixed Dishes - Vegetables - lower nutrient density,4,0.3880890256
+71507025,Mixed Dishes - Vegetables - higher nutrient density,4,0.4645025249
+71508001,Starchy vegetables,2,0.2759354989
+71508005,Mixed Dishes - Vegetables - lower nutrient density,4,0.3062190579
+71508010,Mixed Dishes - Vegetables - higher nutrient density,4,0.3199526074
+71508020,Mixed Dishes - Vegetables - lower nutrient density,4,0.3880890256
+71508025,Mixed Dishes - Vegetables - lower nutrient density,4,0.4645025249
+71508035,Mixed Dishes - Vegetables - higher nutrient density,1,0.9696885187
+71600950,Mixed Dishes - Vegetables - lower nutrient density,2,0.5597071226
+71601010,Mixed Dishes - Vegetables - lower nutrient density,1,0.5597071226
+71601020,Mixed Dishes - Vegetables - higher nutrient density,4,0.345395089
+71602950,Mixed Dishes - Vegetables - lower nutrient density,2,0.4769381838
+71603010,Mixed Dishes - Vegetables - higher nutrient density,4,0.3159890188
+71704000,Mixed Dishes - Vegetables - higher nutrient density,4,0.3549911868
+71801000,Soups - lower nutrient density,1,0.5202527426
+71801010,Soups - lower nutrient density,1,0.2750071322
+71801100,Soups - lower nutrient density,1,0.537385144
+71803010,Soups - lower nutrient density,1,0.3560925803
+71900100,Starchy vegetables,2,0.2478741367
+71900200,Fried Potato Products,4,0.271933187
+71905000,Starchy vegetables,2,0.2478741367
+71905410,"Tortilla, corn, other chips",2,1.1919194602
+71930100,Starchy vegetables,2,0.3167896187
+71962010,Starchy vegetables,2,0.477941529
+72107100,Dark green vegetables,2,0.5367662373
+72107211,Dark green vegetables,2,0.4656629276
+72107213,Dark green vegetables,1,0.3958134747
+72107227,Dark green vegetables,4,0.6631535149
+72107228,Dark green vegetables,4,0.6740174407
+72116000,Dark green vegetables,1,0.9691730239
+72116150,Mixed Dishes - Vegetables - higher nutrient density,1,0.7368601852
+72118212,Dark green vegetables,1,0.5772315757
+72118213,Dark green vegetables,1,0.367457181
+72119190,Dark green vegetables,1,0.8395094396
+72119211,Dark green vegetables,2,0.7691798825
+72119227,Dark green vegetables,4,0.7466953098
+72122213,Dark green vegetables,1,0.3711825206
+72124100,Other vegetables + vegetable combinations,2,1.0622296971
+72125100,Dark green vegetables,2,1.0957295494
+72125200,Dark green vegetables,4,0.4429501595
+72125211,Dark green vegetables,2,1.1928501721
+72125212,Dark green vegetables,2,0.5685001162
+72125213,Dark green vegetables,2,0.4021997869
+72125217,Dark green vegetables,4,0.8713626702
+72125240,Mixed Dishes - Eggs - higher nutrient density,1,0.7826545149
+72125310,Mixed Dishes - Vegetables - higher nutrient density,1,1.4644502974
+72128211,Dark green vegetables,1,0.6276088619
+72128213,Dark green vegetables,1,0.358156535
+72201100,Dark green vegetables,2,0.7558511816
+72201200,Dark green vegetables,4,0.469829367
+72201201,Dark green vegetables,4,0.5990125557
+72201210,Dark green vegetables,2,0.6550411436
+72201211,Dark green vegetables,2,0.7609950284
+72201212,Dark green vegetables,2,0.5288937515
+72201223,Dark green vegetables,4,0.5947759495
+72201224,Dark green vegetables,4,0.6080018807
+72201225,Dark green vegetables,4,0.5943856265
+72201227,Dark green vegetables,4,0.4774927675
+72201230,Mixed Dishes - Vegetables - higher nutrient density,1,0.9195491709
+72201232,Mixed Dishes - Vegetables - higher nutrient density,2,0.9195491709
+72202030,Mixed Dishes - Vegetables - higher nutrient density,1,1.5612018929
+72302000,Soups - lower nutrient density,1,0.4745445409
+72302020,Soups - lower nutrient density,1,0.4753521882
+72302100,Soups - lower nutrient density,1,0.660749876
+72308000,Soups - higher nutrient density,4,0.4788414336
+72308500,Soups - lower nutrient density,2,0.3944291331
+73101010,Red orange vegetables,2,0.3333918705
+73101110,Mixed Dishes - Vegetables - higher nutrient density,4,0.4684008786
+73102200,Red orange vegetables,4,0.346466471
+73102210,Red orange vegetables,1,0.3480543563
+73102211,Red orange vegetables,2,0.3645771002
+73102212,Red orange vegetables,2,0.3458534474
+73102213,Red orange vegetables,2,0.3693712798
+73102217,Red orange vegetables,4,0.4128599037
+73102218,Red orange vegetables,4,0.4263597226
+73102242,Mixed Dishes - Vegetables - lower nutrient density,1,0.5557272197
+73105010,100% juice,1,0.402827043
+73201013,Red orange vegetables,1,0.4340872253
+73302010,Red orange vegetables,2,0.4559631315
+73402010,Red orange vegetables,2,0.4234777046
+73403000,Red orange vegetables,1,0.6527094919
+73403010,Red orange vegetables,2,0.4234777046
+73403021,Red orange vegetables,4,0.377201595
+73403022,Red orange vegetables,4,0.3988056275
+73405010,Red orange vegetables,2,0.4236114319
+73406000,Mixed Dishes - Vegetables - higher nutrient density,1,0.416389187
+73409000,Mixed Dishes - Vegetables - higher nutrient density,1,0.5754734508
+73410210,"Tortilla, corn, other chips",1,1.6756289801
+73420000,Red orange vegetables,1,0.8383204769
+73501000,Soups - higher nutrient density,1,0.4646455155
+73502000,Soups - lower nutrient density,1,0.5676988047
+74101000,Red orange vegetables,2,0.572804395
+74201000,Red orange vegetables,2,0.5518756715
+74201001,Red orange vegetables,2,0.6947091018
+74205020,Condiments and Sauces,1,0.9347457248
+74206000,Red orange vegetables,2,2.4260810137
+74301100,100% juice,2,0.2523116349
+74302000,100% juice,1,0.2661789498
+74303000,100% juice,1,0.2137734882
+74303100,100% juice,2,0.2523116349
+74401010,Condiments and Sauces,2,0.2692220137
+74402010,Condiments and Sauces,2,0.817931862
+74402100,Condiments and Sauces,2,0.5728433286
+74402110,Condiments and Sauces,3,0.3300507908
+74402150,Condiments and Sauces,1,0.5655073136
+74402200,Condiments and Sauces,4,0.2398415526
+74402250,Condiments and Sauces,1,0.4372093644
+74402260,Condiments and Sauces,1,0.3601990078
+74402350,Condiments and Sauces,1,0.598987616
+74404010,Mixed Dishes - Vegetables - lower nutrient density,2,0.3096887053
+74404020,Mixed Dishes - Vegetables - lower nutrient density,4,0.4198195863
+74406010,Condiments and Sauces,1,0.3647691709
+74406100,Condiments and Sauces,2,1.052438255
+74406500,Condiments and Sauces,1,0.817931862
+74504010,Other vegetables + vegetable combinations,1,0.4722239901
+74504121,Red orange vegetables,4,0.4993254684
+74506000,Mixed Dishes - Vegetables - higher nutrient density,4,0.4429308234
+74601000,Soups - higher nutrient density,2,0.2990080977
+74601010,Soups - higher nutrient density,1,0.6279773043
+74602010,Soups - higher nutrient density,1,0.3831517695
+74602200,Soups - higher nutrient density,1,0.4166999466
+74604500,Soups - higher nutrient density,4,0.2575417198
+74604600,Soups - higher nutrient density,1,0.3410054856
+74606010,Soups - higher nutrient density,1,0.3931510364
+75100250,Other vegetables + vegetable combinations,1,0.9571052245
+75100300,Other vegetables + vegetable combinations,1,1.4864902633
+75100500,Other vegetables + vegetable combinations,2,1.6731425676
+75100800,Other vegetables + vegetable combinations,2,1.4161847444
+75101000,Other vegetables + vegetable combinations,2,0.7579860793
+75101800,Other vegetables + vegetable combinations,2,0.6629974896
+75103000,Other vegetables + vegetable combinations,2,0.2271810224
+75104000,Other vegetables + vegetable combinations,2,0.4328626937
+75105000,Other vegetables + vegetable combinations,2,0.3434603729
+75105500,Other vegetables + vegetable combinations,2,0.4140310717
+75107000,Other vegetables + vegetable combinations,2,0.9746280499
+75109000,Other vegetables + vegetable combinations,2,0.3750790973
+75109010,Other vegetables + vegetable combinations,2,0.7219215425
+75109400,Dark green vegetables,2,7.1061695255
+75109500,Other vegetables + vegetable combinations,2,5.9038267321
+75109550,Dark green vegetables,2,0.2471930517
+75109600,Starchy vegetables,2,0.5854239394
+75111000,Other vegetables + vegetable combinations,2,0.392235258
+75111200,Other vegetables + vegetable combinations,2,0.5053820713
+75111500,Other vegetables + vegetable combinations,2,0.9892314061
+75111800,Other vegetables + vegetable combinations,2,0.3141999095
+75113000,Other vegetables + vegetable combinations,2,0.325768278
+75113060,Dark green vegetables,2,1.0683723049
+75113080,Dark green vegetables,2,2.3317528979
+75114000,Dark green vegetables,1,1.2503160986
+75115000,Other vegetables + vegetable combinations,2,0.9499788176
+75117010,Other vegetables + vegetable combinations,2,0.7146019714
+75117020,Other vegetables + vegetable combinations,2,0.2912924496
+75120000,Starchy vegetables,2,0.8587143456
+75121000,Other vegetables + vegetable combinations,2,0.7375659299
+75122000,Other vegetables + vegetable combinations,2,0.6269774188
+75122100,Other vegetables + vegetable combinations,2,0.4389409159
+75122200,Red orange vegetables,2,0.6970842234
+75124000,Other vegetables + vegetable combinations,2,0.9369446304
+75125000,Other vegetables + vegetable combinations,2,0.4019929209
+75127750,Other vegetables + vegetable combinations,2,1.170339957
+75128010,Other vegetables + vegetable combinations,2,0.4257281283
+75129000,Other vegetables + vegetable combinations,2,0.3775792844
+75132000,100% juice,1,0.3666531266
+75140510,Mixed Dishes - Vegetables - lower nutrient density,1,0.7220141709
+75140990,Mixed Dishes - Vegetables - higher nutrient density,1,0.5532326228
+75141000,Mixed Dishes - Vegetables - higher nutrient density,4,0.3555447148
+75141020,Mixed Dishes - Vegetables - lower nutrient density,1,0.7995771711
+75141040,Mixed Dishes - Vegetables - lower nutrient density,4,0.2993403138
+75143000,Mixed Dishes - Vegetables - higher nutrient density,1,0.5262234961
+75143200,Mixed Dishes - Vegetables - higher nutrient density,1,2.2403896068
+75143350,Mixed Dishes - Vegetables - higher nutrient density,1,1.2298571174
+75200700,Fruit drinks - lower nutrient density,1,0.2159247108
+75201030,Mixed Dishes - Vegetables - higher nutrient density,1,1.5204254028
+75202011,Other vegetables + vegetable combinations,2,1.5424379138
+75202012,Other vegetables + vegetable combinations,1,0.8441784094
+75202027,Other vegetables + vegetable combinations,4,2.663424391
+75204012,Starchy vegetables,2,0.4039901928
+75204013,Starchy vegetables,1,0.3407668944
+75204963,Other vegetables + vegetable combinations,4,0.453290856
+75204991,Other vegetables + vegetable combinations,2,0.7006874922
+75204992,Other vegetables + vegetable combinations,2,0.454611998
+75204993,Other vegetables + vegetable combinations,2,0.3356496444
+75205010,Other vegetables + vegetable combinations,4,0.4584813895
+75205011,Other vegetables + vegetable combinations,4,0.4587339698
+75205013,Other vegetables + vegetable combinations,4,0.4567874928
+75205020,Other vegetables + vegetable combinations,4,0.4536481656
+75205021,Other vegetables + vegetable combinations,2,0.7006874922
+75205022,Other vegetables + vegetable combinations,2,0.454611998
+75205023,Other vegetables + vegetable combinations,2,0.3356496444
+75205044,Other vegetables + vegetable combinations,4,0.453290856
+75205045,Other vegetables + vegetable combinations,4,0.4698563218
+75205046,Other vegetables + vegetable combinations,4,0.4530558867
+75205047,Other vegetables + vegetable combinations,4,0.4534254161
+75205048,Other vegetables + vegetable combinations,4,0.4688140158
+75205050,Other vegetables + vegetable combinations,4,0.4523335038
+75205051,Other vegetables + vegetable combinations,4,0.4658899111
+75205052,Other vegetables + vegetable combinations,4,0.4521391093
+75205120,Other vegetables + vegetable combinations,2,0.3602433456
+75208000,Other vegetables + vegetable combinations,4,0.5381658204
+75208011,Other vegetables + vegetable combinations,1,1.2178751571
+75208013,Other vegetables + vegetable combinations,2,0.2466149265
+75209012,Other vegetables + vegetable combinations,2,0.527447287
+75210010,Other vegetables + vegetable combinations,2,0.4609782006
+75210021,Other vegetables + vegetable combinations,4,0.4339840956
+75211020,Other vegetables + vegetable combinations,2,0.2357247191
+75211031,Other vegetables + vegetable combinations,4,0.2423823561
+75211032,Other vegetables + vegetable combinations,4,0.2565411175
+75212010,Other vegetables + vegetable combinations,1,0.6693068331
+75213110,Other vegetables + vegetable combinations,1,0.4086468092
+75213121,Other vegetables + vegetable combinations,4,0.4557441086
+75214011,Other vegetables + vegetable combinations,2,1.0115150416
+75214027,Other vegetables + vegetable combinations,4,0.905487466
+75215010,Other vegetables + vegetable combinations,1,1.1950634082
+75216000,Starchy vegetables,4,0.4683119411
+75216070,Starchy vegetables,1,0.2055718958
+75216100,Starchy vegetables,4,0.4683119411
+75216110,Starchy vegetables,4,0.4646092907
+75216111,Starchy vegetables,2,0.5033741695
+75216112,Starchy vegetables,2,0.4819497708
+75216113,Starchy vegetables,2,0.3240584294
+75216122,Starchy vegetables,1,0.7589145624
+75216135,Starchy vegetables,4,0.4768775908
+75216138,Starchy vegetables,4,0.4768775908
+75216139,Starchy vegetables,4,0.4639353783
+75216142,Starchy vegetables,4,0.4753840951
+75216143,Starchy vegetables,4,0.4625254423
+75216153,Mixed Dishes - Vegetables - lower nutrient density,2,0.2116664393
+75216171,Starchy vegetables,2,0.5033741695
+75216211,Starchy vegetables,2,0.5033741695
+75216212,Starchy vegetables,1,0.5431361409
+75216310,Starchy vegetables,2,0.2150545715
+75216322,Starchy vegetables,4,0.4755762814
+75216710,Other vegetables + vegetable combinations,1,1.0661806885
+75217000,Other vegetables + vegetable combinations,4,0.5422599112
+75217021,Other vegetables + vegetable combinations,4,0.535416017
+75217400,Other vegetables + vegetable combinations,1,3.3979271037
+75219033,Other vegetables + vegetable combinations,4,1.312179153
+75220027,Other vegetables + vegetable combinations,4,0.5802313227
+75221000,Other vegetables + vegetable combinations,4,0.5026875233
+75221011,Other vegetables + vegetable combinations,2,0.3447065186
+75221014,Other vegetables + vegetable combinations,4,0.4998274494
+75221017,Other vegetables + vegetable combinations,4,0.3779459243
+75221018,Other vegetables + vegetable combinations,4,0.3880489639
+75221030,Other vegetables + vegetable combinations,2,0.4942792473
+75221160,Other vegetables + vegetable combinations,1,1.3894993129
+75224010,Starchy vegetables,4,0.4311319629
+75224022,Starchy vegetables,2,0.4607422927
+75224023,Starchy vegetables,2,0.3745939106
+75224051,Starchy vegetables,4,0.4255097901
+75226010,Other vegetables + vegetable combinations,2,0.4586194722
+75226021,Other vegetables + vegetable combinations,4,0.4397001632
+75226061,Red orange vegetables,4,0.7122201632
+75226090,Other vegetables + vegetable combinations,4,0.7332218289
+75226110,Other vegetables + vegetable combinations,1,2.4663879005
+75228010,Other vegetables + vegetable combinations,1,0.4280210325
+75230000,Other vegetables + vegetable combinations,1,1.4166822375
+75230010,Other vegetables + vegetable combinations,1,0.3053779985
+75232000,Other vegetables + vegetable combinations,2,7.9256656437
+75232050,Mixed Dishes - Vegetables - lower nutrient density,1,4.3039246272
+75233011,Other vegetables + vegetable combinations,2,0.496034701
+75233027,Other vegetables + vegetable combinations,4,0.5149352797
+75236000,Condiments and Sauces,2,3.6475192761
+75236500,Condiments and Sauces,2,5.2166752322
+75302080,Mixed Dishes - Vegetables - lower nutrient density,1,0.3927000245
+75302205,Other vegetables + vegetable combinations,1,1.0745299767
+75302505,Other vegetables + vegetable combinations,4,0.358717442
+75303010,Starchy vegetables,1,0.6778360231
+75306998,Other vegetables + vegetable combinations,1,0.5055487282
+75306999,Other vegetables + vegetable combinations,4,0.4064588481
+75307000,Other vegetables + vegetable combinations,1,0.4377518291
+75307001,Other vegetables + vegetable combinations,4,0.4024242412
+75311000,Other vegetables + vegetable combinations,4,0.3917665288
+75311010,Other vegetables + vegetable combinations,2,0.3846593246
+75311012,Other vegetables + vegetable combinations,2,0.3857941929
+75311013,Other vegetables + vegetable combinations,2,0.3779691688
+75311028,Other vegetables + vegetable combinations,4,0.3995115753
+75315010,Starchy vegetables,1,0.3829809242
+75316022,Other vegetables + vegetable combinations,4,0.4766973622
+75316030,Other vegetables + vegetable combinations,4,0.4190096483
+75317020,Other vegetables + vegetable combinations,1,0.388069373
+75330110,Other vegetables + vegetable combinations,1,0.4676717675
+75330121,Other vegetables + vegetable combinations,4,0.6048827085
+75330130,Other vegetables + vegetable combinations,4,0.4379782125
+75330140,Other vegetables + vegetable combinations,1,0.5197497589
+75340010,Other vegetables + vegetable combinations,1,0.5336172967
+75340160,Mixed Dishes - Vegetables - lower nutrient density,1,1.3815849293
+75365000,Mixed Dishes - Vegetables - lower nutrient density,1,2.0478114164
+75403010,Mixed Dishes - Vegetables - higher nutrient density,4,0.4330408252
+75403020,Mixed Dishes - Vegetables - lower nutrient density,4,0.3809287819
+75410500,Mixed Dishes - Vegetables - lower nutrient density,1,1.7589095342
+75410550,Mixed Dishes - Vegetables - lower nutrient density,1,1.4104778573
+75411010,Mixed Dishes - Vegetables - lower nutrient density,1,0.7725461336
+75412010,Mixed Dishes - Vegetables - higher nutrient density,1,1.0235939417
+75412030,Mixed Dishes - Vegetables - higher nutrient density,1,1.2720949998
+75412060,Mixed Dishes - Vegetables - lower nutrient density,1,1.1520422681
+75414020,Mixed Dishes - Vegetables - lower nutrient density,1,1.8725758162
+75414030,Mixed Dishes - Vegetables - higher nutrient density,1,1.446513019
+75414500,Mixed Dishes - Vegetables - higher nutrient density,1,0.4361564453
+75415020,Other vegetables + vegetable combinations,2,1.4428531424
+75416600,Mixed Dishes - Vegetables - lower nutrient density,1,0.9501091114
+75418010,Mixed Dishes - Vegetables - higher nutrient density,1,1.6379620816
+75440100,Mixed Dishes - Vegetables - lower nutrient density,4,0.4691931434
+75440200,Mixed Dishes - Vegetables - higher nutrient density,1,1.6158800038
+75440300,Mixed Dishes - Vegetables - lower nutrient density,4,0.4537798918
+75440310,Mixed Dishes - Vegetables - higher nutrient density,4,0.3501696483
+75440600,Mixed Dishes - Vegetables - higher nutrient density,4,0.4238166447
+75460700,Mixed Dishes - Vegetables - higher nutrient density,1,0.7427240478
+75460900,Mixed Dishes - Grain based - lower nutrient density,1,0.9080851719
+75500210,Condiments and Sauces,2,0.3387161028
+75501010,Condiments and Sauces,1,0.900052937
+75502510,Condiments and Sauces,1,0.9259173948
+75502520,Other vegetables + vegetable combinations,2,1.3669837811
+75503010,Condiments and Sauces,2,0.5486554656
+75503020,Condiments and Sauces,2,0.4877541859
+75503030,Condiments and Sauces,2,0.697275101
+75503040,Condiments and Sauces,2,0.7388038654
+75503085,Condiments and Sauces,2,2.5679048329
+75503090,Condiments and Sauces,2,0.879401285
+75505000,Condiments and Sauces,1,1.4542899855
+75506010,Condiments and Sauces,2,0.5047108314
+75506100,Condiments and Sauces,1,0.859554502
+75507000,Condiments and Sauces,1,1.0897083564
+75510000,Condiments and Sauces,2,2.4573823582
+75510010,Condiments and Sauces,2,1.9016833723
+75510020,Condiments and Sauces,1,2.6515563227
+75510030,Condiments and Sauces,1,2.4096584573
+75511010,Condiments and Sauces,1,0.7512564557
+75511020,Condiments and Sauces,1,0.9965414551
+75511040,Condiments and Sauces,2,0.7414773007
+75515100,Condiments and Sauces,1,0.879401285
+75534550,Condiments and Sauces,2,2.208449809
+75601200,Soups - higher nutrient density,1,0.525524536
+75607000,Soups - lower nutrient density,1,0.3823919919
+75607060,Soups - lower nutrient density,1,0.4368867408
+75608100,Soups - lower nutrient density,1,0.3310146542
+75608200,Soups - lower nutrient density,2,0.1809891535
+75611010,Soups - lower nutrient density,1,0.3148589592
+75647000,Soups - lower nutrient density,2,0.3944291331
+75649010,Soups - higher nutrient density,2,0.3605607072
+75649040,Soups - higher nutrient density,1,0.3629854144
+75649110,Soups - higher nutrient density,2,0.3605607072
+75649150,Soups - higher nutrient density,2,0.4006292629
+75651010,Soups - higher nutrient density,1,0.3740787771
+75651020,Soups - lower nutrient density,1,0.2850901069
+75651070,Soups - higher nutrient density,1,0.3935959189
+75651110,Soups - lower nutrient density,2,0.3796649513
+75651150,Soups - higher nutrient density,2,0.2463407593
+75652010,Soups - higher nutrient density,2,0.2850901069
+75652040,Soups - higher nutrient density,2,0.1899282701
+75652050,Soups - higher nutrient density,2,0.3464873064
+75656060,Soups - lower nutrient density,1,0.3146253383
+75657000,Soups - higher nutrient density,2,0.2857088764
+77272010,"Mixed Dishes - Meat, Poultry, Seafood - lower nutrient density",1,1.3904353293
+78101000,100% juice,1,0.2653006821
+78101100,"Milk substitutes, nutritional beverages, and smoothies",4,0.3224300197
+78101110,"Milk substitutes, nutritional beverages, and smoothies",4,0.4123608313
+78101120,"Milk substitutes, nutritional beverages, and smoothies",1,0.3967700128
+81100500,Butter and animal fats,2,0.8602890295
+81101000,Butter and animal fats,2,0.8368364099
+81101010,Butter and animal fats,2,1.1337943016
+81102000,"Margarine, oils, cream, cream substitutes",2,0.4199842787
+81102010,"Margarine, oils, cream, cream substitutes",1,0.4149923336
+81102020,"Margarine, oils, cream, cream substitutes",2,0.6202986851
+81103040,"Margarine, oils, cream, cream substitutes",1,0.2460345606
+81103080,"Margarine, oils, cream, cream substitutes",1,0.3911490908
+81103090,"Margarine, oils, cream, cream substitutes",1,0.9371625551
+81104010,"Margarine, oils, cream, cream substitutes",1,0.6551680574
+81104011,"Margarine, oils, cream, cream substitutes",1,0.7456120436
+81104020,"Margarine, oils, cream, cream substitutes",2,0.2460345606
+81104100,"Margarine, oils, cream, cream substitutes",2,0.6551680574
+81105020,"Margarine, oils, cream, cream substitutes",2,0.986224854
+81106010,"Margarine, oils, cream, cream substitutes",1,3.3682929675
+81204000,Butter and animal fats,1,2.542014344
+81301000,Condiments and Sauces,1,0.8637093957
+81301020,Condiments and Sauces,1,1.1485015269
+81302010,Condiments and Sauces,1,1.8222447618
+81302040,"Margarine, oils, cream, cream substitutes",1,0.5906593156
+81302050,"Margarine, oils, cream, cream substitutes",2,0.7865926402
+81302070,Condiments and Sauces,1,1.8406585886
+81322000,Butter and animal fats,1,1.2294540498
+82101000,"Margarine, oils, cream, cream substitutes",2,0.4258431866
+82101500,"Margarine, oils, cream, cream substitutes",2,1.3651537226
+82102000,"Margarine, oils, cream, cream substitutes",2,0.2624561064
+82104000,"Margarine, oils, cream, cream substitutes",2,1.0614488353
+82107000,"Margarine, oils, cream, cream substitutes",2,2.5341994839
+83100100,"Margarine, oils, cream, cream substitutes",2,0.5942082096
+83100200,"Margarine, oils, cream, cream substitutes",2,0.4842140619
+83101000,"Margarine, oils, cream, cream substitutes",1,0.6478753381
+83102000,"Margarine, oils, cream, cream substitutes",1,0.7031148668
+83104000,"Margarine, oils, cream, cream substitutes",1,0.461015715
+83105500,"Margarine, oils, cream, cream substitutes",1,0.522292532
+83106000,"Margarine, oils, cream, cream substitutes",1,0.6076167162
+83107000,"Margarine, oils, cream, cream substitutes",1,0.4737461461
+83108000,"Margarine, oils, cream, cream substitutes",1,1.1257100376
+83110000,"Margarine, oils, cream, cream substitutes",1,0.4905450734
+83112000,"Margarine, oils, cream, cream substitutes",1,0.7259605835
+83112500,"Margarine, oils, cream, cream substitutes",1,0.5614464755
+83112950,"Margarine, oils, cream, cream substitutes",1,0.733833843
+83112990,"Margarine, oils, cream, cream substitutes",1,1.0528517502
+83114000,"Margarine, oils, cream, cream substitutes",1,0.479852652
+83115000,"Margarine, oils, cream, cream substitutes",1,0.8998205669
+83200100,"Margarine, oils, cream, cream substitutes",1,0.5537588168
+83201000,"Margarine, oils, cream, cream substitutes",1,0.6544983135
+83202020,"Margarine, oils, cream, cream substitutes",1,0.4963413783
+83203000,"Margarine, oils, cream, cream substitutes",1,0.5659385416
+83204000,"Margarine, oils, cream, cream substitutes",1,0.5166849717
+83204050,"Margarine, oils, cream, cream substitutes",1,0.5262597416
+83204500,"Margarine, oils, cream, cream substitutes",1,0.5808474061
+83205450,"Margarine, oils, cream, cream substitutes",1,0.6422783322
+83206500,"Margarine, oils, cream, cream substitutes",1,0.6132483209
+83207000,"Margarine, oils, cream, cream substitutes",1,0.4684301783
+83210100,"Margarine, oils, cream, cream substitutes",1,0.5344457241
+83300100,"Margarine, oils, cream, cream substitutes",1,0.5024372035
+83300300,"Margarine, oils, cream, cream substitutes",1,0.5293766987
+83300400,"Margarine, oils, cream, cream substitutes",1,0.4420335748
+83300500,"Margarine, oils, cream, cream substitutes",1,0.943888664
+83300600,"Margarine, oils, cream, cream substitutes",1,0.6089581497
+83300700,"Margarine, oils, cream, cream substitutes",1,0.5781294918
+83300900,"Margarine, oils, cream, cream substitutes",1,0.8822350308
+83301000,"Margarine, oils, cream, cream substitutes",1,0.5157519469
+91101000,Sugars,2,0.1665106897
+91101010,Sugars,1,0.143985425
+91101020,Sugars,2,0.2458544592
+91102010,Sugars,2,0.2528514365
+91104100,Sugars,1,2.8211008104
+91106010,Sugars,1,0.9387057351
+91107000,Sugars,2,2.9738658974
+91108000,Sugars,2,2.5674152844
+91108010,Sugars,1,19.659530358
+91200000,Sugars,2,1.4614797721
+91200005,Sugars,1,14.597156073
+91200040,Sugars,1,1.5296231715
+91200110,Sugars,1,1.5643315022
+91201010,Sugars,2,2.2255180995
+91300010,Sugars,2,0.4336758783
+91300100,Sugars,2,0.4223456386
+91301020,Sugars,2,0.2914283363
+91301030,Sugars,2,0.3918504697
+91301040,Sugars,1,0.294018787
+91301050,Sugars,1,1.0605328324
+91301060,Sugars,2,1.6214334298
+91301080,Sugars,1,0.3774940946
+91301100,Sugars,1,0.920420328
+91301130,Sugars,2,0.3344085255
+91301250,Sugars,2,0.3159363688
+91301510,Sugars,2,0.4466427488
+91302010,Sugars,2,1.0944673811
+91302020,Sugars,2,0.6734447742
+91303000,Sugars,2,0.6661760628
+91304010,Sugars,2,0.6132021096
+91304020,Sugars,2,0.7377163793
+91304030,Sugars,1,0.4993959167
+91304040,Sugars,2,0.6715036459
+91304060,Sugars,2,1.9799025161
+91304090,Sugars,2,0.9920854013
+91304300,Sugars,1,1.2507562878
+91305010,Sugars,1,0.4209405685
+91305020,Sugars,1,0.4286307716
+91306020,Sugars,1,0.9160069865
+91306030,Sugars,1,0.97902596
+91306040,Sugars,1,1.1139838089
+91351010,Sugars,2,0.4762565139
+91361010,Condiments and Sauces,1,0.6857023657
+91361020,Sugars,1,0.5130592284
+91361050,Condiments and Sauces,2,0.6132003841
+91361070,Condiments and Sauces,1,1.33681014
+91401000,Sugars,2,0.3493647152
+91402000,Sugars,2,0.5569113178
+91403000,Sugars,2,0.5375987074
+91404000,Sugars,2,0.6463093877
+91405000,Sugars,2,0.8381178323
+91405500,Sugars,2,0.6823946659
+91406000,Sugars,2,0.9837031961
+91406500,Sugars,2,0.9837031961
+91406600,Sugars,2,0.6823946659
+91407100,Sugars,1,0.3513399229
+91407150,Sugars,1,0.8738856656
+91501010,Other Desserts,1,0.3570573303
+91501020,Other Desserts,1,0.5195105828
+91511010,Other Desserts,2,0.3558129731
+91511020,Other Desserts,2,0.5195105828
+91601000,Other Desserts,1,0.311156481
+91611000,Other Desserts,1,0.2171686269
+91621000,Other Desserts,2,0.311156481
+91700010,Candy,2,1.1916033067
+91700500,Candy,2,1.1721518631
+91701010,Candy,1,2.0435721135
+91701020,Candy,1,1.4757047174
+91703010,Candy,2,0.6471897262
+91703020,Candy,2,1.173024692
+91703040,Candy,1,1.6383097263
+91703060,Candy,2,2.1489922343
+91703070,Candy,2,1.2598009313
+91703150,Candy,2,2.2232386001
+91703200,Candy,2,1.393510014
+91703400,Candy,2,1.9860015248
+91705010,Candy,1,1.2724211745
+91705020,Candy,1,1.0551253204
+91705030,Candy,2,1.4236297235
+91705040,Candy,1,3.0449931051
+91705050,Candy,1,2.0762075628
+91705060,Candy,2,1.4754280381
+91705070,Candy,2,1.5279744527
+91705090,Candy,1,1.6994480796
+91705200,Candy,1,0.8498506154
+91705300,Candy,2,1.7911181448
+91705310,Candy,1,1.9726473935
+91705400,Candy,2,1.101280512
+91705420,Candy,1,1.6470016325
+91705430,Candy,1,1.7003723859
+91706000,Candy,1,0.8924950404
+91706100,Candy,2,1.9229088253
+91707000,Candy,1,0.5923897279
+91707010,Candy,1,1.4200382076
+91708000,Candy,2,1.1413050689
+91708030,Candy,2,1.0292976559
+91708070,Candy,2,1.0375627253
+91708100,Candy,2,0.8418103109
+91709000,Candy,1,1.4652422051
+91713030,Candy,1,1.2247490806
+91713050,Candy,1,1.4199149052
+91713070,Candy,1,1.7907872036
+91715100,Candy,2,1.3231669274
+91715200,Candy,2,1.0970333555
+91715300,Candy,2,1.0292674051
+91718000,Candy,2,1.0372804771
+91718100,Candy,2,1.2725847796
+91718200,Candy,1,1.8356815585
+91721000,Candy,1,0.6695825456
+91723000,Candy,1,0.5933673803
+91723010,Candy,1,1.5740505649
+91726000,Candy,1,0.8274541495
+91726130,Candy,2,1.253717374
+91726410,Candy,1,1.2087207068
+91726420,Candy,2,1.3397568809
+91727010,Candy,1,2.0598572236
+91728500,Candy,1,2.1068510723
+91731000,Candy,2,1.0921359522
+91731010,Candy,2,1.0870170227
+91731100,Candy,1,0.9249114648
+91732000,Candy,2,1.2278093
+91733000,Candy,1,1.0865627688
+91734000,Candy,1,1.6659138873
+91734100,Candy,2,1.4322003471
+91734200,Candy,2,1.0776595487
+91734300,Candy,2,1.2906015457
+91734400,Candy,2,1.4822956857
+91734500,Candy,2,0.9206599379
+91735000,Candy,1,2.881371044
+91739010,Candy,1,1.0374183921
+91739600,Candy,1,1.6049467599
+91745010,Candy,1,0.8643042603
+91745020,Candy,1,1.0522319333
+91745040,Candy,2,1.0522319333
+91745100,Candy,2,0.9741708948
+91746100,Candy,2,1.1378432308
+91746120,Candy,1,1.0598011758
+91746150,Candy,1,0.8193350718
+91750000,Candy,2,0.9829905261
+91760000,Candy,1,1.1480388528
+91760100,Candy,1,1.3675031401
+91760200,Candy,1,1.430371308
+91760500,Candy,1,2.6496519125
+91770020,Candy,1,2.2061788532
+91801000,Candy,2,1.5589274528
+91802000,Candy,2,3.1964346576
+92101000,"Coffee & Tea, higher nutrient density",1,0.0489423649
+92101500,"Coffee & Tea, higher nutrient density",4,0.0592205743
+92101610,"Coffee & Tea, higher nutrient density",1,0.0474569345
+92101700,"Coffee & Tea, higher nutrient density",1,0.0951783205
+92101800,"Coffee & Tea, lower nutrient density",4,0.0532311198
+92101820,"Coffee & Tea, lower nutrient density",1,0.2677660028
+92101850,"Coffee & Tea, lower nutrient density",1,0.505137118
+92101851,"Coffee & Tea, lower nutrient density",2,0.505137118
+92101900,"Coffee & Tea, higher nutrient density",1,0.6577429386
+92101901,"Coffee & Tea, higher nutrient density",1,0.1480700359
+92101904,"Coffee & Tea, lower nutrient density",1,0.4679757432
+92101905,"Coffee & Tea, lower nutrient density",1,0.4659313655
+92101906,"Coffee & Tea, lower nutrient density",1,0.5256443173
+92101920,"Coffee & Tea, lower nutrient density",1,0.5290021445
+92101925,"Coffee & Tea, lower nutrient density",2,0.5290021445
+92101950,"Coffee & Tea, lower nutrient density",1,0.2230102921
+92101955,"Coffee & Tea, lower nutrient density",1,0.4616867059
+92101960,"Coffee & Tea, lower nutrient density",1,1.0262137779
+92102000,"Coffee & Tea, lower nutrient density",1,0.5048989593
+92102400,"Coffee & Tea, higher nutrient density",2,0.0489423649
+92102401,"Coffee & Tea, higher nutrient density",2,0.0669913263
+92103000,"Coffee & Tea, higher nutrient density",2,0.0244869495
+92111010,"Coffee & Tea, higher nutrient density",1,0.0669913263
+92114000,"Coffee & Tea, higher nutrient density",2,0.0328685483
+92121000,"Coffee & Tea, lower nutrient density",2,0.0730866413
+92121010,"Coffee & Tea, lower nutrient density",2,0.1137967253
+92130010,"Coffee & Tea, higher nutrient density",2,0.6577429386
+92152000,"Coffee & Tea, higher nutrient density",1,0.0464514666
+92161000,"Coffee & Tea, higher nutrient density",1,0.3075768553
+92161001,"Coffee & Tea, higher nutrient density",1,0.4476584264
+92161002,"Coffee & Tea, lower nutrient density",1,0.855142326
+92171000,"Coffee & Tea, lower nutrient density",1,0.3183689983
+92203000,"Coffee & Tea, higher nutrient density",2,0.0889162882
+92302000,"Coffee & Tea, higher nutrient density",1,0.0386799218
+92302500,"Coffee & Tea, higher nutrient density",1,0.0621694356
+92303010,"Coffee & Tea, higher nutrient density",1,0.1094682675
+92303100,"Coffee & Tea, higher nutrient density",1,0.1156420282
+92304100,"Coffee & Tea, higher nutrient density",1,0.134684765
+92305010,"Coffee & Tea, higher nutrient density",1,0.5073533603
+92305040,"Coffee & Tea, lower nutrient density",1,0.2999995758
+92305050,"Coffee & Tea, lower nutrient density",1,0.0683715062
+92305090,"Coffee & Tea, higher nutrient density",1,0.0991098422
+92305110,"Coffee & Tea, higher nutrient density",1,0.0487819072
+92305180,"Coffee & Tea, higher nutrient density",1,0.4285472462
+92305900,"Coffee & Tea, higher nutrient density",1,0.0767259608
+92305910,"Coffee & Tea, lower nutrient density",1,0.1693842598
+92305920,"Coffee & Tea, higher nutrient density",1,0.10221343
+92306000,"Coffee & Tea, higher nutrient density",1,0.1289481662
+92306090,"Coffee & Tea, higher nutrient density",1,0.1328745242
+92306700,"Coffee & Tea, higher nutrient density",1,0.1557518884
+92306800,"Coffee & Tea, lower nutrient density",4,0.0845358586
+92307500,"Coffee & Tea, lower nutrient density",1,0.0975648934
+92307510,"Coffee & Tea, lower nutrient density",1,0.1255167496
+92307520,"Coffee & Tea, higher nutrient density",1,0.091679971
+92308000,"Coffee & Tea, lower nutrient density",2,0.0989349589
+92308010,"Coffee & Tea, higher nutrient density",2,0.1363189025
+92308020,"Coffee & Tea, higher nutrient density",1,0.0199042423
+92308030,"Coffee & Tea, lower nutrient density",2,0.0496086728
+92308040,"Coffee & Tea, higher nutrient density",2,0.0609428637
+92308050,"Coffee & Tea, higher nutrient density",1,0.0417085905
+92308500,"Coffee & Tea, lower nutrient density",2,0.0890014669
+92308510,"Coffee & Tea, higher nutrient density",2,0.0797802276
+92308520,"Coffee & Tea, higher nutrient density",1,0.0512177758
+92308530,"Coffee & Tea, lower nutrient density",2,0.0890014669
+92308550,"Coffee & Tea, higher nutrient density",1,0.0609428637
+92309000,"Coffee & Tea, lower nutrient density",1,0.0989349589
+92309010,"Coffee & Tea, lower nutrient density",1,0.0496086728
+92309020,"Coffee & Tea, higher nutrient density",1,0.1363189025
+92309030,"Coffee & Tea, higher nutrient density",2,0.1363189025
+92309040,"Coffee & Tea, higher nutrient density",1,0.1319048134
+92309500,"Coffee & Tea, lower nutrient density",1,0.0890014669
+92309510,"Coffee & Tea, higher nutrient density",1,0.0797802276
+92400000,Soft drinks,2,0.1033520555
+92400100,Diet beverages,1,0.0740626087
+92410110,Soft drinks,1,0.1570433051
+92410210,Diet beverages,1,0.1171260781
+92410250,Diet beverages,1,0.1662013995
+92410310,Soft drinks,1,0.1022463859
+92410320,Diet beverages,1,0.1078641383
+92410340,Soft drinks,1,0.0937264008
+92410350,Diet beverages,1,0.0969505673
+92410360,Soft drinks,1,0.1067027199
+92410370,Diet beverages,1,0.1095157865
+92410390,Soft drinks,1,0.0948606285
+92410400,Diet beverages,1,0.0952346098
+92410410,Soft drinks,1,0.117789757
+92410420,Diet beverages,1,0.1081464437
+92410510,Soft drinks,1,0.1003379503
+92410520,Diet beverages,1,0.0948326798
+92410550,Soft drinks,1,0.1088151421
+92410560,Diet beverages,1,0.1048225932
+92410610,Soft drinks,1,0.102539467
+92410620,Diet beverages,1,0.09400632
+92410710,Soft drinks,1,0.100454787
+92410720,Diet beverages,1,0.0978580701
+92411510,Soft drinks,1,0.1165122987
+92411610,Diet beverages,1,0.1033658298
+92432000,Fruit drinks - higher nutrient density,1,0.2843345587
+92433000,Fruit drinks - higher nutrient density,1,0.3375531806
+92510610,Fruit drinks - lower nutrient density,1,0.1318128952
+92510650,Fruit drinks - lower nutrient density,1,0.1555292313
+92510955,Fruit drinks - lower nutrient density,1,0.1265892107
+92510960,Fruit drinks - lower nutrient density,2,0.0891521029
+92511015,Fruit drinks - lower nutrient density,1,0.1120826812
+92512040,Fruit drinks - lower nutrient density,1,0.56799827
+92512090,Fruit drinks - lower nutrient density,1,0.3284343915
+92512110,Fruit drinks - lower nutrient density,1,0.3808026996
+92513000,Fruit drinks - lower nutrient density,2,0.3992017165
+92530410,Fruit drinks - lower nutrient density,1,0.0857380243
+92530510,Fruit drinks - lower nutrient density,1,0.1434454741
+92530610,Fruit drinks - lower nutrient density,1,0.0958367493
+92530950,Fruit drinks - lower nutrient density,1,0.1463092679
+92531030,Fruit drinks - lower nutrient density,1,0.0818778349
+92541010,Fruit drinks - lower nutrient density,2,0.0615503253
+92542000,Fruit drinks - lower nutrient density,2,0.0473057644
+92550030,Fruit drinks - lower nutrient density,1,0.185444273
+92550035,Fruit drinks - lower nutrient density,1,0.1723845473
+92550040,Fruit drinks - higher nutrient density,1,0.1644400175
+92550110,Fruit drinks - lower nutrient density,1,0.136792225
+92550350,Fruit drinks - higher nutrient density,1,0.2095439173
+92550360,Fruit drinks - higher nutrient density,1,0.0965979453
+92550370,Fruit drinks - lower nutrient density,1,0.1302662232
+92550380,Fruit drinks - higher nutrient density,1,0.1330782562
+92550400,Diet beverages,1,0.122152961
+92550405,Fruit drinks - higher nutrient density,1,0.2234915611
+92550610,Diet beverages,1,0.2875653637
+92550620,Diet beverages,1,0.1609607248
+92552000,Diet beverages,2,0.0497614025
+92552010,Diet beverages,2,0.0182164141
+92552020,Fruit drinks - higher nutrient density,1,0.1264614484
+92552030,Fruit drinks - lower nutrient density,1,0.1353441005
+92582110,Fruit drinks - lower nutrient density,2,0.0818778349
+92610020,"Milk substitutes, nutritional beverages, and smoothies",1,0.1699418361
+92610030,"Milk substitutes, nutritional beverages, and smoothies",2,0.1699418361
+92611010,"Milk substitutes, nutritional beverages, and smoothies",1,0.3105227421
+92613010,"Milk substitutes, nutritional beverages, and smoothies",2,0.1699418361
+94100200,Diet beverages,1,0.0767406684
+94100300,Fruit drinks - lower nutrient density,1,0.1401695713
+94210100,Diet beverages,1,0.1611879632
+94210200,Soft drinks,1,0.2004549483
+94220215,Diet beverages,1,0.1915677263
+95101000,"Milk substitutes, nutritional beverages, and smoothies",2,0.5612683563
+95101010,"Milk substitutes, nutritional beverages, and smoothies",2,0.6390122308
+95102000,"Milk substitutes, nutritional beverages, and smoothies",1,0.4489849194
+95103000,"Milk substitutes, nutritional beverages, and smoothies",2,0.4489849194
+95104000,"Milk substitutes, nutritional beverages, and smoothies",2,0.4489849194
+95105000,"Milk substitutes, nutritional beverages, and smoothies",2,0.4943349727
+95120000,"Milk substitutes, nutritional beverages, and smoothies",1,0.5612683563
+95120010,"Milk substitutes, nutritional beverages, and smoothies",1,0.6390122308
+95120020,"Milk substitutes, nutritional beverages, and smoothies",1,0.4660262938
+95310200,Soft drinks,1,0.3823307324
+95310400,Soft drinks,1,0.3799008491
+95310560,Soft drinks,1,0.3920606958
+95310600,Soft drinks,1,0.7804391092
+95310700,Soft drinks,1,0.362987334
+95310750,Soft drinks,1,0.2939702469
+95311000,Soft drinks,1,0.6649824047
+95312400,Soft drinks,1,0.3948761221
+95312560,Diet beverages,1,0.2809264638
+95312600,Diet beverages,1,0.8259554622
+95312700,Diet beverages,1,0.3616291376
+95313200,Diet beverages,1,0.3757005359
+95320200,Soft drinks,1,0.1335142519
+95320500,Soft drinks,1,0.1041019272
+95321000,Soft drinks,2,0.1268234293
+95322200,Soft drinks,1,0.1287738195
+95322500,Diet beverages,1,0.111557012
+95330100,Soft drinks,2,0.5870459345

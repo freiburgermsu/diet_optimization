@@ -37,10 +37,19 @@ dri_calculator_snapshot:
   license: "Public domain (US Government work)"
   notes: "No stable download URL; snapshot is captured manually. Profile parameters recorded in macronutritional_needs.csv."
 
-thrifty_food_plan_2021:
-  description: "USDA Thrifty Food Plan 2021 (issue #2 — pricing fallback)"
-  url: "https://www.fns.usda.gov/sites/default/files/resource-files/ThriftyFoodPlan2021.pdf"
+thrifty_food_plan_2021_report:
+  description: "USDA Thrifty Food Plan 2021 report (FNS-916)"
+  url: "https://fns-prod.azureedge.us/sites/default/files/resource-files/TFP2021.pdf"
   release_date: "2021-08-01"
   sha256: "TBD"
-  local_path: "data/raw/ThriftyFoodPlan2021.pdf"
+  local_path: "data/raw/TFP2021.pdf"
   license: "Public domain (US Government work)"
+
+thrifty_food_plan_2021_supplement:
+  description: "USDA TFP 2021 Online Supplement — per-FNDDS-food $/100g as-consumed prices"
+  url: "https://www.fns.usda.gov/cnpp/thrifty-food-plan-2021"
+  release_date: "2021-08-01"
+  sha256: "TBD"
+  local_path: "data/raw/TFP_2021_Online_Supplement.xlsx"
+  license: "Public domain (US Government work)"
+  notes: "3,072 FNDDS-coded foods with June 2021 prices. Parsed by scripts/parse_tfp_xlsx.py into data/tfp_prices.csv."
