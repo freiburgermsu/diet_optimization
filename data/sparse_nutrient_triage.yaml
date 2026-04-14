@@ -1,0 +1,47 @@
+# Triage for nutrients whose FDC coverage is too sparse for a hard
+# constraint. Current notebook (cell 21) drops any nutrient with <6
+# supporting foods — that's scientifically wrong for B12 (no plant source)
+# and overly cautious for phosphorus (actually present but underreported).
+#
+# Tiers:
+#   supplement   - nutrient is structurally absent; solver should use
+#                  supplements.yaml variable if --allow-supplements
+#   soft         - add slack variable; let solver underfulfill with a
+#                  logged deficit instead of dropping the constraint
+#   impute       - fill missing values from food-group medians
+#   drop         - truly optional (upper-bound-only nutrients)
+
+B12:
+  tier: supplement
+  rationale: "No plant-food source of B12; imputation would be scientifically wrong"
+  soft_penalty: null
+
+"Vitamin D":
+  tier: supplement
+  rationale: "Dietary D is sparse; sun exposure confounds dietary need"
+  soft_penalty: null
+
+Iodine:
+  tier: supplement
+  rationale: "Iodized salt + multivitamin; FDC coverage is structurally sparse"
+  soft_penalty: null
+
+Chromium:
+  tier: soft
+  rationale: "DRI is Adequate Intake (AI) not RDA — evidence is weak"
+  soft_penalty: 1.0
+
+Molybdenum:
+  tier: soft
+  rationale: "Deficiency is vanishingly rare; hard constraint provides false precision"
+  soft_penalty: 0.5
+
+Phosophorous:   # matches current notebook spelling
+  tier: impute
+  rationale: "Genuinely sparse reporting in FDC, not absent in food; safe to impute from food-group medians"
+  soft_penalty: null
+
+"Dietary Cholesterol":
+  tier: drop
+  rationale: "Not a required nutrient; upper-bound-only and only meaningful with animal foods"
+  soft_penalty: null
