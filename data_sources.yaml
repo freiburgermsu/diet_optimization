@@ -1,0 +1,46 @@
+# Pinned external data sources. Update this file when bumping a dataset version.
+# Every entry: url, release_date (ISO), sha256 (of the downloaded archive/file),
+# local_path (relative to repo root), license.
+#
+# To bump: edit entry, run scripts/fetch_data.sh, commit the new sha256.
+
+fdc_full_csv:
+  description: "USDA FoodData Central — full download (CSV bundle)"
+  url: "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_csv_2024-10-31.zip"
+  release_date: "2024-10-31"
+  sha256: "TBD"  # fill in on first fetch
+  local_path: "data/raw/FoodData_Central_csv_2024-10-31.zip"
+  license: "Public domain (US Government work)"
+
+ers_vegetable_prices_2022:
+  description: "USDA ERS Vegetable Prices 2022"
+  url: "https://www.ers.usda.gov/webdocs/DataFiles/50472/Vegetable-Prices-2022.csv"
+  release_date: "2023-01-01"
+  sha256: "TBD"
+  local_path: "Vegetable-Prices-2022.csv"
+  license: "Public domain (US Government work)"
+
+ers_fruit_prices_2022:
+  description: "USDA ERS Fruit Prices 2022"
+  url: "https://www.ers.usda.gov/webdocs/DataFiles/50472/Fruit-Prices-2022.csv"
+  release_date: "2023-01-01"
+  sha256: "TBD"
+  local_path: "Fruit-Prices-2022.csv"
+  license: "Public domain (US Government work)"
+
+dri_calculator_snapshot:
+  description: "USDA DRI Calculator — snapshot of results page for reference adult (28yo, 150lb, male, active)"
+  url: "https://www.nal.usda.gov/human-nutrition-and-food-safety/dri-calculator/results"
+  release_date: "2025-01-01"  # snapshot date
+  sha256: "TBD"
+  local_path: "data/raw/dri_snapshot.html"
+  license: "Public domain (US Government work)"
+  notes: "No stable download URL; snapshot is captured manually. Profile parameters recorded in macronutritional_needs.csv."
+
+thrifty_food_plan_2021:
+  description: "USDA Thrifty Food Plan 2021 (issue #2 — pricing fallback)"
+  url: "https://www.fns.usda.gov/sites/default/files/resource-files/ThriftyFoodPlan2021.pdf"
+  release_date: "2021-08-01"
+  sha256: "TBD"
+  local_path: "data/raw/ThriftyFoodPlan2021.pdf"
+  license: "Public domain (US Government work)"
