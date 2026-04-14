@@ -1,0 +1,99 @@
+# Hand-applied overrides to the raw DRI table. Each entry carries a citation
+# so future readers can audit the deviation from USDA's published values.
+#
+# Override layering: raw DRI -> apply overrides -> validate_bounds() -> use.
+# Adding an override here is the ONLY supported way to change bounds; the
+# notebook's hard-coded patches (cell 13) are being migrated into this file.
+#
+# Profile: active 28yo, 150lb, male, https://www.nal.usda.gov/human-nutrition-and-food-safety/dri-calculator/results
+
+Magnesium:
+  high_bound: 10000
+  units: mg
+  citation: |
+    Raw DRI table has upper (350 mg) below lower (400 mg) — inverted and
+    infeasible. Freiburger 2025 report (Table 1) sets effectively unbounded.
+
+Folate:
+  high_bound: 3000
+  units: mcg
+  citation: |
+    Raised from the older 1000 mcg upper per more recent literature
+    cited in the report.
+
+Potassium:
+  high_bound: 15000
+  units: mg
+  citation: |
+    Raw DRI upper is "ND" (not determinable). Set to 15 g/day — well above
+    any plausible dietary intake but finite for LP solver numerics.
+
+Phosphorus:
+  low_bound: 700
+  high_bound: 4000
+  units: mg
+  citation: |
+    DRI RDA 700 mg/day, UL 4000 mg/day (IOM 1997). Raw table missing values;
+    populated here from primary source.
+
+Copper:
+  low_bound: 0.9
+  high_bound: 10
+  units: mg
+  citation: |
+    DRI RDA 0.9 mg/day, UL 10 mg/day (IOM 2001).
+
+Carotenoids:
+  high_bound: 100000
+  units: mg
+  citation: |
+    No established upper — carotenoids are poorly absorbed at high doses.
+    Set to 100 g/day as a soft numerical ceiling.
+
+Choline:
+  low_bound: 550
+  high_bound: 3300
+  units: mg
+  citation: |
+    DRI AI 550 mg/day (adult male), UL 3500 mg/day. Upper rounded to 3300
+    per notebook cell 13 — source uncited; confirm against IOM 1998.
+
+"Saturated fatty acids":
+  low_bound: 0
+  high_bound: 33.3  # 3000 kcal * 0.10 / 9 kcal/g
+  units: grams
+  citation: |
+    AHA guideline: <10% of total calories. At 3000 kcal/day reference diet,
+    this is ~33 g. Re-derive from the Energy upper bound if it changes.
+
+"Dietary Cholesterol":
+  low_bound: 0
+  high_bound: 800
+  units: mg
+  citation: |
+    Not a true DRI — 2020-2025 Dietary Guidelines dropped the 300 mg cap.
+    800 mg set as an arbitrary but defensible ceiling per notebook cell 13.
+
+"Total Water":
+  low_bound: 0.37
+  units: L
+  citation: |
+    Minimum 0.37 L/day from food water content (not total intake).
+    Upper bound inherits from raw DRI table.
+
+Energy:
+  low_bound: 2400
+  high_bound: 3200
+  units: kcal
+  citation: |
+    TDEE band for reference profile (active 28yo male, 150lb). Adjust per
+    user when personalization lands (#13).
+
+Protein:
+  low_bound: 100
+  high_bound: 150
+  units: grams
+  citation: |
+    Override: DRI RDA is 54 g/day for reference profile, but active-male
+    intake target of 1.4-2.0 g/kg applies here. Note: this bulk constraint
+    will be replaced by per-EAA constraints (#10).
