@@ -34,11 +34,29 @@ def test_long_fdc_research_description():
     assert extract_search_term(desc) == "round beef"
 
 
-def test_nutrient_headed_rows_skipped():
-    assert extract_search_term("Total Fat, Ground turkey, 93% lean, raw (NY1)") is None
-    assert extract_search_term("Niacin, Chicken breast, raw") is None
-    assert extract_search_term("Cholesterol, Pork, belly, raw") is None
-    assert extract_search_term("Amino Acids, Chicken, dark meat") is None
+def test_nutrient_headed_rows_recover_the_food():
+    """Previously these were dropped; now we shift past the nutrient
+    header and keep the food."""
+    assert extract_search_term("Total Fat, Ground turkey, 93% lean, raw (NY1)") == "ground turkey"
+    assert extract_search_term("Niacin, Chicken breast, raw") == "chicken breast"
+    # seg[1] = "belly" is a cut name → prepended
+    assert extract_search_term("Cholesterol, Pork, belly, raw") == "belly pork"
+    # seg[1] = "dark meat" (2 words, alphabetic) → prepended
+    assert extract_search_term("Amino Acids, Chicken, dark meat, lean only") == "dark meat chicken"
+
+
+def test_multiple_nutrient_headers_stripped():
+    # Hypothetical double-header — loop must handle it
+    assert extract_search_term("Total Fat, Protein, Chicken breast, raw") == "chicken breast"
+
+
+def test_hyphenated_nutrient_header_stripped():
+    # FDC research rows like "Cholesterol-WT, Chicken, skin, raw"
+    assert extract_search_term("Cholesterol-WT, Chicken, skin, raw") == "skin chicken"
+    # "Cholesterol - Beef, Top Loin, raw": we strip the whole first segment
+    # (including "Beef"), landing on "top loin". Kroger search will surface
+    # top loin products in practice.
+    assert extract_search_term("Cholesterol - Beef, Top Loin, raw") == "top loin"
 
 
 def test_empty_returns_none():
@@ -47,9 +65,10 @@ def test_empty_returns_none():
     assert extract_search_term(",,,") is None
 
 
-def test_amino_acid_rows_skipped():
+def test_amino_acid_rows_recover_food():
+    # Old behavior returned None; now we shift past "Amino Acids"
     desc = "Amino Acids, Chicken, dark meat, lean only, drumstick, raw, non-enhanced (CA2,NC1)"
-    assert extract_search_term(desc) is None
+    assert extract_search_term(desc) == "dark meat chicken"
 
 
 def test_b12_reference_skipped():
@@ -73,9 +92,13 @@ def test_load_from_live_file_has_many_terms():
     assert "brown rice" in terms
     assert "black beans" in terms
     assert "kidney beans" in terms
-    # And nutrient-analysis rows don't leak through
+    # Nutrient-headed rows now resolve to their actual food
+    assert "ground turkey" in terms
+    # And the nutrient header itself never appears as a term
     assert not any(t.startswith("total fat") for t in terms)
     assert not any(t.startswith("niacin ") for t in terms)
+    assert "amino acids" not in terms
+    assert "cholesterol" not in terms
 
 
 def test_load_normalizes_plural_duplicates(tmp_path: Path):

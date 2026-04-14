@@ -130,28 +130,58 @@ _SEGMENT_TERMINATORS = {
 }
 
 
+def _is_nutrient_header(segment: str) -> bool:
+    """True if this segment looks like a nutrient heading.
+
+    Handles exact match ("cholesterol") and common suffix patterns
+    ("cholesterol-wt", "cholesterol - beef").
+    """
+    if segment in _NUTRIENT_HEADERS:
+        return True
+    for h in _NUTRIENT_HEADERS:
+        if segment.startswith(h):
+            rest = segment[len(h):]
+            if rest and not rest[0].isalpha():  # hyphen, space, dash, etc.
+                return True
+    return False
+
+
 def extract_search_term(fdc_description: str) -> str | None:
     """Turn an FDC description into a retailer-friendly search term.
 
-    Inverts FDC's "category, qualifier" ordering:
-      "Beans, pinto, mature seeds, raw" → "pinto beans"
-      "Rice, brown, long-grain, raw"    → "brown rice"
-      "Carrots, raw whole"              → "carrots"
-      "Total Fat, Ground turkey, ..."   → None (nutrient analysis row)
+    Rules:
+      1. If segment[0] is a nutrient header (Total Fat, Niacin, Amino Acids,
+         ...), drop it and re-process starting from segment[1]. Loops to
+         handle multi-nutrient headers.
+      2. Invert FDC's "category, qualifier" ordering: if segment[1] is a
+         short alphabetic variety word, prepend it.
+      3. Skip terminators (raw, cooked, frozen, ...) as qualifiers.
+      4. Skip ambiguous tokens like "b12" that aren't foods.
 
-    Returns None for FDC analysis rows (nutrient-headed descriptions) and
-    empty strings.
+    Examples:
+      "Beans, pinto, mature seeds, raw"          → "pinto beans"
+      "Rice, brown, long-grain, raw"             → "brown rice"
+      "Carrots, raw whole"                       → "carrots"
+      "Total Fat, Ground turkey, 93% lean, raw"  → "ground turkey"
+      "Niacin, Chicken breast, raw"              → "chicken breast"
+      "Amino Acids, Chicken, dark meat, ..."     → "dark meat chicken"
     """
     if not fdc_description:
         return None
     segments = [s.strip().lower() for s in fdc_description.split(",")]
+
+    # Rule 1: shift past nutrient headers (handles exact + suffixed forms
+    # like "cholesterol-wt" or "cholesterol - beef").
+    while segments and _is_nutrient_header(segments[0]):
+        segments = segments[1:]
+
     if not segments or not segments[0]:
         return None
     head = segments[0]
-    if head in _NUTRIENT_HEADERS or head in _SKIP_EXACT:
+    if head in _SKIP_EXACT:
         return None
 
-    # Try prepending a variety qualifier from segment[1].
+    # Rule 2: try prepending a variety qualifier from segment[1].
     if len(segments) >= 2:
         q = segments[1]
         words = q.split()
