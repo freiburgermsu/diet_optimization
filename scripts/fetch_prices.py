@@ -101,6 +101,123 @@ def load_terms_from_food_info(path: str) -> list[str]:
         return list(json.load(f).keys())
 
 
+# FDC research sub-sample rows start with a nutrient name rather than the
+# food category. These aren't foods — they're lab-analysis panels we need
+# to skip.
+_NUTRIENT_HEADERS = {
+    "amino acids",
+    "total fat", "saturated fat", "trans fat",
+    "cholesterol", "sugars", "total sugars", "added sugars",
+    "carbohydrate", "protein", "fiber",
+    "calcium", "iron", "magnesium", "phosphorus", "potassium",
+    "sodium", "zinc", "copper", "manganese", "selenium", "fluoride",
+    "vitamin a", "vitamin c", "vitamin d", "vitamin e", "vitamin k",
+    "vitamin b-6", "vitamin b6", "vitamin b-12", "vitamin b12",
+    "thiamin", "riboflavin", "niacin", "folate", "pantothenic acid",
+    "choline", "water", "ash", "energy", "carbohydrates",
+    "fatty acids",
+}
+_SKIP_EXACT = {"b12", "b-12", "b6", "b-6"}
+
+# Terminators: if segment[1] is one of these, don't prepend it to segment[0].
+# These are processing/state descriptors, not variety qualifiers.
+_SEGMENT_TERMINATORS = {
+    "raw", "cooked", "boiled", "roasted", "grilled", "fried", "baked",
+    "steamed", "stewed", "broiled", "sauteed",
+    "mature", "dry", "dried", "fresh", "frozen", "canned",
+    "whole", "sliced", "chopped", "diced",
+    "prepared", "unprepared",
+}
+
+
+def _is_nutrient_header(segment: str) -> bool:
+    """True if this segment looks like a nutrient heading.
+
+    Handles exact match ("cholesterol") and common suffix patterns
+    ("cholesterol-wt", "cholesterol - beef").
+    """
+    if segment in _NUTRIENT_HEADERS:
+        return True
+    for h in _NUTRIENT_HEADERS:
+        if segment.startswith(h):
+            rest = segment[len(h):]
+            if rest and not rest[0].isalpha():  # hyphen, space, dash, etc.
+                return True
+    return False
+
+
+def extract_search_term(fdc_description: str) -> str | None:
+    """Turn an FDC description into a retailer-friendly search term.
+
+    Rules:
+      1. If segment[0] is a nutrient header (Total Fat, Niacin, Amino Acids,
+         ...), drop it and re-process starting from segment[1]. Loops to
+         handle multi-nutrient headers.
+      2. Invert FDC's "category, qualifier" ordering: if segment[1] is a
+         short alphabetic variety word, prepend it.
+      3. Skip terminators (raw, cooked, frozen, ...) as qualifiers.
+      4. Skip ambiguous tokens like "b12" that aren't foods.
+
+    Examples:
+      "Beans, pinto, mature seeds, raw"          → "pinto beans"
+      "Rice, brown, long-grain, raw"             → "brown rice"
+      "Carrots, raw whole"                       → "carrots"
+      "Total Fat, Ground turkey, 93% lean, raw"  → "ground turkey"
+      "Niacin, Chicken breast, raw"              → "chicken breast"
+      "Amino Acids, Chicken, dark meat, ..."     → "dark meat chicken"
+    """
+    if not fdc_description:
+        return None
+    segments = [s.strip().lower() for s in fdc_description.split(",")]
+
+    # Rule 1: shift past nutrient headers (handles exact + suffixed forms
+    # like "cholesterol-wt" or "cholesterol - beef").
+    while segments and _is_nutrient_header(segments[0]):
+        segments = segments[1:]
+
+    if not segments or not segments[0]:
+        return None
+    head = segments[0]
+    if head in _SKIP_EXACT:
+        return None
+
+    # Rule 2: try prepending a variety qualifier from segment[1].
+    if len(segments) >= 2:
+        q = segments[1]
+        words = q.split()
+        if (1 <= len(words) <= 2
+                and all(w.isalpha() and 3 <= len(w) <= 15 for w in words)
+                and q not in _SEGMENT_TERMINATORS
+                and words[0] not in _SEGMENT_TERMINATORS):
+            return f"{q} {head}"
+
+    return head
+
+
+def load_terms_from_fdc_descriptions(
+    path: str,
+    normalize_plurals: bool = True,
+) -> list[str]:
+    """Extract unique Kroger-friendly search terms from a JSON file whose
+    keys are FDC descriptions (e.g. fresh_foods_nutrients_names_physiology.json).
+
+    When `normalize_plurals=True`, collapses "apple" / "apples" by preferring
+    the singular form (simpler for Kroger's search to match).
+    """
+    with open(path) as f:
+        keys = list(json.load(f).keys())
+    terms: set[str] = set()
+    for k in keys:
+        t = extract_search_term(k)
+        if t is not None:
+            terms.add(t)
+    if normalize_plurals:
+        # If both "apple" and "apples" present, keep singular.
+        drop = {t for t in terms if t.endswith("s") and t[:-1] in terms}
+        terms -= drop
+    return sorted(terms)
+
+
 def get_access_token(cfg: RetailerConfig) -> str:
     """OAuth2 client-credentials flow with the `product.compact` scope."""
     import base64
@@ -207,8 +324,15 @@ def main() -> int:
     group.add_argument("--terms", help="comma-separated search terms")
     group.add_argument(
         "--terms-from-food-info",
-        help="path to food_info.json; uses its keys as search terms (covers all "
-             "foods with nutrition data)",
+        help="path to food_info.json; uses its keys as search terms (covers the "
+             "69 foods with ERS prices; small set)",
+    )
+    group.add_argument(
+        "--terms-from-fdc-descriptions",
+        help="path to a JSON whose keys are FDC descriptions "
+             "(e.g. fresh_foods_nutrients_names_physiology.json — 2,254 foods). "
+             "Extracts the first-comma segment, dedupes, and normalizes plurals "
+             "to ~300-400 retailer-friendly terms.",
     )
     fetch.add_argument(
         "--location-id",
@@ -261,6 +385,13 @@ def main() -> int:
     if args.terms_from_food_info:
         terms = load_terms_from_food_info(args.terms_from_food_info)
         print(f"loaded {len(terms)} terms from {args.terms_from_food_info}", file=sys.stderr)
+    elif args.terms_from_fdc_descriptions:
+        terms = load_terms_from_fdc_descriptions(args.terms_from_fdc_descriptions)
+        print(
+            f"extracted {len(terms)} unique search terms from "
+            f"{args.terms_from_fdc_descriptions}",
+            file=sys.stderr,
+        )
     else:
         terms = [t.strip() for t in args.terms.split(",") if t.strip()]
 
