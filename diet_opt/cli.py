@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from .data import load_pipeline_inputs, validate_bounds
+from .data import load_pipeline_inputs, load_priced_foods, validate_bounds
 from .model import build_model
 from .overrides import apply_overrides, load_overrides
 from .report import plot_bounds, write_diet_csv
@@ -16,10 +16,23 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="cmd", required=True)
     opt = sub.add_parser("optimize", help="solve the LP and emit optimum_diet.csv + optimized_diet.png")
     opt.add_argument("--sensitivity", action="store_true", help="also print shadow prices (uses simplex, not exact)")
+    opt.add_argument(
+        "--priced-foods", default=None,
+        help="path to priced_foods.json (from scripts/build_priced_foods.py). "
+             "When set, replaces food_info.json + food_matches.json "
+             "with the ~610-food expanded table (Kroger + TFP).",
+    )
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
 
-    food_info, food_matches, nutrition = load_pipeline_inputs()
+    if getattr(args, "priced_foods", None):
+        food_info, food_matches, nutrition = load_priced_foods(args.priced_foods)
+        print(
+            f"loaded {len(food_info)} foods from {args.priced_foods}",
+            file=sys.stderr,
+        )
+    else:
+        food_info, food_matches, nutrition = load_pipeline_inputs()
     try:
         nutrition = apply_overrides(nutrition, load_overrides())
     except FileNotFoundError:

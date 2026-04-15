@@ -31,6 +31,44 @@ def load_pipeline_inputs() -> tuple[dict, dict, dict]:
     return food_info, food_matches, nutrition
 
 
+DEFAULT_CUP_EQ = 1.0   # cups per 100g-edible; used when priced_foods.json
+                       # has no per-food value (most of the 610-food table).
+
+
+def load_priced_foods(
+    name: str = "priced_foods.json",
+    default_cup_eq: float = DEFAULT_CUP_EQ,
+) -> tuple[dict, dict, dict]:
+    """Load priced_foods.json and split it into the (food_info, food_matches,
+    nutrition) triple the existing model.build_model() expects.
+
+    Shape of priced_foods.json (per entry):
+      {price_per_100g, price_source, nutrients: {...}, ...}
+
+    Returns:
+      food_info    → {term: {price, yield, cupEQ}} where price is back-solved
+                     so that `price/yield/4.54` equals the original
+                     price_per_100g (preserves the existing objective formula).
+      food_matches → {term: nutrients-dict}
+      nutrition    → loaded from nutrition.json (unchanged)
+    """
+    priced = load_json(name)
+    food_info: dict[str, dict] = {}
+    food_matches: dict[str, dict] = {}
+    for term, entry in priced.items():
+        # build_model uses `price / yield / 4.54` as the per-100g cost.
+        # We already have price_per_100g; set yield=1.0 and price = ppg*4.54.
+        ppg = entry["price_per_100g"]
+        food_info[term] = {
+            "price": ppg * 4.54,
+            "yield": 1.0,
+            "cupEQ": entry.get("cup_equivalent", default_cup_eq),
+        }
+        food_matches[term] = entry.get("nutrients", {})
+    nutrition = load_json("nutrition.json")
+    return food_info, food_matches, nutrition
+
+
 def parse_bound(raw: str | float | int) -> float:
     """Parse a DRI bound like '100', '1,200', or 'inf' into a float."""
     if isinstance(raw, (int, float)):

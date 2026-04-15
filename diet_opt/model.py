@@ -1,48 +1,65 @@
-"""Build the Optlang LP from loaded data.
+"""Build the LP directly on optlang (no private-fork dependency).
 
-Extracted from `optimization_diet.ipynb` cell 21. Behavior is preserved
-bit-for-bit — constraint shape, volume cap, objective formula, and the
-`<6 foods => skip nutrient` heuristic all unchanged.
+Originally extracted from the notebook and wrapped through
+`modelseedpy.core.optlanghelper` (a private fork). Rewritten to use
+optlang's native Model/Variable/Constraint/Objective so the LP runs on
+any installation with `pip install optlang`.
+
+Behavior preserved bit-for-bit from cell 21:
+  - Per-nutrient linear constraints with DRI lower/upper bounds
+  - Water units converted from g to L via grams-per-liter=998
+  - Skip nutrients reported by <SPARSE_NUTRIENT_THRESHOLD foods
+  - 5-20 cup volume constraint (skippable via include_volume=False
+    since the 610-food priced table rarely has per-food cupEQ data)
+  - Objective: sum_f(var_f * price_per_100g_edible)
 """
 from __future__ import annotations
 
 from .data import parse_bound
 
 GRAMS_PER_LITER = 998
-SPARSE_NUTRIENT_THRESHOLD = 6  # nutrients with fewer supporting foods are skipped; see #8
+SPARSE_NUTRIENT_THRESHOLD = 6  # see #8 for the per-nutrient triage follow-up
 
 
 def _sparse_nutrients(food_info: dict, food_matches: dict, nutrition: dict) -> dict[str, int]:
     """Count foods that report each nutrient — used to skip sparse ones."""
-    counts = {}
-    for nutrient in nutrition:
-        counts[nutrient] = sum(
+    return {
+        nutrient: sum(
             1 for food in food_info if nutrient in food_matches.get(food, {})
         )
-    return counts
+        for nutrient in nutrition
+    }
 
 
-def build_model(food_info: dict, food_matches: dict, nutrition: dict):
-    """Construct the LP model from the three input tables.
+def _safe_name(food: str) -> str:
+    """Optlang variable names can't contain spaces / some punctuation."""
+    return "".join(c if c.isalnum() or c == "_" else "_" for c in food.replace(" ", "_"))
 
-    Requires a build of `modelseedpy` that includes `core.optlanghelper`
-    (the notebook's private fork); PyPI `modelseedpy==0.4.2` does not.
-    See #18 follow-up for replacing this with a direct optlang build.
+
+def build_model(
+    food_info: dict,
+    food_matches: dict,
+    nutrition: dict,
+    include_volume: bool = True,
+):
+    """Construct the LP from the three input tables using optlang directly.
+
+    Returns: (model, variables, constraints) where:
+      - model: optlang.Model
+      - variables: {safe_name: Variable}
+      - constraints: {name: Constraint}
     """
-    from modelseedpy.core.optlanghelper import (
-        Bounds,
-        OptlangHelper,
-        tupConstraint,
-        tupObjective,
-        tupVariable,
-    )
+    import optlang
 
-    variables = {
-        food.replace(" ", "_"): tupVariable(food.replace(" ", "_"), Bounds(0, 5), "continuous")
+    variables: dict[str, "optlang.Variable"] = {
+        _safe_name(food): optlang.Variable(_safe_name(food), lb=0, ub=5, type="continuous")
         for food in food_info
     }
 
-    constraints = {}
+    model = optlang.Model(name="minimize_nutrition_cost")
+    model.add(list(variables.values()))
+
+    constraints: dict[str, "optlang.Constraint"] = {}
     support = _sparse_nutrients(food_info, food_matches, nutrition)
 
     for nutrient, content in nutrition.items():
@@ -50,50 +67,41 @@ def build_model(food_info: dict, food_matches: dict, nutrition: dict):
             continue
         lb = parse_bound(content["low_bound"])
         ub = parse_bound(content["high_bound"])
-        nutrient_foods = {}
+
+        expr_terms = []
         for food in food_info:
             if nutrient not in food_matches[food]:
                 continue
             amount = food_matches[food][nutrient]
             if nutrient == "Total Water":
                 amount /= GRAMS_PER_LITER
-            key = food.replace(" ", "_")
-            nutrient_foods[key] = {
-                "elements": [variables[key].name, amount],
-                "operation": "Mul",
-            }
-        cname = nutrient.replace(" ", "_")
-        constraints[cname] = tupConstraint(
-            name=cname,
-            bounds=Bounds(lb, ub),
-            expr={"elements": list(nutrient_foods.values()), "operation": "Add"},
-        )
+            expr_terms.append(amount * variables[_safe_name(food)])
+        if not expr_terms:
+            continue
 
-    volume_expr = {
-        "elements": [
-            {"elements": [variables[f.replace(" ", "_")].name, info["cupEQ"]], "operation": "Mul"}
+        expr = sum(expr_terms)
+        cname = _safe_name(nutrient)
+        # Replace +inf with None so optlang treats it as unbounded
+        c_lb = lb if lb != float("inf") else None
+        c_ub = ub if ub != float("inf") else None
+        c = optlang.Constraint(expr, lb=c_lb, ub=c_ub, name=cname)
+        constraints[cname] = c
+        model.add(c)
+
+    if include_volume:
+        volume_expr = sum(
+            info["cupEQ"] * variables[_safe_name(f)]
             for f, info in food_info.items()
-        ],
-        "operation": "Add",
-    }
-    constraints["volume"] = tupConstraint(name="volume", bounds=Bounds(5, 20), expr=volume_expr)
+        )
+        vol = optlang.Constraint(volume_expr, lb=5, ub=20, name="volume")
+        constraints["volume"] = vol
+        model.add(vol)
 
-    objective = tupObjective("minimize cost of nutritional diet", [], "min")
-    for food, pricing in food_info.items():
-        key = food.replace(" ", "_")
-        objective.expr.append({
-            "elements": [{
-                "elements": [variables[key].name, pricing["price"] / pricing["yield"] / 4.54],
-                "operation": "Mul",
-            }],
-            "operation": "Add",
-        })
-
-    model = OptlangHelper.define_model(
-        "minimize_nutrition_cost",
-        list(variables.values()),
-        list(constraints.values()),
-        objective,
-        True,
+    # Objective: minimize sum_f(var_f * price_per_100g_edible)
+    obj_expr = sum(
+        (pricing["price"] / pricing["yield"] / 4.54) * variables[_safe_name(food)]
+        for food, pricing in food_info.items()
     )
+    model.objective = optlang.Objective(obj_expr, direction="min")
+
     return model, variables, constraints

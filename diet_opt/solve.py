@@ -21,7 +21,16 @@ def solve(model, extract_duals: bool = False):
     an empty shadow_prices list. When True, falls back to simplex — GLPK's
     exact mode does not populate duals.
     """
-    model.configuration.lp_method = "simplex" if extract_duals else "exact"
+    # GLPK's "exact" method is iterating-simplex with rational arithmetic; duals
+    # aren't populated. Only force "exact" when we don't need duals; fall back
+    # to the solver's default (primal simplex) for simplex/dual extraction.
+    try:
+        if extract_duals:
+            model.configuration.lp_method = "simplex"
+        else:
+            model.configuration.lp_method = "exact"
+    except (AttributeError, ValueError):
+        pass  # non-GLPK backend; use defaults
     model.optimize()
     primals = {k: v for k, v in model.primal_values.items() if v > 0}
     constraint_values = {
