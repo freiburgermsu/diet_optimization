@@ -1,0 +1,432 @@
+search_term,tfp_category,price_per_100g_2021,confidence,reason
+abalone mollusks,,,high,Abalone is a specialty mollusk not widely available in mainstream US grocery markets; TFP does not include game or exotic seafood items with reliable national pricing
+abiyuch,,,high,Abiyuch is a rare regional tuber not mainstream in the US food supply; TFP does not include national-average pricing for this item.
+acerola,"Fruit, higher nutrient density",0.6674,medium,Acerola is a tropical fruit (also called Barbados cherry) rich in vitamin C; as a whole fruit it maps to the higher nutrient density fruit category.
+acerola juice,100% juice,0.1952,high,Acerola juice is a fruit juice product that fits the 100% juice category
+acorns nuts,,,high,Acorns are not a mainstream consumer food in the US food system and are not represented in TFP's national-average pricing basket.
+adzuki beans,"Beans, peas, lentils",0.3206,high,Adzuki beans are legumes that map directly to the beans category as a raw ingredient
+agar seaweed,,,high,Agar seaweed is a specialized food additive/thickening agent not represented in the mainstream TFP consumer basket and does not fit any standard food category
+agave,Sugars,0.6734,high,Agave is a sweetener product commonly used as a sugar substitute in cooking and beverages.
+alfalfa sprouts,Dark green vegetables,0.6080,medium,Alfalfa sprouts are a green leafy vegetable product and fit best in the dark green vegetables category.
+all classes turkey,"Poultry, higher nutrient density",0.9048,high,Turkey is poultry; 'all classes' indicates a raw/whole ingredient form fitting the higher nutrient density category
+all types peanuts,"Nuts & Seeds, higher nutrient density",1.8060,high,Peanuts are legume seeds typically consumed as a nut product; raw or minimally processed peanuts fit the higher nutrient density category.
+amaranth leaves,Dark green vegetables,0.6080,high,"Amaranth leaves are a dark leafy green vegetable, similar to spinach or kale, and fit the dark green vegetables category"
+anchovy fish,Seafood,1.9739,high,Anchovies are fish; raw anchovies fit the Seafood category
+antelope game meat,,,high,Antelope is a game meat not represented in the USDA Thrifty Food Plan's mainstream-consumer basket; no national-average price available.
+arrowhead,,,high,Arrowhead is a tropical tuber not commonly sold in US mainstream markets; TFP does not provide pricing for this item.
+arrowroot,Staple grains - higher nutrient density,0.5721,medium,Arrowroot starch is a whole-grain-type starch product used similarly to other whole starches in cooking.
+asian pear,"Fruit, higher nutrient density",0.6674,high,Asian pears are whole fresh fruit with nutritional value; they fit the higher nutrient density fruit category
+ataulfo mango,"Fruit, higher nutrient density",0.6674,high,"Ataulfo mango is a fresh whole fruit variety, fitting the higher nutrient density fruit category."
+australian beef,"Meat, higher nutrient density",1.5417,high,"Australian beef is a lean red meat cut; without specification of fat content, it defaults to the higher nutrient density meat category as a raw ingredient"
+australian lamb,"Meat, higher nutrient density",1.5417,high,Australian lamb is a lean red meat cut that fits the higher nutrient density meat category
+australian veal,"Meat, higher nutrient density",1.5417,high,"Veal is a lean red meat cut that fits the higher nutrient density meat category, regardless of origin."
+avocado,"Nuts & Seeds, higher nutrient density",1.8060,medium,Avocado is a nutrient-dense fruit with high fat content similar to nuts and seeds; it fits best in the nuts/seeds category for pricing purposes.
+back turkey,"Poultry, higher nutrient density",0.9048,high,Turkey back is a raw poultry cut; it fits the higher nutrient density poultry category as an unprocessed meat cut.
+banana pepper,Red orange vegetables,0.4250,high,Banana peppers are a type of sweet pepper that falls under the red/orange vegetable category in TFP
+bass fish,Seafood,1.9739,high,Bass is a common freshwater and saltwater fish; the Seafood category covers all fish including bass
+bear game meat,,,high,Bear game meat is not represented in TFP's mainstream consumer basket; no national-average price available
+beaver game meat,,,high,Beaver is a game meat not included in the TFP mainstream consumer basket; no national-average price data available
+beef proximates,,,high,"Beef proximates is a nutritional analysis term (protein, fat, moisture, ash content) rather than a food ingredient itself; it has no direct TFP category match."
+beefalo game meat,,,high,Beefalo is a hybrid game meat not represented in mainstream TFP consumer baskets; no national-average price data available
+beet greens,Dark green vegetables,0.6080,high,"Beet greens are leafy dark green vegetables, fitting directly into the dark green vegetables category."
+beluga whale,,,high,Beluga whale is a game/marine mammal not represented in TFP's mainstream US consumer food basket; no national-average price available
+bison game meat,,,high,Bison is a game meat not represented in the TFP mainstream-consumer basket; no national-average price available
+black plantains,Starchy vegetables,0.4607,high,Black plantains are starchy fruits/vegetables typically used as a savory side dish and fit the starchy vegetables category.
+black rice,Staple grains - higher nutrient density,0.5721,high,Black rice is a whole grain variety with higher nutrient density compared to white rice
+black turtle beans,"Beans, peas, lentils",0.3206,high,Black turtle beans are a dried legume variety that maps directly to the beans category.
+bluefish fish,Seafood,1.9739,high,Bluefish is a common food fish; the Seafood category covers all fish species
+boar game meat,,,high,Boar is a game meat not included in the TFP mainstream-consumer basket; no national-average price available
+bone marrow caribou,,,high,"Caribou is game meat not represented in the TFP mainstream-consumer basket, and bone marrow from wild game is even further outside typical national-average pricing"
+boneless top loin steak,"Meat, higher nutrient density",1.5417,high,Boneless top loin steak is a lean beef cut in raw form; it fits the higher nutrient density meat category.
+boneless turkey roast,"Poultry, lower nutrient density",1.2797,medium,A boneless turkey roast is a prepared poultry product; the roasting process and packaged form indicate lower nutrient density compared to raw poultry cuts.
+borage,,,high,Borage is an herb/edible flower not commonly found in mainstream US grocery stores or TFP pricing; no fitting category covers culinary herbs or specialty greens at scale.
+bottom sirloin beef,"Meat, higher nutrient density",1.5417,high,Bottom sirloin is a lean beef cut that fits the higher nutrient density meat category
+breadfruit,Starchy vegetables,0.4607,medium,"Breadfruit is a starchy, carbohydrate-rich tropical fruit commonly used as a vegetable staple in cooking; it fits best with starchy vegetables like potatoes and plantain"
+breadfruit seeds seeds,"Nuts & Seeds, higher nutrient density",1.8060,medium,"Breadfruit seeds are edible seeds typically consumed roasted or boiled as a starchy, nutrient-dense food; they fit best in the seeds category."
+breast meat ruffed grouse,,,high,Ruffed grouse is a game bird not represented in the TFP mainstream consumer basket; no national-average price available
+breast pheasant,,,high,Pheasant is a game bird not represented in the TFP mainstream-consumer basket; no national-average price available
+breast quail,"Poultry, higher nutrient density",0.9048,high,Quail breast is a raw poultry cut; plain poultry cuts map to the higher nutrient density category
+breast veal,"Meat, higher nutrient density",1.5417,high,"Veal breast is a lean meat cut; it fits the meat category with higher nutrient density for a plain, unprocessed protein source."
+broadbeans (fava beans),"Beans, peas, lentils",0.3206,high,Broad beans (fava beans) are legumes that fit directly into the legume category as a raw ingredient
+broccoflower,Other vegetables + vegetable combinations,0.4688,medium,"Broccoflower is a hybrid cruciferous vegetable (broccoli-cauliflower cross) that doesn't fit the specific dark green or red/orange vegetable categories, so it maps to the general other vegetables category."
+broccoli raab,Dark green vegetables,0.6080,high,Broccoli raab is a dark leafy green cruciferous vegetable closely related to broccoli
+brown mushrooms,Other vegetables + vegetable combinations,0.4688,medium,Brown mushrooms are vegetables commonly used as a raw ingredient; they fit best in the catch-all other vegetables category since TFP has no dedicated mushroom subcategory.
+buffalo game meat,,,high,Buffalo game meat is not represented in TFP's mainstream-consumer food basket; no national-average price available
+bulb fennel,Other vegetables + vegetable combinations,0.4688,high,"Bulb fennel (Florence fennel) is a vegetable that does not fit the specific TFP vegetable categories (dark green, red/orange, starchy, or beans/peas), so it belongs in the catch-all 'Other vegetables' category."
+bulgur,Staple grains - higher nutrient density,0.5721,high,"Bulgur is a whole-grain product made from cracked wheat; it retains the bran and germ, making it a higher nutrient density grain."
+burbot fish,Seafood,1.9739,high,Burbot is a freshwater fish species; all fish map to the Seafood category
+burdock root,,,high,Burdock root is a non-mainstream vegetable not widely represented in the US TFP basket; no national-average price available
+butterfish fish,Seafood,1.9739,high,Butterfish is a fish species; raw fish fillets fit directly into the Seafood category
+canada goose,,,high,Canada goose is a game bird not included in the TFP mainstream consumer basket; no national-average price available
+cantaloupe melons,"Fruit, higher nutrient density",0.6674,high,"Cantaloupe is a fresh whole fruit with no processing, fitting the higher nutrient density fruit category."
+capons chicken,"Poultry, higher nutrient density",0.9048,high,"Capons are castrated roosters; as a whole poultry cut, they fit the poultry category, and raw/unprocessed poultry maps to higher nutrient density"
+carambola,"Fruit, higher nutrient density",0.6674,high,Carambola (star fruit) is a whole fresh fruit commonly available in US mainstream groceries and fits the higher nutrient density fruit category.
+carcass beef,"Meat, higher nutrient density",1.5417,medium,Beef carcass is a raw beef product that yields lean cuts; it belongs in the meat category as a higher nutrient density form when used for cooking.
+cardoon,Other vegetables + vegetable combinations,0.4688,medium,"Cardoon is an uncommon thistle-like vegetable that does not fit TFP's main vegetable color/type categories (dark green, red/orange, starchy, or legume vegetables); it maps to the residual 'other vegetables' category."
+caribou,,,high,Caribou is a game meat not represented in the TFP mainstream-consumer basket; no national-average price available.
+caribou game meat,,,high,Caribou is game meat not represented in the TFP mainstream-consumer basket; no national-average price available
+carissa,,,high,"Carissa (Carissa carandas, Asian plum) is a tropical fruit not meaningfully represented in the TFP mainstream US consumer basket; no national-average price data available"
+carp fish,Seafood,1.9739,high,Carp is a freshwater fish; the Seafood category covers fish broadly including both saltwater and freshwater varieties
+casaba melons,"Fruit, higher nutrient density",0.6674,high,"Casaba melons are whole fresh melons, a nutrient-dense fruit with no processing."
+catjang cowpeas,"Beans, peas, lentils",0.3206,high,"Catjang cowpeas are a legume variety that directly fits the beans, peas, and lentils category as a dry legume ingredient."
+celeriac,Other vegetables + vegetable combinations,0.4688,high,"Celeriac (celery root) is a root vegetable that does not fit the specific TFP vegetable categories (dark green, red/orange, starchy, or beans/peas); it belongs in the residual vegetables category."
+celtuce,Other vegetables + vegetable combinations,0.4688,medium,"Celtuce is a leafy Asian vegetable (stem lettuce) that doesn't fit the specific dark-green or red-orange vegetable categories, making it best classified as an other vegetable."
+chanterelle mushrooms,Other vegetables + vegetable combinations,0.4688,medium,"Chanterelle mushrooms are a fresh fungal vegetable not captured by the specific vegetable color/type categories, fitting best in the general 'Other vegetables' category."
+chard,Dark green vegetables,0.6080,high,Chard is a leafy dark green vegetable that fits directly into the Dark green vegetables category.
+cherimoya,"Fruit, higher nutrient density",0.6674,medium,Cherimoya is a tropical whole fruit with high nutrient density; it fits the fresh fruit category
+chia seeds,"Nuts & Seeds, higher nutrient density",1.8060,high,"Chia seeds are nutrient-dense seeds with healthy fats and fiber, fitting the higher nutrient density seeds category."
+chicken carotenoids,,,high,"""Chicken carotenoids"" is not a food ingredient but a nutrient compound; TFP categories map to actual foods, not isolated nutrients."
+chicken fa,,,high,"The search term 'chicken fa' is incomplete and ambiguous; it could refer to chicken fajitas, chicken fat, or other preparations, making confident categorization impossible."
+chicken minerals,,,high,"Chicken minerals is a supplement or fortified product, not a food ingredient; TFP categories cover whole foods and basic ingredients, not isolated nutrient supplements."
+chicken proximates,"Poultry, higher nutrient density",0.9048,high,Chicken proximates refers to raw chicken meat components; plain poultry fits the higher nutrient density category for unprocessed poultry
+chicken retinol,,,high,"""Chicken retinol"" is not a food ingredient; retinol is a nutrient/compound, not a purchasable food item."
+chicory greens,Dark green vegetables,0.6080,high,Chicory greens are a leafy green vegetable with dark coloring; they fit directly into the dark green vegetables category.
+chicory roots,Other vegetables + vegetable combinations,0.4688,medium,"Chicory roots are a vegetable/root consumed as food; they don't fit the specialized vegetable categories (dark green, red/orange, starchy, or legume-beans) and belong in the catch-all vegetables category."
+chinese broccoli,Dark green vegetables,0.6080,high,Chinese broccoli (gai lan) is a leafy green cruciferous vegetable that fits the dark green vegetables category
+chokecherries,"Fruit, higher nutrient density",0.6674,medium,"Chokecherries are small wild berries similar to other whole fruits; they fit the higher nutrient density fruit category as a plain, unprocessed food"
+choles,"Beans, peas, lentils",0.3206,high,"Choles (chole) refers to chickpeas, a legume that fits directly into the beans/peas/lentils category"
+chrysanthemum leaves,Dark green vegetables,0.6080,medium,Chrysanthemum leaves are a dark leafy green vegetable commonly used in Asian cuisines and fit the dark green vegetable category.
+cisco fish,Seafood,1.9739,high,Cisco is a freshwater fish commonly consumed; it fits the Seafood category alongside other fish
+cloudberries,"Fruit, higher nutrient density",0.6674,medium,"Cloudberries are a whole berry fruit similar to raspberries and blackberries, fitting the fresh/whole fruit category with higher nutrient density."
+cockles,Seafood,1.9739,high,Cockles are shellfish and belong in the Seafood category alongside other mollusks and crustaceans
+coconut cream nuts,"Nuts & Seeds, higher nutrient density",1.8060,medium,"Coconut cream is derived from coconut, a tree nut; the unsweetened/less-processed form fits the higher nutrient density nuts category."
+coconut meat nuts,"Nuts & Seeds, higher nutrient density",1.8060,high,"Coconut meat is a whole nut/seed product in its raw form, fitting the higher nutrient density category"
+coconut milk nuts,"Nuts & Seeds, higher nutrient density",1.8060,medium,Coconut milk nuts is primarily a nut/seed product; coconut is classified as a tree nut in nutritional contexts and fits the higher nutrient density category when raw or minimally processed.
+common guavas,"Fruit, higher nutrient density",0.6674,high,"Common guavas are whole fresh fruits with high nutrient density, fitting the whole-fruit category"
+cookie,Sweet bakery products,0.9507,high,Cookies are a sweet baked confection product that fits most closely in the sweet bakery products category.
+cornsalad,Dark green vegetables,0.6080,high,"Cornsalad (mâche) is a leafy green vegetable similar to lettuce and spinach, fitting the dark green vegetables category."
+cowpeas,"Beans, peas, lentils",0.3206,high,"Cowpeas are legumes in the pea family; they map directly to the beans, peas, lentils category as a raw ingredient."
+crabapples,"Fruit, higher nutrient density",0.6674,high,Crabapples are whole fruits with high nutrient density despite their small size and tart flavor; they fit the fruit category.
+crayfish crustaceans,Seafood,1.9739,high,"Crayfish are crustaceans that belong in the Seafood category, which covers fish and shellfish broadly"
+cress,Dark green vegetables,0.6080,high,"Cress is a dark leafy green vegetable similar to arugula and other peppery greens, fitting the dark green vegetables category"
+croaker fish,Seafood,1.9739,high,Croaker is a common fish species; fresh fillets or whole fish fit directly into the Seafood category
+cured beef,Cured meat,1.2100,high,"Cured beef (e.g., corned beef, beef jerky) is a processed/preserved meat product that falls directly into the Cured meat category"
+cured pork,Cured meat,1.2100,high,"Cured pork (bacon, ham, sausage) is processed pork and maps directly to the Cured meat category"
+currants,"Fruit, higher nutrient density",0.6674,high,Currants are small dried or fresh berries that fit the whole fruit category with higher nutrient density.
+cusk fish,Seafood,1.9739,high,Cusk is a common Atlantic fish and raw fish fillets fit the Seafood category.
+custard-apple,"Fruit, higher nutrient density",0.6674,medium,Custard-apple is a whole tropical fruit with moderate nutrient density; it fits the fresh fruit category despite being less common in US markets.
+cuttlefish mollusks,Seafood,1.9739,high,"Cuttlefish are mollusks (cephalopods) commonly consumed as seafood, fitting the Seafood category alongside other shellfish."
+dark meat chicken,"Poultry, lower nutrient density",1.2797,high,"Dark meat chicken is fattier and less nutrient-dense than white meat, so it fits the lower nutrient density poultry category"
+dark meat turkey,"Poultry, lower nutrient density",1.2797,high,Dark meat turkey is a fattier poultry cut; it maps to the lower nutrient density variant
+deer game meat,,,high,Deer is game meat not represented in the TFP mainstream-consumer basket; no national-average price available
+defatted soy meal,Processed soy products,1.4186,high,Defatted soy meal is a processed soy byproduct used as a protein supplement or ingredient; it fits the processed soy products category.
+dock,Dark green vegetables,0.6080,medium,"Dock is a leafy green vegetable similar to spinach and sorrel, fitting the dark green vegetables category."
+domesticated duck,"Poultry, higher nutrient density",0.9048,high,Domesticated duck is poultry; a raw or plain-prepared form fits the higher nutrient density category.
+domesticated goose,"Poultry, higher nutrient density",0.9048,high,"Domesticated goose is a poultry bird and a raw ingredient, fitting the higher nutrient density poultry category"
+drum fish,Seafood,1.9739,high,Drum fish is a common freshwater and saltwater fish; raw fish fillets fit directly into the Seafood category
+drumstick leaves,Dark green vegetables,0.6080,medium,Drumstick leaves (moringa oleifera leaves) are a nutrient-dense dark leafy green vegetable commonly consumed in South Asian cuisines.
+drumstick pods,Other vegetables + vegetable combinations,0.4688,medium,"Drumstick pods (moringa pods) are a legume vegetable consumed for their pods; while they contain some protein, they are eaten primarily as a vegetable rather than as dried legumes for their protein content, making the general vegetable category the best fit."
+drumstick turkey,"Poultry, higher nutrient density",0.9048,high,Turkey drumstick is a raw poultry cut with lean meat; it fits the higher nutrient density poultry category
+duck egg,Eggs,0.3829,high,Duck eggs are eggs; the Eggs category covers all egg types regardless of source bird
+durian,"Fruit, higher nutrient density",0.6674,medium,"Durian is a tropical fruit commonly eaten fresh; despite its pungent odor and creamy texture, it is a whole fruit fitting the fruit category"
+eel fish,Seafood,1.9739,high,Eel is a fish and falls under the Seafood category
+egg,Eggs,0.3829,high,Egg is a direct match to the Eggs category
+elderberries,"Fruit, higher nutrient density",0.6674,high,"Elderberries are whole berries with high nutrient density; they fit the fruit category for raw, nutrient-dense produce"
+elk game meat,,,high,Elk is a game meat not represented in the TFP mainstream-consumer food basket; no national-average price available.
+enoki mushrooms,Other vegetables + vegetable combinations,0.4688,medium,Enoki mushrooms are a vegetable ingredient; mushrooms do not have a dedicated TFP category and fit best in the catch-all vegetables category
+epazote,,,high,Epazote is a Mexican herb rarely sold in mainstream US grocery stores and not represented in the TFP basket; no national-average price available.
+eppaw,,,high,Eppaw (a type of yam or root vegetable from West Africa) is not a mainstream US food item represented in the TFP basket.
+european black currants,"Fruit, higher nutrient density",0.6674,high,Black currants are whole berries with high nutritional density and fit the fresh fruit category
+eye caribou,,,high,Caribou game meat is not included in the TFP mainstream-consumer basket; no national-average price data available
+fa - beef,"Meat, higher nutrient density",1.5417,medium,"FA-beef is a beef cut; without specific fattiness indicators, it maps to the higher nutrient density meat category as a lean option"
+fan fillet emu,,,high,Emu is a game bird not represented in the TFP mainstream-consumer basket; no national-average price available for this exotic meat.
+fan ostrich,,,high,Ostrich is a game/exotic meat not represented in the TFP mainstream consumer basket; no national-average price available.
+farm raised shrimp,Seafood,1.9739,high,Farm-raised shrimp is shellfish and maps directly to the Seafood category
+farm raised tilapia,Seafood,1.9739,high,Farm-raised tilapia is a fish and falls squarely within the Seafood category regardless of farming method.
+fava beans,"Beans, peas, lentils",0.3206,high,Fava beans are legumes; raw dried or canned fava beans fit the direct beans/peas/lentils category
+feijoa,"Fruit, higher nutrient density",0.6674,medium,Feijoa is a whole fruit native to South America with high nutrient density; it fits the fresh fruit category.
+fennel bulb,Other vegetables + vegetable combinations,0.4688,high,"Fennel bulb is a raw vegetable that does not fit the specific TFP vegetable categories (dark green, red/orange, starchy, or beans/peas), so it belongs in the catch-all 'Other vegetables' category."
+fiddlehead ferns,Dark green vegetables,0.6080,medium,Fiddlehead ferns are an edible green vegetable that fits the dark green vegetables category as a fresh produce item.
+flat fillet emu,,,high,Emu is a game/exotic meat not represented in the TFP mainstream-consumer basket; no national-average price available.
+foreshank lamb,"Meat, higher nutrient density",1.5417,high,Lamb foreshank is a lean red meat cut; raw cuts map to the higher nutrient density meat category.
+free range buffalo,,,high,Buffalo is game meat not included in the TFP mainstream-consumer basket; no national-average price available
+free range elk,,,high,Elk is a game meat not included in the TFP mainstream-consumer basket; no national-average price data available
+frog legs,,,high,Frog legs are a niche/exotic protein not represented in the TFP mainstream-consumer basket; no national-average price data available.
+fruit chayote,Other vegetables + vegetable combinations,0.4688,medium,"Chayote is a gourd-like vegetable that does not fit neatly into dark green, red/orange, or starchy vegetable categories, making the general 'other vegetables' category the best match."
+fruit salad,"Fruit, higher nutrient density",0.6674,medium,Fruit salad is primarily whole fruit in a mixed preparation; the fruit component dominates and fits the higher nutrient density category better than a mixed-dishes category
+full rump emu,,,high,Emu is a game/exotic meat not included in the USDA Thrifty Food Plan mainstream-consumer basket; no national-average price data available.
+garden cress,Dark green vegetables,0.6080,high,Garden cress is a leafy green vegetable rich in nutrients; it fits the dark green vegetables category
+garland chrysanthemum,Dark green vegetables,0.6080,medium,Garland chrysanthemum is a leafy green vegetable commonly used in Asian cuisine and fits the dark green vegetable category.
+garlic,Condiments and Sauces,0.8179,medium,Garlic is typically used as a seasoning/flavoring ingredient and best fits the condiments and sauces category for TFP pricing purposes.
+ginkgo nuts nuts,"Nuts & Seeds, higher nutrient density",1.8060,medium,"Ginkgo nuts are tree nuts typically consumed raw or roasted; they fit the nuts and seeds category as a whole, minimally-processed food"
+goat game meat,,,high,Goat game meat is not represented in the TFP mainstream-consumer basket; TFP does not provide national-average pricing for game meats
+goose egg,Eggs,0.3829,high,Goose eggs are eggs; they belong in the Eggs category regardless of the source bird.
+gooseberries,"Fruit, higher nutrient density",0.6674,high,Gooseberries are whole berries consumed fresh; they fit the whole fruit category with higher nutrient density
+gourd,Other vegetables + vegetable combinations,0.4688,medium,"Gourd is a broad term encompassing squashes and pumpkins, which are starchy or non-starchy vegetables not fitting a more specific TFP category."
+grain einkorn,Staple grains - higher nutrient density,0.5721,high,"Einkorn is an ancient whole grain with higher nutritional density than refined grains, fitting the staple grains category for whole grains."
+grain fonio,Staple grains - higher nutrient density,0.5721,medium,Fonio is a whole ancient grain from West Africa with high nutritional value; it fits the whole grain category
+grain khorasan,Staple grains - higher nutrient density,0.5721,high,Khorasan (Kamut) is a whole grain variety with higher nutrient density compared to refined grains
+grape leaves,,,high,Grape leaves are a specialty ingredient not meaningfully covered by TFP categories; they are neither a common vegetable nor a mainstream US dietary staple with a national-average price.
+green cauliflower,Other vegetables + vegetable combinations,0.4688,high,"Green cauliflower is a cruciferous vegetable that doesn't fit the specific dark green leafy, red/orange, or starchy vegetable categories; the catch-all category best represents it."
+green plantains,Starchy vegetables,0.4607,high,"Green plantains are a starchy vegetable staple, unripe and used as a savory side dish rather than a fruit."
+green soybeans,"Beans, peas, lentils",0.3206,high,"Green soybeans (edamame) are immature soybeans in pod form, fitting best with legume/bean categories as a whole-food legume ingredient rather than processed soy."
+green turtle,,,high,Green turtle is a game/exotic meat not included in the TFP mainstream consumer basket; no national-average price available.
+ground bison,,,high,Bison is a game meat not represented in the TFP mainstream-consumer basket; no national-average price data available.
+ground chicken,"Poultry, higher nutrient density",0.9048,high,Ground chicken is a plain poultry ingredient without added processing; it fits the higher nutrient density poultry category.
+ground emu,,,high,Emu is a game/exotic meat not included in the TFP mainstream-consumer basket; no national-average price available
+ground lamb,"Meat, higher nutrient density",1.5417,high,Ground lamb is a lean red meat cut and fits the higher nutrient density meat category for raw/plain preparations.
+ground ostrich,,,high,Ostrich is a game/exotic meat not included in the TFP mainstream-consumer basket; no national-average price data available
+ground turkey retinol,"Poultry, higher nutrient density",0.9048,high,Ground turkey is a poultry product; the 'retinol' descriptor indicates nutritional content but does not change the ingredient classification—it remains raw poultry and maps to the higher nutrient density category.
+ground veal,"Meat, higher nutrient density",1.5417,high,"Ground veal is a lean red meat cut in its raw/unprocessed form, fitting the higher nutrient density meat category."
+groundcherries,"Fruit, higher nutrient density",0.6674,high,"Ground cherries are small whole fruits with edible skin, fitting the higher nutrient density fruit category."
+guava,"Fruit, higher nutrient density",0.6674,high,Guava is a whole fresh tropical fruit with high nutritional density; it fits the fruit category best.
+guinea hen,"Poultry, higher nutrient density",0.9048,high,Guinea hen is poultry (a game bird raised domestically); raw or plain-prepared forms fit the higher nutrient density poultry category
+haddock,Seafood,1.9739,high,Haddock is a common white fish and maps directly to the Seafood category
+haddock fish,Seafood,1.9739,high,Haddock is a common white fish; the Seafood category covers all fish and shellfish
+haddock minerals,Seafood,1.9739,high,"Haddock is a fish; the term 'minerals' is a descriptor of nutritional content rather than an ingredient modifier, so it maps to the core Seafood category"
+haddock proximates,Seafood,1.9739,high,Haddock is a fish; 'proximates' likely refers to nutritional composition data but does not change the ingredient classification to seafood.
+halibut fish,Seafood,1.9739,high,Halibut is a fish; fresh fish fillets fit directly into the Seafood category
+hawaii mountain yam,Starchy vegetables,0.4607,high,Hawaii mountain yam is a starchy tuber variety that fits the starchy vegetables category alongside potatoes and other root vegetables.
+hazelnuts,"Nuts & Seeds, higher nutrient density",1.8060,high,"Hazelnuts are nuts in their raw form, fitting the higher nutrient density category for nuts and seeds."
+heart chicken,"Poultry, higher nutrient density",0.9048,high,"Chicken heart is a plain, lean poultry organ; it fits the poultry category as a raw ingredient with high nutrient density"
+herring fish,Seafood,1.9739,high,Herring is a fish; fresh fish fillets or whole herring fit directly into the Seafood category
+horned owl,,,high,Horned owl is a wild game bird not represented in TFP's mainstream consumer food basket; no national-average price data available
+horse game meat,,,high,Horse meat is a game/exotic meat not included in the USDA Thrifty Food Plan's mainstream consumer basket; no national-average price available
+huckleberries,"Fruit, higher nutrient density",0.6674,high,Huckleberries are wild berries; fresh whole berries fit the higher nutrient density fruit category
+hyacinth beans,"Beans, peas, lentils",0.3206,high,Hyacinth beans are a legume variety; the raw bean form maps directly to the legume/bean category
+immature seeds broadbeans,"Beans, peas, lentils",0.3206,high,"Immature seeds (such as young broad beans or fava beans) are legumes in their pod/immature stage and fit the legume category; they are raw ingredients, not prepared dishes."
+immature seeds cowpeas (blackeyes),"Beans, peas, lentils",0.3206,high,"Immature seeds of cowpeas (blackeyes) are legumes in their young pod stage, fitting the beans/peas/lentils category as a raw legume ingredient."
+immature seeds hyacinth-beans,"Beans, peas, lentils",0.3206,high,"Immature hyacinth-bean seeds are legumes in their young pod stage, fitting the beans/peas/lentils category as a raw legume ingredient."
+immature seeds pigeonpeas,"Beans, peas, lentils",0.3206,high,"Immature seeds of pigeonpeas are legumes in their young pod stage, fitting the beans/peas/lentils category as a raw legume ingredient."
+immature seeds winged beans,"Beans, peas, lentils",0.3206,medium,Immature seeds (pods) of winged beans are legume vegetables; the legume category best captures their nutritional profile as a protein-rich plant food
+indian squash,Starchy vegetables,0.4607,medium,Indian squash (also called bottle gourd or similar varieties) is a starchy vegetable commonly used in cooking and fits the starchy vegetables category.
+inside drum emu,,,high,Emu is game/exotic meat not represented in the TFP mainstream consumer basket; no national-average price data available
+inside leg ostrich,,,high,Ostrich is a game/exotic meat not represented in the TFP mainstream-consumer food basket; no national-average price data available.
+inside strip ostrich,,,high,Ostrich is a game/exotic meat not represented in TFP's mainstream consumer food basket; no national-average price data available
+irishmoss seaweed,,,high,Irish moss seaweed is not a mainstream US food ingredient covered by TFP categories; it is a specialty/niche ingredient without a national-average price model in the Thrifty Food Plan.
+jackfruit,"Fruit, higher nutrient density",0.6674,medium,Jackfruit is a tropical fruit typically eaten fresh or minimally processed; it fits the whole fruit category as a higher nutrient density option.
+japanese persimmons,"Fruit, higher nutrient density",0.6674,high,"Japanese persimmons are fresh whole fruit; they fit the higher nutrient density fruit category as a plain, unprocessed ingredient."
+java-plum,"Fruit, higher nutrient density",0.6674,medium,Java-plum (also called jambul or black plum) is a whole fruit native to South Asia and increasingly available in US markets; it fits the fresh fruit category as a higher nutrient density option.
+jerusalem-artichokes,Other vegetables + vegetable combinations,0.4688,medium,"Jerusalem artichokes are a starchy root vegetable that doesn't fit dark green, red/orange, or the specific starchy vegetable categories, making the residual 'other vegetables' category the best fit."
+jew's ear,,,high,Jew's ear is a fungus/mushroom not commonly sold in mainstream US food markets and lacks a specific TFP category; mushrooms are not explicitly covered in the provided TFP categories.
+jicama,Other vegetables + vegetable combinations,0.4688,high,"Jicama is a starchy root vegetable that doesn't fit into the specific vegetable categories (dark green, red/orange, or beans/peas), so it belongs in the catch-all other vegetables category."
+jujube,"Fruit, higher nutrient density",0.6674,medium,"Jujubes are small dried fruits similar to dates; they fit the whole fruit category as a plain, minimally processed fruit product."
+kelp seaweed,,,high,Kelp seaweed is not a mainstream U.S. food item in the TFP commodity basket; it lacks a national-average price representation in standard USDA food categories.
+kohlrabi,Other vegetables + vegetable combinations,0.4688,high,"Kohlrabi is a cruciferous vegetable that doesn't fit into the specific vegetable subcategories (dark green, red/orange, starchy, or beans/peas), so it maps to the catch-all category."
+kumquat,"Fruit, higher nutrient density",0.6674,high,Kumquats are whole citrus fruits typically eaten raw or fresh; they fit the higher nutrient density fruit category.
+lamb,"Meat, higher nutrient density",1.5417,high,Lamb is a lean red meat cut that fits the higher nutrient density meat category when purchased as a raw ingredient.
+lambsquarters,Dark green vegetables,0.6080,high,"Lambsquarters is a leafy green vegetable with high nutritional density, fitting the dark green vegetables category."
+laver seaweed,,,high,Laver seaweed is not a mainstream US food item in the TFP consumer basket; it is a specialty/ethnic ingredient without a dedicated or appropriate category match.
+leafy tips balsam-pear (bitter gourd),Dark green vegetables,0.6080,high,Leafy tips of bitter gourd (balsam-pear) are a dark green leafy vegetable commonly consumed as a cooked green.
+leafy tips cowpeas,Dark green vegetables,0.6080,high,"Leafy tips of cowpeas are the edible green leaves of the plant, which are a dark leafy vegetable regardless of the legume origin."
+leaves fireweed,,,high,Fireweed leaves are a foraged wild plant not commonly sold in mainstream US markets and not represented in the TFP national-average pricing basket.
+leg lamb,"Meat, higher nutrient density",1.5417,high,Lamb leg is a lean red meat cut that fits the higher nutrient density meat category.
+leg pheasant,,,high,Pheasant is a game bird not represented in the TFP mainstream-consumer basket; no national-average price available
+leg veal,"Meat, higher nutrient density",1.5417,high,Veal leg is a lean cut of meat and fits the higher nutrient density meat category as a raw protein ingredient.
+lemon grass (citronella),,,high,Lemongrass is a specialized herb/aromatic ingredient not mainstream in the TFP basket; no dedicated herb or spice category exists to map it appropriately.
+lemon peel,,,high,Lemon peel is a processing byproduct/ingredient not meaningfully represented as a standalone food item in TFP's mainstream consumer basket; it is typically used as a garnish or flavoring in very small amounts rather than consumed as a primary food.
+light meat turkey from whole,"Poultry, higher nutrient density",0.9048,high,"Light meat turkey from a whole bird is raw poultry in its plainest form, fitting the higher nutrient density category."
+ling fish,Seafood,1.9739,high,Ling is a saltwater fish commonly sold fresh or frozen; it fits directly in the Seafood category
+lingcod fish,Seafood,1.9739,high,Lingcod is a fish; raw fillets fit directly into the Seafood category
+litchis,"Fruit, higher nutrient density",0.6674,high,Litchis are whole fresh fruits with good nutritional content; they fit the higher nutrient density fruit category
+liver caribou,,,high,Caribou is a game meat not represented in the TFP mainstream-consumer food basket; no national-average price data available.
+liver goose,,,high,Goose liver is a game bird organ product not represented in mainstream US TFP categories; no national-average price data available
+liver walrus,,,high,Walrus is a marine mammal not included in mainstream US food consumption; TFP does not provide national-average pricing for game or exotic marine mammals.
+lobster crustaceans,Seafood,1.9739,high,Lobster is a crustacean/shellfish that falls directly under the Seafood category
+loin beef,"Meat, higher nutrient density",1.5417,high,Loin beef is a lean cut of beef that fits the higher nutrient density meat category.
+loin veal,"Meat, higher nutrient density",1.5417,high,"Veal loin is a lean cut of meat; it fits the higher nutrient density meat category as a plain, minimally-processed protein."
+longans,"Fruit, higher nutrient density",0.6674,high,Longans are a whole tropical fruit with similar nutritional profile to other fresh fruits; the higher nutrient density category is appropriate for this unprocessed form
+loquats,"Fruit, higher nutrient density",0.6674,high,Loquats are a whole fruit commonly consumed fresh; they fit the higher nutrient density fruit category
+lotus root,Starchy vegetables,0.4607,medium,Lotus root is a starchy tuber vegetable commonly used in Asian cuisine; it fits the starchy vegetables category.
+lotus seeds seeds,"Nuts & Seeds, higher nutrient density",1.8060,medium,Lotus seeds are seeds consumed as a whole food ingredient; they fit the nuts and seeds category with higher nutrient density for a raw/plain form.
+lupins,"Beans, peas, lentils",0.3206,medium,"Lupins are legume seeds with nutritional profiles similar to beans and lentils, fitting naturally into the legume category."
+mackerel fish,Seafood,1.9739,high,Mackerel is a fish; fresh fish fillets or whole fish fit the Seafood category
+mahimahi fish,Seafood,1.9739,high,Mahimahi is a fish commonly consumed in the United States; it fits directly into the Seafood category
+maitake mushrooms,Other vegetables + vegetable combinations,0.4688,medium,Maitake mushrooms are fungi typically classified with vegetables in culinary and nutritional contexts; the broad 'Other vegetables' category is the best fit in TFP.
+mamey sapote,,,high,Mamey sapote is a tropical fruit not commonly available in US mainstream markets and lacks established TFP pricing data.
+mammy-apple,,,high,Mamey apple (mammy-apple) is a tropical fruit not mainstream in US consumer markets and lacks a specific TFP category match; no national-average price data available.
+mango,"Fruit, higher nutrient density",0.6674,high,Mango is a whole fresh fruit with good nutritional density; it fits the higher nutrient density fruit category
+masa harina corn flour,Staple grains - higher nutrient density,0.5721,high,"Masa harina is a corn flour made from treated whole corn kernels; it is a staple grain ingredient used for traditional tortillas and tamales, fitting the higher nutrient density category as a less-refined grain product."
+mashu roots,,,high,Mashu (Dioscorea japonica) is a Japanese mountain yam variety not commonly sold in mainstream U.S. food markets; TFP does not include regional Asian tuber varieties.
+meat moose,,,high,Moose is game meat not represented in the TFP mainstream-consumer basket; no national-average price available
+meat only guinea hen,"Poultry, higher nutrient density",0.9048,high,"Guinea hen is poultry; the meat-only specification indicates a raw/plain cut, fitting the higher nutrient density category."
+meat only quail,,,high,Quail is a game bird not commonly sold in mainstream US markets; TFP does not provide national-average pricing for game poultry
+meat walrus,,,high,Walrus is a marine mammal game meat not represented in TFP's mainstream consumer basket; no national-average price data available
+mechanically deboned poultry,"Poultry, lower nutrient density",1.2797,medium,Mechanically deboned poultry is a processed form of poultry meat with lower nutrient density due to processing and fat content.
+mechanically deboned turkey,"Poultry, lower nutrient density",1.2797,medium,Mechanically deboned turkey is a processed poultry product with lower nutrient density due to its mechanical processing and typical fat/binder additions.
+milkfish fish,Seafood,1.9739,high,Milkfish is a common fish species; raw fish fillets fit directly into the Seafood category
+millet,Staple grains - higher nutrient density,0.5721,high,"Millet is a whole grain and staple carbohydrate source, fitting the higher nutrient density grain category."
+minerals - beef,,,high,"""Minerals - beef"" is not a food ingredient but rather a nutritional attribute label; it does not correspond to an actual consumable product that TFP categories model."
+mixed salad greens,Dark green vegetables,0.6080,high,"Mixed salad greens are predominantly composed of dark leafy greens like lettuce, spinach, and arugula, which fit the dark green vegetables category."
+monkfish fish,Seafood,1.9739,high,Monkfish is a fish and fits directly into the Seafood category
+moose game meat,,,high,Moose is game meat not represented in the TFP mainstream-consumer basket; no national-average price available
+morel mushrooms,Other vegetables + vegetable combinations,0.4688,medium,Morel mushrooms are fungi used as a vegetable ingredient in cooking; the 'Other vegetables' category is the best fit for specialty vegetables not covered by color-specific categories.
+mothbeans,"Beans, peas, lentils",0.3206,high,"Mothbeans are a legume variety commonly used in Indian cuisine and fit directly into the beans, peas, lentils category as a raw ingredient."
+mulberries,"Fruit, higher nutrient density",0.6674,high,"Mulberries are whole fresh berries with no processing, fitting the higher nutrient density fruit category."
+mullet fish,Seafood,1.9739,high,Mullet is a fish; raw fish fillets fit directly into the Seafood category
+mung beans,"Beans, peas, lentils",0.3206,high,Mung beans are legumes that fit directly into the legumes category as a raw ingredient.
+mungo beans,"Beans, peas, lentils",0.3206,high,"Mungo beans are a legume variety; dry beans fit directly into the beans, peas, lentils category"
+muscadine grapes,"Fruit, higher nutrient density",0.6674,high,Muscadine grapes are whole fresh fruit with good nutritional profile; they fit the higher nutrient density fruit category
+mushrooms,Other vegetables + vegetable combinations,0.4688,high,Mushrooms are fungi classified as vegetables in culinary and nutritional contexts; they fit best in the general vegetable category since TFP has no specific fungi or mushroom category.
+muskrat game meat,,,high,Muskrat is a game meat not represented in the TFP mainstream-consumer food basket; no national-average price data available
+mussel mollusks,Seafood,1.9739,high,Mussels are shellfish; the Seafood category covers all shellfish including mussels
+mustard greens,Dark green vegetables,0.6080,high,Mustard greens are a dark leafy green vegetable that fit directly into the Dark green vegetables category
+mustard spinach,Dark green vegetables,0.6080,high,"Mustard spinach is a dark leafy green vegetable, fitting directly into the dark green vegetables category"
+native persimmons,"Fruit, higher nutrient density",0.6674,high,Native persimmons are whole fresh fruits with no processing; they fit the higher nutrient density fruit category
+new zealand beef,"Meat, higher nutrient density",1.5417,high,Beef is a red meat; New Zealand beef is a lean cut sourced internationally but fits the higher nutrient density meat category for raw cuts.
+new zealand lamb,"Meat, higher nutrient density",1.5417,high,New Zealand lamb is a lean red meat cut; fresh lamb fits the higher nutrient density meat category
+new zealand spinach,Dark green vegetables,0.6080,high,New Zealand spinach is a leafy green vegetable despite its name (it is not true spinach but functionally similar); it belongs in the dark green vegetables category.
+nopales,Other vegetables + vegetable combinations,0.4688,medium,Nopales (cactus paddle) are a vegetable; they don't fit the specific TFP vegetable color/type categories and belong in the catch-all category.
+oat bran,"Cereals, higher nutrient density",0.6543,high,"Oat bran is a whole-grain cereal product with high fiber and nutrient density, fitting the cereals category."
+ocean perch fish,Seafood,1.9739,high,Ocean perch is a fish; raw fish fillets fit directly in the Seafood category
+octopus mollusks,Seafood,1.9739,high,Octopus is a mollusk and marine protein that falls under the broad Seafood category alongside fish and shellfish.
+oheloberries,"Fruit, higher nutrient density",0.6674,medium,Oheloberries are a wild Hawaiian berry variety; as a whole fruit they fit the higher nutrient density fruit category
+orange juice,100% juice,0.1952,high,Orange juice is a 100% fruit juice product and maps directly to the dedicated juice category
+orange peel,,,high,Orange peel is a processed byproduct/ingredient not meaningfully covered as a standalone item in TFP categories; it is typically used as a flavoring or zest rather than a primary food component.
+oriental radishes,Other vegetables + vegetable combinations,0.4688,high,"Oriental radishes (daikon or similar varieties) are vegetables not fitting dark green, red/orange, or starchy categories, so they fall under the catch-all vegetables category."
+outside drum emu,,,high,Emu is game/exotic poultry not represented in TFP's mainstream US consumer food basket; 'outside drum' cut designation further indicates a specialty item without national-average pricing
+outside leg ostrich,,,high,Ostrich is a game/exotic meat not included in the TFP mainstream consumer basket; no national-average price data available
+outside strip ostrich,,,high,Ostrich is game/exotic poultry not represented in TFP's mainstream US consumer food basket; no national-average price data available.
+overripe plantains,Starchy vegetables,0.4607,high,"Plantains are starchy vegetables, and overripe ones are still in their raw/whole ingredient form suitable for TFP pricing"
+oyster mushrooms,Other vegetables + vegetable combinations,0.4688,medium,Oyster mushrooms are a fungal vegetable ingredient; they fit best in the general vegetables category since TFP lacks a specific mushroom classification.
+parsley,Dark green vegetables,0.6080,high,"Parsley is a dark leafy herb that fits the dark green vegetables category as a raw, nutrient-dense leafy green ingredient."
+pearled farro,Staple grains - higher nutrient density,0.5721,high,Pearled farro is a whole grain product with good nutritional profile; it belongs in the staple grains category for higher nutrient density
+peeled cucumber,Other vegetables + vegetable combinations,0.4688,high,"Peeled cucumber is a raw vegetable that doesn't fit the specific dark green or red/orange categories, so it maps to the general 'Other vegetables' category."
+perch fish,Seafood,1.9739,high,Perch is a freshwater fish and falls under the Seafood category which covers fish broadly.
+persimmon,"Fruit, higher nutrient density",0.6674,high,Persimmon is a whole fresh fruit with moderate nutrient density; it fits the fruit category rather than juices or processed preparations.
+pheasant,,,high,Pheasant is a game bird not represented in the TFP mainstream-consumer basket; no national-average price available
+pike fish,Seafood,1.9739,high,Pike is a freshwater fish that fits directly into the Seafood category
+pink grapefruit juice,100% juice,0.1952,high,Pink grapefruit juice is a citrus juice that qualifies as 100% juice when it contains only juice with no added sugars or water.
+pitanga,"Fruit, higher nutrient density",0.6674,medium,"Pitanga (Brazilian cherry) is a whole tropical fruit with good nutritional density, fitting the fresh fruit category."
+pods balsam-pear (bitter gourd),Other vegetables + vegetable combinations,0.4688,medium,"Bitter gourd (balsam-pear pods) is a vegetable but doesn't fit the specific dark-green, red-orange, or starchy vegetable categories; it belongs in the catch-all other vegetables category."
+pokeberry shoots,,,high,Pokeberry shoots are a wild/foraged plant not typically represented in mainstream US food commerce or the TFP's national-average pricing basket.
+polar bear,,,high,Polar bear is a game meat not represented in the TFP mainstream-consumer food basket; no national-average price available
+pollock,Seafood,1.9739,high,Pollock is a common white fish; it maps directly to the Seafood category
+pollock fish,Seafood,1.9739,high,Pollock is a common fish; raw fillets fit directly into the Seafood category
+pollock minerals,Seafood,1.9739,high,"Pollock is a common white fish; the search term 'pollock minerals' refers to the fish itself, not a supplement or mineral product, so it maps to the Seafood category"
+pollock nitrogen,Seafood,1.9739,high,Pollock is a common fish species; the nitrogen descriptor is likely a product variant or specification detail that does not change its fundamental categorization as seafood.
+pollock proximates,Seafood,1.9739,high,"Pollock is a white fish; despite the technical 'proximates' reference, the ingredient itself is plain seafood and maps to the Seafood category"
+pollock retinol,Seafood,1.9739,high,Pollock is a fish; the retinol descriptor notes its nutritional content but does not change its primary ingredient classification.
+pompano fish,Seafood,1.9739,high,Pompano is a common fish species; the Seafood category directly covers fish fillets and whole fish
+pork bockwurst,Cured meat,1.2100,high,Bockwurst is a German sausage made from pork and cured/processed; it fits the cured meat category alongside other processed pork products like bacon and sausage
+porterhouse steak fa - beef,"Meat, higher nutrient density",1.5417,high,Porterhouse steak is a lean beef cut from the loin; raw steak ingredients map to the higher nutrient density meat category
+porterhouse steak minerals - beef,"Meat, higher nutrient density",1.5417,high,"Porterhouse steak is a lean beef cut that fits the higher nutrient density meat category for raw, unprocessed beef."
+potherb jute,Dark green vegetables,0.6080,medium,Potherb jute (Corchorus olitorius) is a leafy green vegetable commonly used in African and Asian cuisines; it fits the dark green vegetables category as a raw ingredient.
+pout fish,Seafood,1.9739,high,Pout is a common Atlantic fish species; it fits the Seafood category like other fish.
+prairie turnips,,,high,Prairie turnips (tipsin/breadroot) are a foraged Native American plant not represented in the mainstream US TFP consumer basket; no national-average price available.
+prickly pears,"Fruit, higher nutrient density",0.6674,high,Prickly pears are whole fresh fruits with nutritional density; they fit the higher nutrient density fruit category
+pummelo,"Fruit, higher nutrient density",0.6674,high,Pummelo is a citrus fruit similar to grapefruit; fresh whole citrus fruits fit the higher nutrient density fruit category
+pumpkin flowers,Other vegetables + vegetable combinations,0.4688,medium,"Pumpkin flowers are an edible flower vegetable that doesn't fit any of the more specific TFP vegetable categories (dark green, red/orange, starchy, or beans/peas), so they map to the general other vegetables category."
+pumpkin leaves,Dark green vegetables,0.6080,high,Pumpkin leaves are a dark leafy green vegetable similar to other cooked greens like spinach or kale.
+purple passion-fruit juice,100% juice,0.1952,medium,"Passion-fruit juice is a fruit juice product; if it is 100% juice with no added sweeteners, it maps to the 100% juice category."
+purslane,Dark green vegetables,0.6080,medium,"Purslane is a leafy green vegetable with a slightly succulent appearance; it fits the dark green vegetables category as a raw, edible green."
+quail,"Poultry, higher nutrient density",0.9048,medium,Quail is a small game bird classified as poultry; raw quail meat fits the higher nutrient density poultry category
+quail egg,Eggs,0.3829,high,Quail eggs are eggs; they fit the direct Eggs category just like chicken eggs
+quinces,"Fruit, higher nutrient density",0.6674,high,Quinces are whole fruits with higher nutrient density when raw or minimally processed.
+rabbit game meat,,,high,Rabbit is a game meat not included in the TFP mainstream consumer basket; no national-average price data available.
+radicchio,Dark green vegetables,0.6080,medium,Radicchio is a dark leafy vegetable with a purple-red hue but classified botanically as a chicory with dark green nutritional properties similar to other leafy greens.
+retail cuts beef,"Meat, higher nutrient density",1.5417,high,"Retail cuts of beef are raw meat cuts; without specification of fattiness, plain beef cuts default to the higher nutrient density category"
+retail parts turkey,"Poultry, higher nutrient density",0.9048,high,"Turkey parts (breast, thighs, etc.) are raw poultry cuts; retail parts indicate a plain ingredient form matching the higher nutrient density category."
+rhubarb,"Fruit, higher nutrient density",0.6674,medium,"Rhubarb is a plant stalk commonly used in culinary applications as a fruit; despite being technically a vegetable botanically, it is treated as a fruit in cooking and nutrition contexts and fits the higher nutrient density fruit category as a whole-food ingredient."
+rib lamb,"Meat, higher nutrient density",1.5417,medium,"Lamb ribs are a red meat cut; while fattier than lean cuts, they are raw/unprocessed ingredients that fit the meat category better than mixed dishes."
+rib veal,"Meat, higher nutrient density",1.5417,high,"Veal rib is a lean red meat cut; it belongs in the meat category with higher nutrient density since it is a plain, unprocessed cut"
+roasting chicken,"Poultry, higher nutrient density",0.9048,high,"A roasting chicken is a whole poultry bird suitable for raw preparation; it fits the higher nutrient density poultry category as an unprocessed, plain ingredient form."
+rockfish fish,Seafood,1.9739,high,Rockfish is a common fish species; fresh fillets or whole rockfish fit directly into the Seafood category
+roe fish,Seafood,1.9739,medium,Fish roe (eggs) is a seafood product derived from fish and fits within the broad Seafood category
+root wasabi,Condiments and Sauces,0.8179,medium,Wasabi root is typically processed into a paste or powder condiment used as a flavoring agent in cuisines.
+roselle,"Fruit, higher nutrient density",0.6674,medium,Roselle is a tropical fruit (hibiscus sabdariffa) with edible calyces commonly consumed fresh or brewed as tea; as a whole fruit ingredient it fits the higher nutrient density fruit category
+roughy fish,Seafood,1.9739,high,Roughy is a fish species commonly consumed in the US; it fits the Seafood category
+round ostrich,,,high,Ostrich is a game bird not represented in TFP's mainstream consumer basket; no national-average price available.
+rowal,,,high,Rowal is not a commonly recognized food ingredient in mainstream US cuisine and does not match any standard TFP category.
+sablefish fish,Seafood,1.9739,high,Sablefish is a fish species; raw fillets fit directly into the Seafood category
+salmonberries,"Fruit, higher nutrient density",0.6674,high,"Salmonberries are whole berries similar to raspberries and blackberries, fitting the whole fruit category"
+salsify,Other vegetables + vegetable combinations,0.4688,medium,"Salsify is an uncommon root vegetable that does not fit the specific vegetable categories (dark green, red/orange, starchy, or legume-based) and belongs in the catch-all category."
+sandwich steaks beef,"Meat, higher nutrient density",1.5417,high,"Sandwich steaks are beef cuts suitable for grilling or cooking; as a raw/plain meat ingredient, they fit the higher nutrient density meat category"
+sapodilla,"Fruit, higher nutrient density",0.6674,medium,Sapodilla is a whole tropical fruit with nutritional value; it fits the whole fruit category for higher nutrient density.
+scallop mollusks,Seafood,1.9739,high,Scallops are shellfish/mollusks and fall directly under the Seafood category
+scup fish,Seafood,1.9739,high,Scup is a common Atlantic fish species; it fits directly into the Seafood category
+sea bass fish,Seafood,1.9739,high,Sea bass is a fish; fresh fillets fit the Seafood category
+seal,,,high,Seal is a marine game mammal not included in TFP's mainstream consumer food basket; no national-average price available
+seatrout fish,Seafood,1.9739,high,Seatrout is a fish species; fresh fish fillets or whole fish fit directly into the Seafood category
+sesame butter seeds,Nut & seed butters,1.0914,high,Sesame butter is a seed-based spread that fits the dedicated nut & seed butters category rather than whole seeds.
+sesbania flower,,,high,"Sesbania flowers are an uncommon, region-specific vegetable not mainstream in US consumer diet; TFP does not include a category for edible flowers or this particular plant"
+shad fish,Seafood,1.9739,high,Shad is a fish species; raw fish fillets fit directly into the Seafood category
+shank crosscuts beef,"Meat, higher nutrient density",1.5417,high,Beef shank crosscuts are a lean red meat cut suitable for stewing or braising; the raw ingredient maps to the higher nutrient density meat category.
+shank veal,"Meat, higher nutrient density",1.5417,high,Veal shank is a lean cut of veal (young beef); raw meat cuts fit the meat category with higher nutrient density for plain/unprocessed forms.
+shark fish,Seafood,1.9739,high,Shark is a fish and falls under the broad Seafood category.
+sheefish fish,Seafood,1.9739,medium,Sheefish is a freshwater fish species; it falls under the broad Seafood category that covers fish and shellfish
+sheepshead fish,Seafood,1.9739,high,Sheepshead is a common edible fish species that fits directly into the Seafood category
+shoulder lamb,"Meat, higher nutrient density",1.5417,high,"Lamb shoulder is a lean red meat cut and fits the higher nutrient density meat category as a raw, plain ingredient."
+shoulder veal,"Meat, higher nutrient density",1.5417,high,Veal shoulder is a lean cut of red meat and fits the meat category for higher nutrient density.
+sirloin veal,"Meat, higher nutrient density",1.5417,high,Sirloin is a lean cut of veal (calf meat); veal fits the meat category and sirloin is a higher nutrient density cut.
+sitka deer (venison),,,high,Venison (wild deer) is a game meat not included in the TFP mainstream-consumer basket; no national-average price data available
+skin turkey,"Poultry, lower nutrient density",1.2797,high,"Turkey skin is a poultry product with higher fat content, fitting the lower nutrient density category"
+small white beans,"Beans, peas, lentils",0.3206,high,Small white beans are a raw legume ingredient and map directly to the beans/peas/lentils category.
+smelt fish,Seafood,1.9739,high,Smelt is a small fish; the Seafood category covers all fish and shellfish regardless of size or type
+snail mollusks,,,high,Snails (escargot) are an exotic/specialty mollusk not represented in the TFP mainstream-consumer basket; no national-average price available.
+snapper fish,Seafood,1.9739,high,Snapper is a common fish; the Seafood category covers all fish and shellfish
+sorghum,Staple grains - higher nutrient density,0.5721,high,"Sorghum is a whole grain used as a staple carbohydrate source, similar to other whole grains like brown rice and oats."
+sour cherries,"Fruit, higher nutrient density",0.6674,high,"Sour cherries are whole fresh fruit with no processing, fitting the higher nutrient density fruit category"
+soursop,"Fruit, higher nutrient density",0.6674,medium,Soursop is a tropical whole fruit with high nutrient density when consumed fresh; it fits the fruit category best despite being less common in US mainstream markets.
+soy flour,Processed soy products,1.4186,high,Soy flour is a processed soy product derived from soybeans; it fits the dedicated soy products category
+soybeans,"Beans, peas, lentils",0.3206,high,"Soybeans are legumes and fit directly into the beans, peas, lentils category as a raw ingredient."
+spiny lobster crustaceans,Seafood,1.9739,high,Spiny lobster is a crustacean/shellfish and falls under the broad Seafood category
+spirulina seaweed,,,high,Spirulina is a specialized nutritional supplement/superfood powder not part of the mainstream TFP food basket; no standard national-average price category applies
+spot fish,Seafood,1.9739,high,Spot fish is a common edible fish species; it fits directly into the Seafood category.
+sprouted alfalfa seeds,"Nuts & Seeds, higher nutrient density",1.8060,medium,"Sprouted alfalfa seeds are seeds in their sprouted form, representing a nutrient-dense whole food that fits the seeds category"
+sprouted lentils,"Beans, peas, lentils",0.3206,high,Sprouted lentils are still a raw legume ingredient in their primary form; they belong in the legume category rather than a mixed dish category
+sprouted radish seeds,"Nuts & Seeds, higher nutrient density",1.8060,medium,"Sprouted radish seeds are seeds in their sprouted form, fitting the seeds subcategory of nuts and seeds; sprouting increases nutrient density."
+squab,"Poultry, higher nutrient density",0.9048,high,"Squab is young pigeon meat, a poultry product typically sold fresh; it fits the poultry category as a plain, unprocessed protein"
+squid mollusks,Seafood,1.9739,high,Squid is a mollusk commonly consumed as seafood; it fits within the broad Seafood category alongside fish and shellfish.
+squirrel game meat,,,high,Squirrel is game meat not represented in the TFP mainstream-consumer basket; no national-average price available
+stalks broccoli,Dark green vegetables,0.6080,high,"Broccoli stalks are part of the broccoli plant, which is a dark green vegetable"
+starfruit,"Fruit, higher nutrient density",0.6674,medium,Starfruit is a fresh whole fruit with good nutritional density; it fits the general fruit category despite being somewhat exotic
+stewing chicken,"Poultry, lower nutrient density",1.2797,medium,"Stewing chicken is a tougher, fattier cut typically used for slow cooking in dishes, making it lower nutrient density compared to raw breast meat."
+strawberry guavas,"Fruit, higher nutrient density",0.6674,high,"Strawberry guavas are whole fruits; they fit the higher nutrient density fruit category as a fresh, unprocessed fruit."
+sturgeon fish,Seafood,1.9739,high,Sturgeon is a fish; fresh fish fillets fit the Seafood category regardless of species
+succotash,Mixed Dishes - Vegetables - higher nutrient density,0.5224,medium,Succotash is a traditional vegetable mixture of lima beans and corn; it is a prepared dish combining legumes and starchy vegetables.
+sucker fish,Seafood,1.9739,medium,Sucker fish is a freshwater fish species and falls under the broad Seafood category that covers fish.
+sugar-apples,"Fruit, higher nutrient density",0.6674,medium,Sugar-apples are a tropical fruit with natural sugars; they map to the whole fruit category as a fresh/minimally processed option.
+sunfish fish,Seafood,1.9739,medium,Sunfish is a freshwater fish commonly consumed as food; it falls under the Seafood category which covers fish broadly.
+sweet potato leaves,Dark green vegetables,0.6080,high,Sweet potato leaves are a dark leafy green vegetable and fit the dark green vegetables category.
+swiss chard,Dark green vegetables,0.6080,high,Swiss chard is a dark leafy green vegetable that fits directly into the dark green vegetables category.
+swordfish fish,Seafood,1.9739,high,Swordfish is a fish and falls directly under the Seafood category
+tamarinds,"Fruit, higher nutrient density",0.6674,high,"Tamarinds are a tropical fruit with a tart, tangy flavor typically consumed whole or used in cooking; they fit the whole fruit category as a minimally processed ingredient."
+taro leaves,Dark green vegetables,0.6080,medium,Taro leaves are dark leafy greens commonly used as a vegetable in cooking; they fit the dark green vegetables category.
+taro shoots,Other vegetables + vegetable combinations,0.4688,medium,Taro shoots are young leafy vegetable sprouts; they lack a dedicated TFP category and best fit the broad 'Other vegetables' category.
+tenderloin ostrich,,,high,Ostrich is a game/exotic meat not represented in the TFP mainstream-consumer basket; no national-average price available
+thiamin vit d,,,high,"Thiamin and vitamin D are nutritional supplements/nutrients, not food ingredients; TFP categories are designed for actual foods, not isolated vitamins."
+tilefish fish,Seafood,1.9739,high,Tilefish is a fish species; it maps directly to the Seafood category
+tip trimmed ostrich,,,high,Ostrich is a game/exotic meat not represented in TFP's mainstream US consumer food basket; no national-average price data available
+tommy atkins mango,"Fruit, higher nutrient density",0.6674,high,"Tommy Atkins mango is a fresh, whole fruit variety commonly available in US markets and fits the higher nutrient density fruit category."
+tongue caribou,,,high,Caribou tongue is game meat from a non-domestic animal; TFP does not include game meats in its mainstream consumer basket
+top loin ostrich,,,high,Ostrich is game/exotic poultry not represented in TFP's mainstream consumer basket; no national-average price available
+trout fish,Seafood,1.9739,high,Trout is a fish; fresh fish fillets or whole trout fit directly into the Seafood category
+turbot fish,Seafood,1.9739,high,Turbot is a flatfish commonly eaten fresh; seafood category covers all fish and shellfish
+turkey egg,Eggs,0.3829,high,Turkey eggs are eggs from a poultry bird; they map directly to the Eggs category just as chicken eggs do
+underripe plantains,Starchy vegetables,0.4607,high,Plantains are starchy vegetables commonly used in cuisines worldwide; underripe plantains are typically cooked as a vegetable rather than eaten as fruit.
+vinespinach,Dark green vegetables,0.6080,high,"Vinespinach is a dark leafy green vegetable similar to spinach and kale, fitting directly into the dark green vegetables category."
+vit e - beef,"Meat, higher nutrient density",1.5417,high,"This is beef, a red meat; the search term's 'vit e' prefix suggests a nutrient-focused context, so the higher nutrient density category is most appropriate."
+wakame seaweed,,,high,Wakame seaweed is not a mainstream US food represented in the TFP categories; no national-average price baseline exists for this specialty Asian ingredient.
+walrus,,,high,Walrus is a game/marine mammal not represented in TFP's mainstream consumer food basket; no national-average price data available.
+watercress,Dark green vegetables,0.6080,high,Watercress is a dark leafy green vegetable with high nutrient density
+waxgourd,Other vegetables + vegetable combinations,0.4688,medium,"Waxgourd (also called winter melon) is a pale, mild vegetable that does not fit TFP's specific vegetable categories (dark green, red/orange, or starchy), so it maps to the residual 'Other vegetables' category."
+whelk mollusks,Seafood,1.9739,high,"Whelks are marine mollusks (shellfish) and fit directly into the Seafood category alongside other shellfish like clams, mussels, and oysters."
+white grapefruit juice,100% juice,0.1952,high,White grapefruit juice is a citrus juice that qualifies as 100% juice when unsweetened/unprocessed
+white icicle radishes,Other vegetables + vegetable combinations,0.4688,high,"White icicle radishes are a raw vegetable that doesn't fit the specific vegetable categories (dark green, red/orange, starchy, or beans/peas), so they belong in the catch-all vegetables category."
+white sorghum bran,Staple grains - higher nutrient density,0.5721,medium,"White sorghum bran is a whole-grain byproduct with higher nutrient density compared to refined grains, fitting the staple grains category."
+white sorghum flour,Staple grains - higher nutrient density,0.5721,medium,"White sorghum flour is a whole-grain flour product that functions as a staple grain ingredient for cooking and baking, fitting the higher nutrient density category for unrefined grain products."
+white sorghum grain,Staple grains - higher nutrient density,0.5721,high,"White sorghum grain is a whole grain staple similar to brown rice or oats, fitting the higher nutrient density grain category."
+wild duck,,,high,Wild duck is a game bird not represented in the TFP mainstream-consumer basket; no national-average price available for game poultry
+wing turkey,"Poultry, lower nutrient density",1.2797,high,Turkey wings are a poultry cut with higher fat content; the lower nutrient density category is appropriate for this fattier poultry preparation
+winged bean leaves,Dark green vegetables,0.6080,medium,Winged bean leaves are edible leafy greens with nutritional properties similar to other dark leafy vegetables.
+winged bean tuber,,,high,Winged bean tubers are a tropical legume variety not commonly available in mainstream US food markets; TFP pricing does not cover this specialty item
+winged beans,"Beans, peas, lentils",0.3206,medium,"Winged beans (Psophocarpus tetragonolobus) are legumes commonly consumed as pods or dried beans, fitting the beans/peas/lentils category."
+with peel cucumber,Other vegetables + vegetable combinations,0.4688,high,"Cucumber with peel is a raw vegetable that doesn't fit the specific dark green, red/orange, or starchy vegetable categories, so it falls into the general other vegetables category."
+with skin apricot,"Fruit, higher nutrient density",0.6674,high,"Apricots with skin are whole fresh fruit, fitting the higher nutrient density fruit category"
+with skin cucumber,Other vegetables + vegetable combinations,0.4688,high,"Cucumber with skin is a raw vegetable that doesn't fit the specific dark green, red/orange, or starchy vegetable categories, so it belongs in the catch-all vegetables category."
+witloof chicory,Dark green vegetables,0.6080,medium,Witloof chicory is a leafy green vegetable with a slightly bitter taste; it fits the dark green vegetables category as a raw leafy green.
+wolffish fish,Seafood,1.9739,high,Wolffish is a saltwater fish commonly consumed; it fits directly into the Seafood category
+yambean (jicama),Other vegetables + vegetable combinations,0.4688,high,"Jicama (yambean) is a starchy root vegetable that doesn't fit the specific vegetable subcategories (dark green, red/orange, or legume-based); the 'Other vegetables' category is the appropriate catch-all."
+yardlong bean,"Beans, peas, lentils",0.3206,medium,Yardlong beans (also called asparagus beans) are legumes typically used fresh or dried as a vegetable-legume; they belong in the beans/peas/lentils category rather than vegetable categories since they are fundamentally a legume crop.
+yautia (tannier),,,high,Yautia (tannier) is a tropical root vegetable not commonly available in mainstream US markets and not represented in the TFP's national-average pricing basket.
+yellow beans,Other vegetables + vegetable combinations,0.4688,high,Yellow beans are snap beans or green beans in yellow color; they fit the vegetable category best since they are eaten as a vegetable rather than dried legumes.
+yellow passion-fruit juice,100% juice,0.1952,high,Passion-fruit juice is a fruit juice product; if it is 100% juice it belongs in the 100% juice category rather than the fruit drinks categories
+yellow peaches,"Fruit, higher nutrient density",0.6674,high,Yellow peaches are whole fresh fruit with high nutrient density; they fit the raw fruit category
+yellow plantains,Starchy vegetables,0.4607,high,Yellow plantains are a starchy tropical fruit classified as a vegetable in nutrition and cooking contexts; they fit the starchy vegetables category.
+yellow summer squash,Other vegetables + vegetable combinations,0.4688,high,"Yellow summer squash is a non-starchy, non-dark-green vegetable that fits the residual 'other vegetables' category."
+yellow tomatoes,Red orange vegetables,0.4250,high,"Yellow tomatoes are tomatoes, a red/orange vegetable category staple, despite their color variation."
+yellowtail fish,Seafood,1.9739,high,Yellowtail is a fish species; fresh fish fillets map directly to the Seafood category
+yolk egg,Eggs,0.3829,high,Egg yolk is part of a whole egg; the Eggs category covers all egg products including yolks
+yolk only egg,Eggs,0.3829,medium,Egg yolk is still fundamentally part of the egg product; the Eggs category covers whole eggs and egg components
+young leaves fireweed,,,high,Fireweed young leaves are a foraged wild plant not represented in mainstream US consumer food baskets tracked by TFP; no national-average price data available.
