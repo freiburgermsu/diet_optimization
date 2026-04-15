@@ -5,6 +5,12 @@ data/raw/*.pdf
 data/raw/*.zip
 .DS_Store
 
+# Scrape outputs and per-term caches (local only; re-generate via scripts)
+cache/
+prices_raw.json
+prices.json
+prices_claude.json
+
 # Python
 __pycache__/
 *.py[cod]
