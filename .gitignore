@@ -10,6 +10,10 @@ cache/
 prices_raw.json
 prices.json
 prices_claude.json
+final_prices.json
+priced_foods.json
+meal_plan.json
+meal_plan.md
 
 # Python
 __pycache__/
