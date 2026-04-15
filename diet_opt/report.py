@@ -8,7 +8,7 @@ from pandas import DataFrame
 
 
 def write_diet_csv(primals: dict, path: str | Path = "optimum_diet.csv") -> None:
-    grams = {"food": list(primals.keys()), "grams": [int(v * 100) for v in primals.values()]}
+    grams = {"food": list(primals.keys()), "grams": [round(v * 100) for v in primals.values()]}
     DataFrame(grams).to_csv(path)
 
 

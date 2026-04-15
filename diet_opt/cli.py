@@ -8,7 +8,7 @@ from .data import load_pipeline_inputs, load_priced_foods, validate_bounds
 from .model import build_model
 from .overrides import apply_overrides, load_overrides
 from .report import plot_bounds, write_diet_csv
-from .solve import explain_shadow_prices, solve
+from .solve import explain_shadow_prices, solve, solve_with_min_serving
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -21,6 +21,13 @@ def main(argv: list[str] | None = None) -> int:
         help="path to priced_foods.json (from scripts/build_priced_foods.py). "
              "When set, replaces food_info.json + food_matches.json "
              "with the ~610-food expanded table (Kroger + TFP).",
+    )
+    opt.add_argument(
+        "--min-serving-grams", type=float, default=0.0,
+        help="minimum grams/day a food must contribute IF included. "
+             "Foods below this threshold are iteratively dropped from the LP "
+             "(semi-continuous heuristic). Default 0 disables; pass e.g. 30 "
+             "to drop any food whose optimal quantity would be below 30g/day.",
     )
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
@@ -47,15 +54,33 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "optimize":
-        model, _vars, _cons = build_model(food_info, food_matches, nutrition)
-        objective, primals, constraint_values, shadows = solve(
-            model, extract_duals=args.sensitivity
-        )
+        model, variables, _cons = build_model(food_info, food_matches, nutrition)
+
+        if args.min_serving_grams > 0:
+            min_units = args.min_serving_grams / 100.0  # variable units = 100g each
+            result = solve_with_min_serving(
+                model, variables, min_serving_units=min_units,
+                extract_duals=args.sensitivity,
+            )
+            objective, primals, constraint_values, shadows, iters = result
+            if objective is None:
+                print(f"ERROR: infeasible after dropping foods below "
+                      f"{args.min_serving_grams}g/day. Try a smaller threshold.",
+                      file=sys.stderr)
+                return 1
+            print(f"converged in {iters} iteration(s) with "
+                  f"min-serving {args.min_serving_grams}g/day",
+                  file=sys.stderr)
+        else:
+            objective, primals, constraint_values, shadows = solve(
+                model, extract_duals=args.sensitivity
+            )
+
         write_diet_csv(primals)
         plot_bounds(constraint_values, nutrition)
         print(f"objective = ${objective:.2f}/day")
         for food, amount in sorted(primals.items(), key=lambda kv: -kv[1]):
-            print(f"  {food:30s} {int(amount * 100)} g")
+            print(f"  {food:30s} {round(amount * 100)} g")
         if shadows:
             print("\nBinding constraints (shadow prices):")
             for line in explain_shadow_prices(shadows, nutrition):
