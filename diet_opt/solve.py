@@ -59,6 +59,75 @@ def _extract_duals(model) -> list[ShadowPrice]:
     return out
 
 
+def solve_with_min_serving(
+    model,
+    variables: dict,
+    min_serving_units: float,
+    extract_duals: bool = False,
+    big_m: float = 5.0,
+):
+    """Enforce a true semi-continuous constraint via MILP.
+
+    Each food variable f_i becomes semi-continuous: f_i = 0 OR f_i ≥ min.
+    Implemented with a binary indicator b_i per food and two linked
+    constraints:
+        f_i ≤ big_m × b_i          (if b_i = 0 then f_i = 0)
+        f_i ≥ min_units × b_i      (if b_i = 1 then f_i ≥ min_units)
+
+    This converts the LP into a MILP. GLPK solves it; expect 5-60 sec
+    depending on food pool size (610 binaries currently).
+
+    Previous implementation (drop-and-resolve heuristic) cycled on the
+    610-food table — dropped foods got replaced by other tiny-quantity
+    foods every iteration. MILP gives the globally optimal answer.
+
+    Returns (objective, primals, constraint_values, shadow_prices, iterations)
+    where `iterations` is always 1 (kept for API compatibility).
+    """
+    import optlang
+
+    added_binaries = []
+    added_constraints = []
+    for food_key, var in variables.items():
+        b_name = f"use_{food_key}"
+        if b_name in {v.name for v in model.variables}:
+            continue  # already added (e.g. re-solve of same model)
+        b = optlang.Variable(b_name, lb=0, ub=1, type="binary")
+        model.add(b)
+        added_binaries.append(b)
+        c_ub = optlang.Constraint(var - big_m * b, ub=0, name=f"mincap_ub_{food_key}")
+        c_lb = optlang.Constraint(var - min_serving_units * b, lb=0, name=f"mincap_lb_{food_key}")
+        model.add(c_ub)
+        model.add(c_lb)
+        added_constraints.extend([c_ub, c_lb])
+
+    # GLPK's exact mode is LP-only; drop to simplex for the MILP solve.
+    try:
+        model.configuration.lp_method = "simplex"
+    except (AttributeError, ValueError):
+        pass
+
+    try:
+        model.optimize()
+        if getattr(model, "status", None) in ("infeasible", "infeasible_inaccurate"):
+            return None, None, None, None, 1
+    except Exception:
+        return None, None, None, None, 1
+
+    # Filter out the binary indicators from the primals we return.
+    primals = {
+        k: v for k, v in model.primal_values.items()
+        if v > 0 and not k.startswith("use_")
+    }
+    constraint_values = {
+        c.name: {"lb": c.lb, "val": c.primal, "ub": c.ub}
+        for c in model.constraints
+        if not c.name.startswith("mincap_")
+    }
+    shadow_prices = _extract_duals(model) if extract_duals else []
+    return model.objective.value, primals, constraint_values, shadow_prices, 1
+
+
 def explain_shadow_prices(shadows: list[ShadowPrice], nutrition: dict, top_k: int = 5) -> list[str]:
     """Render shadow prices as one natural-language line each."""
     lines = []
