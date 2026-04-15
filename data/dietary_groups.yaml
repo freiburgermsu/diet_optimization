@@ -1,0 +1,288 @@
+# Dietary exclusion groups for use with --dietary-preset.
+#
+# Each group is a list of lowercase substring patterns matched against
+# food names. If any pattern is a substring of the food name, the food
+# is excluded from that group.
+#
+# Keyword choice favors false-negatives over false-positives — we'd
+# rather miss a food that "should" be excluded than wrongly drop one.
+# Users can top up with explicit --blacklist items for edge cases.
+#
+# Known ambiguities (by design):
+#   - "butter" NOT in dairy (collides with peanut/almond butter);
+#     milk/cheese/yogurt/cream keywords catch most real dairy.
+#   - "peanut" NOT in nut (peanuts are legumes; tree-nut allergy
+#     sufferers who also avoid peanuts should add it manually).
+#   - "coconut" IS in nut (tree-nut allergen label).
+
+groups:
+  meat:
+    # Generic meat + cut descriptors
+    - meat
+    - steak
+    - loin         # sirloin, top loin
+    - rib          # beef rib, pork rib
+    - brisket
+    - chuck
+    - flank
+    - shank
+    - shoulder
+    - tenderloin
+    - ribeye
+    - roast        # "pot roast" etc; could collide with "roast coffee" — FDC coffee rare
+    - cutlet
+    - fillet       # fish also but fillet in FDC is mostly meat
+
+    # Red meat species
+    - beef
+    - pork
+    - lamb
+    - veal
+    - goat
+    - bison
+    - buffalo
+    - venison
+    - elk
+    - moose
+    - mutton
+    - game
+
+    # Poultry
+    - chicken
+    - turkey
+    - duck
+    - goose
+    - quail
+    - pheasant
+    - grouse
+    - squab
+    - guinea
+    - hen           # "hen" for laying birds; collides only w/ "hen of the woods"
+    - cornish
+    - ostrich
+    - emu
+    - pigeon
+    - poultry
+
+    # Game + exotic
+    - boar
+    - rabbit
+    - hare
+    - antelope
+    - beaver
+    - bear
+    - beefalo
+    - caribou
+    - horse
+
+    # Cured / processed meats
+    - sausage
+    - bacon
+    - ham
+    - pepperoni
+    - salami
+    - pastrami
+    - prosciutto
+    - chorizo
+    - jerky
+    - pate
+    - deli
+
+    # Organ meats
+    - gizzard
+    - liver
+    - tripe
+    - tongue
+    - kidneys        # organ; "kidney beans" won't match (bean keyword is "bean")
+    - brains
+    - heart
+    - sweetbreads
+    - offal
+    - carcass
+
+  fish:
+    - fish
+    - seafood
+    - salmon
+    - tuna
+    - cod
+    - bass
+    - trout
+    - pollock
+    - snapper
+    - mackerel
+    - sardine
+    - halibut
+    - catfish
+    - swordfish
+    - tilapia
+    - herring
+    - anchovy
+    - flounder
+    - perch
+    - whitefish
+    - haddock
+    - hake
+    - pike
+    - carp
+    - mahi
+    - sole
+    - turbot
+    - sturgeon
+    - pompano
+    - bluefish
+    - croaker
+    - tilefish
+    - shrimp
+    - prawn
+    - crab
+    - lobster
+    - crayfish
+    - clam
+    - oyster
+    - mussel
+    - mollusk
+    - scallop
+    - caviar
+    - roe
+    - abalone
+    - squid
+    - octopus
+
+  dairy:
+    - milk       # note: "coconut milk", "almond milk" also match; user can whitelist
+    - yogurt
+    - cheese
+    - kefir
+    - whey
+    - ghee
+    - buttermilk
+    - cream     # cream and creamer
+
+  egg:
+    - egg
+    - yolk
+
+  nut:
+    - almond
+    - walnut
+    - pecan
+    - pistachio
+    - cashew
+    - hazelnut
+    - filbert
+    - macadamia
+    - brazil nut
+    - chestnut
+    - pine nut
+    - coconut
+
+  gluten:
+    - wheat
+    - barley
+    - rye
+    - spelt
+    - kamut
+    - triticale
+    - farro
+    - couscous
+    - bulgur
+    - seitan
+    - bread
+    - pasta
+    - noodle
+    - matzo
+
+  soy:
+    - soy
+    - tofu
+    - tempeh
+    - edamame
+    - miso
+    - natto
+
+  nightshade:
+    - tomato
+    - potato
+    - eggplant
+    - pepper
+    - goji
+    - paprika
+
+  legume:
+    # Overlaps with "bean" searches; use with care.
+    - bean
+    - lentil
+    - chickpea
+    - garbanzo
+    - pea
+    - lupin
+    - peanut
+
+  processed:
+    # Added for the whole_foods preset. Catches TFP-priced convenience
+    # foods the LP otherwise treats as cheap nutrient sources (cookies
+    # get enriched-flour nutrients and show up suspiciously often).
+    - cookie
+    - cracker
+    - biscuit
+    - candy
+    - chocolate
+    - cake
+    - pastry
+    - donut
+    - doughnut
+    - pie
+    - muffin  # usually enriched
+    - brownie
+    - ice cream
+    - sorbet
+    - frozen yogurt
+    - gelato
+    - soda
+    - pop           # soft drink
+    - energy drink
+    - sport drink
+    - cereal bar
+    - snack bar
+    - granola bar
+    - protein bar
+    - chip          # potato chip, tortilla chip
+    - pretzel
+    - popcorn
+    - pudding
+    - custard
+    - gummies
+    - gummy
+    - jelly
+    - jam
+    - preserves
+    - nectar  # e.g. "agave nectar"
+    - syrup
+
+# Presets combine one or more groups.
+# --dietary-preset vegan expands to the union of meat + fish + dairy + egg groups.
+# Pass multiple with --dietary-preset vegan,gluten_free
+presets:
+  pescatarian:    [meat]
+  vegetarian:     [meat, fish]
+  lacto_vegetarian:    [meat, fish, egg]
+  ovo_vegetarian: [meat, fish, dairy]
+  vegan:          [meat, fish, dairy, egg]
+
+  nut_free:       [nut]
+  gluten_free:    [gluten]
+  dairy_free:     [dairy]
+  egg_free:       [egg]
+  soy_free:       [soy]
+  nightshade_free: [nightshade]
+  legume_free:    [legume]
+  whole_foods:    [processed]
+
+  # Diet styles
+  paleo:          [gluten, dairy, soy, legume]
+  whole30:        [gluten, dairy, soy, legume]
+
+  # Common combinations
+  vegan_gluten_free: [meat, fish, dairy, egg, gluten]
+  vegan_nut_free:    [meat, fish, dairy, egg, nut]

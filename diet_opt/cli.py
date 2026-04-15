@@ -7,6 +7,7 @@ import sys
 from .data import load_pipeline_inputs, load_priced_foods, validate_bounds
 from .model import build_model
 from .overrides import apply_overrides, load_overrides
+from .presets import foods_excluded_by_presets, list_presets
 from .report import plot_bounds, write_diet_csv
 from .solve import explain_shadow_prices, solve, solve_with_min_serving
 
@@ -28,6 +29,12 @@ def main(argv: list[str] | None = None) -> int:
              "Foods below this threshold are iteratively dropped from the LP "
              "(semi-continuous heuristic). Default 0 disables; pass e.g. 30 "
              "to drop any food whose optimal quantity would be below 30g/day.",
+    )
+    opt.add_argument(
+        "--dietary-preset", default="",
+        help=f"comma-separated dietary preset names to exclude matching foods. "
+             f"Available presets: {', '.join(list_presets())}. "
+             f"Multiple presets union together (e.g. 'vegan,gluten_free').",
     )
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
@@ -54,6 +61,28 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "optimize":
+        # Apply dietary presets before building the model — filters food_info.
+        if args.dietary_preset:
+            preset_names = [p.strip() for p in args.dietary_preset.split(",") if p.strip()]
+            try:
+                excluded = foods_excluded_by_presets(preset_names, list(food_info))
+            except ValueError as e:
+                print(f"ERROR: {e}", file=sys.stderr)
+                return 1
+            for food in excluded:
+                food_info.pop(food, None)
+                food_matches.pop(food, None)
+            print(
+                f"dietary preset {preset_names} excluded {len(excluded)} foods; "
+                f"{len(food_info)} remain",
+                file=sys.stderr,
+            )
+            if excluded:
+                sample = excluded[:8]
+                print(f"  examples: {', '.join(sample)}"
+                      + (f", +{len(excluded) - 8} more" if len(excluded) > 8 else ""),
+                      file=sys.stderr)
+
         model, variables, _cons = build_model(food_info, food_matches, nutrition)
 
         if args.min_serving_grams > 0:
