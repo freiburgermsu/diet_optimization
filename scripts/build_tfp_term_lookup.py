@@ -264,7 +264,13 @@ def main() -> int:
     p.add_argument("--limit", type=int, default=None)
     p.add_argument("--only-nulls-from", default=None,
                    help="path to prices_claude.json; only categorize terms that Claude "
-                        "ranker returned null for (plus terms with zero Kroger hits)")
+                        "ranker evaluated and rejected (had candidates, chose null). "
+                        "Terms with zero Kroger hits are NOT included here unless "
+                        "--include-zero-result is also set.")
+    p.add_argument("--include-zero-result", action="store_true",
+                   help="with --only-nulls-from, also categorize terms that had zero "
+                        "Kroger hits (never entered the ranker). Expands the set from "
+                        "Claude-nulls only to all-unpriced.")
     args = p.parse_args()
 
     cache_dir = Path(args.cache_dir)
@@ -282,13 +288,32 @@ def main() -> int:
     else:
         all_terms = [l.strip() for l in terms_path.read_text().splitlines() if l.strip()]
 
-    # Optionally filter to only terms that need a TFP fallback
+    # Optionally filter to only terms Claude ranker evaluated and rejected.
     if args.only_nulls_from:
         priced_claude = set(json.loads(Path(args.only_nulls_from).read_text()))
-        terms = [t for t in all_terms if t not in priced_claude]
+        # Build the set of terms that actually entered the ranker (had ≥1 Kroger
+        # candidate product). Without this filter, 237 zero-result terms would
+        # be mixed in — they never saw a ranker decision.
+        terms_with_candidates = set()
+        if terms_path.suffix == ".json":
+            for p in raw.get("products", []):
+                t = p.get("search_term")
+                if t:
+                    terms_with_candidates.add(t)
+
+        if args.include_zero_result:
+            terms = [t for t in all_terms if t not in priced_claude]
+            scope = "all unpriced terms (Claude nulls + zero-result)"
+        else:
+            # Default: only terms that had candidates but Claude said null
+            terms = [
+                t for t in all_terms
+                if t in terms_with_candidates and t not in priced_claude
+            ]
+            scope = "Claude-ranker nulls (had candidates, chose null)"
+
         print(
-            f"filtering to {len(terms)}/{len(all_terms)} terms "
-            f"that Claude ranker didn't price",
+            f"filtering to {len(terms)}/{len(all_terms)} terms — {scope}",
             file=sys.stderr,
         )
     else:
