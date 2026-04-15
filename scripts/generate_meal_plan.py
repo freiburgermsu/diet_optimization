@@ -120,6 +120,26 @@ Unless the user specifies a single cuisine style, give each day a distinct cuisi
 - Combine steps into sentences rather than numbered lists
 - Target: a literate adult who doesn't cook professionally
 
+## Raw vs cooked weights (IMPORTANT)
+
+Ingredient grams in your output come from USDA FoodData Central's
+raw/dry entries. This means:
+- Beans, lentils, rice, oats, pasta, quinoa: DRY weight. Cook yields
+  roughly 2-3× the mass (water absorption). When the ingredient list
+  says "100g pinto beans", the cook should rehydrate that dry weight.
+- Meat and fish: RAW weight. Cooked weight is ~25% less.
+- Fresh produce: as-is weight. No conversion needed.
+- Leafy greens: shrink dramatically when cooked (spinach → 25% of raw).
+
+In cooking_instructions, when a dry ingredient appears, be explicit:
+"100g dry pinto beans (yields ~280g cooked)" or "rinse 80g dry brown
+rice, simmer in 160mL water for 35 min". Do NOT say "cook 280g pinto
+beans" — the ingredient value is the DRY weight; writing it as the
+cooked weight would understate the amount by 3×.
+
+For fresh produce and meat, the ingredient gram matches what the user
+sees in the dish (accounting for cooking shrink naturally).
+
 ## Prep time
 
 Respect the user's max-prep-minutes budget (default 30 min/meal). Breakfasts should be faster (<15 min). One dinner per week can be slower (batch-cook meal, up to 60 min) and explicitly flagged as the "prep-ahead" day.
@@ -413,8 +433,40 @@ def generate_with_retries(
     return plan, violations
 
 
-def render_markdown(plan: WeeklyMealPlan) -> str:
-    """Pretty-print the plan as Markdown for human consumption."""
+def load_cooking_yields(path: Path = Path("data/cooking_yields.yaml")) -> dict[str, dict]:
+    """Return {food_key: {raw_to_cooked, state}}. Empty dict if file absent."""
+    if not path.exists():
+        return {}
+    import yaml
+    return yaml.safe_load(path.read_text()) or {}
+
+
+def lookup_yield(food: str, yields: dict[str, dict]) -> dict | None:
+    """Substring match of food against yield keys; longest match wins."""
+    f = food.lower().replace(" ", "_")
+    candidates = [(k, v) for k, v in yields.items() if k in f or f in k]
+    if not candidates:
+        return None
+    candidates.sort(key=lambda kv: -len(kv[0]))
+    return candidates[0][1]
+
+
+def format_ingredient(ing: "Ingredient", yields: dict[str, dict]) -> str:
+    """Annotate each shopping-list line with dual-weight if the food is dry."""
+    y = lookup_yield(ing.food, yields)
+    if y is None or y["state"] != "dry":
+        return f"- {ing.food}: {ing.grams:.0f}g"
+    cooked = ing.grams * y["raw_to_cooked"]
+    return f"- {ing.food}: {ing.grams:.0f}g dry (≈ {cooked:.0f}g cooked)"
+
+
+def render_markdown(plan: WeeklyMealPlan, yields: dict[str, dict] | None = None) -> str:
+    """Pretty-print the plan as Markdown for human consumption.
+
+    Filters out 0g ingredients (leftover-reheat markers) and annotates
+    dry-weight items in the shopping list with their cooked yield.
+    """
+    yields = yields or {}
     lines = ["# Weekly Meal Plan", "", plan.weekly_summary, ""]
     for day in plan.days:
         lines.append(f"## Day {day.day}")
@@ -423,8 +475,12 @@ def render_markdown(plan: WeeklyMealPlan) -> str:
             lines.append("")
         for meal in day.meals:
             lines.append(f"### {meal.name.title()}: {meal.dish_name} _({meal.cuisine}, {meal.prep_time_min} min)_")
-            for ing in meal.ingredients:
-                lines.append(f"- {ing.food}: {ing.grams:.0f}g")
+            nonzero = [i for i in meal.ingredients if i.grams > 0]
+            if nonzero:
+                for ing in nonzero:
+                    lines.append(format_ingredient(ing, yields))
+            else:
+                lines.append("_(reheat from an earlier day — no new ingredients)_")
             lines.append("")
             lines.append(meal.cooking_instructions)
             if meal.nutritional_highlight:
@@ -433,7 +489,7 @@ def render_markdown(plan: WeeklyMealPlan) -> str:
     lines.append("## Shopping list")
     lines.append("")
     for ing in sorted(plan.shopping_list, key=lambda i: -i.grams):
-        lines.append(f"- {ing.food}: {ing.grams:.0f}g")
+        lines.append(format_ingredient(ing, yields))
     return "\n".join(lines)
 
 
@@ -514,12 +570,38 @@ def main() -> int:
             print(f"  ✓ mass conservation holds after rebalance", file=sys.stderr)
         violations = post_violations
 
+    yields = load_cooking_yields()
+
+    # Realism warning: flag any single-meal dry-ingredient portion that
+    # produces >400g cooked (≥4 large servings).
+    realism_warnings: list[str] = []
+    for day in plan.days:
+        for meal in day.meals:
+            for ing in meal.ingredients:
+                y = lookup_yield(ing.food, yields)
+                if y is None or y["state"] != "dry":
+                    continue
+                cooked = ing.grams * y["raw_to_cooked"]
+                if cooked > 400:
+                    realism_warnings.append(
+                        f"Day {day.day} {meal.name}: {ing.grams:.0f}g dry {ing.food} "
+                        f"= {cooked:.0f}g cooked ({cooked/200:.1f} large servings)"
+                    )
+
     Path(args.output).write_text(plan.model_dump_json(indent=2))
     print(f"wrote {args.output}", file=sys.stderr)
 
     if args.markdown:
-        Path(args.markdown).write_text(render_markdown(plan))
+        Path(args.markdown).write_text(render_markdown(plan, yields=yields))
         print(f"wrote {args.markdown}", file=sys.stderr)
+
+    if realism_warnings:
+        print(f"\nRealism check: {len(realism_warnings)} meals exceed 400g "
+              f"cooked weight per dry ingredient:", file=sys.stderr)
+        for w in realism_warnings[:10]:
+            print(f"  {w}", file=sys.stderr)
+        print("  Consider tightening LP per-food caps (see issue #11).",
+              file=sys.stderr)
 
     if violations:
         return 3

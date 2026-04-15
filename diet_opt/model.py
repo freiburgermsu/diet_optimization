@@ -19,6 +19,10 @@ from .data import parse_bound
 
 GRAMS_PER_LITER = 998
 SPARSE_NUTRIENT_THRESHOLD = 6  # see #8 for the per-nutrient triage follow-up
+MAX_SERVINGS_PER_FOOD = 4      # each variable's ub in units of 100g/day (= 400g/day)
+                                # reduced from 5 in the original LP to tighten
+                                # per-food portion realism pending the full #11
+                                # variety-cap wiring.
 
 
 def _sparse_nutrients(food_info: dict, food_matches: dict, nutrition: dict) -> dict[str, int]:
@@ -52,7 +56,9 @@ def build_model(
     import optlang
 
     variables: dict[str, "optlang.Variable"] = {
-        _safe_name(food): optlang.Variable(_safe_name(food), lb=0, ub=5, type="continuous")
+        _safe_name(food): optlang.Variable(
+            _safe_name(food), lb=0, ub=MAX_SERVINGS_PER_FOOD, type="continuous"
+        )
         for food in food_info
     }
 

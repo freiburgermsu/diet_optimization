@@ -285,3 +285,102 @@ def test_rebalance_skips_within_tolerance():
     plan = _make_simple_plan(m)
     changes = m.rebalance_plan(plan, {"carrots": 150.3}, tolerance_g=0.5)
     assert not changes
+
+
+# --- Cooking yields + dual-weight rendering ---
+
+def test_lookup_yield_substring_match():
+    m = _load()
+    yields = {
+        "pinto_beans": {"raw_to_cooked": 2.8, "state": "dry"},
+        "beans": {"raw_to_cooked": 2.7, "state": "dry"},
+    }
+    # Longest match wins
+    assert m.lookup_yield("pinto_beans", yields)["raw_to_cooked"] == 2.8
+    # Partial match falls back to shorter key
+    assert m.lookup_yield("navy_beans", yields)["raw_to_cooked"] == 2.7
+
+
+def test_lookup_yield_case_insensitive():
+    m = _load()
+    yields = {"brown_rice": {"raw_to_cooked": 3.0, "state": "dry"}}
+    assert m.lookup_yield("Brown Rice", yields)["raw_to_cooked"] == 3.0
+
+
+def test_lookup_yield_missing_returns_none():
+    m = _load()
+    assert m.lookup_yield("unicorn_meat", {}) is None
+
+
+def test_format_ingredient_dry_shows_cooked():
+    m = _load()
+    ing = m.Ingredient(food="pinto_beans", grams=100)
+    yields = {"pinto_beans": {"raw_to_cooked": 2.8, "state": "dry"}}
+    line = m.format_ingredient(ing, yields)
+    assert "100g dry" in line
+    assert "280g cooked" in line
+
+
+def test_format_ingredient_fresh_no_annotation():
+    m = _load()
+    ing = m.Ingredient(food="carrots", grams=100)
+    yields = {"carrots": {"raw_to_cooked": 0.9, "state": "fresh"}}
+    line = m.format_ingredient(ing, yields)
+    assert "dry" not in line
+    assert line == "- carrots: 100g"
+
+
+def test_format_ingredient_no_yield_data_no_annotation():
+    m = _load()
+    ing = m.Ingredient(food="mystery", grams=50)
+    line = m.format_ingredient(ing, {})
+    assert line == "- mystery: 50g"
+
+
+def test_render_markdown_filters_zero_ingredients():
+    m = _load()
+    plan = _make_simple_plan(m)
+    # Insert a zero-ingredient "reheat" meal
+    plan.days[0].meals[0].ingredients = [
+        m.Ingredient(food="carrots", grams=0),
+        m.Ingredient(food="pinto_beans", grams=0),
+    ]
+    md = m.render_markdown(plan)
+    assert "carrots: 0g" not in md
+    assert "reheat from an earlier day" in md
+
+
+def test_render_markdown_uses_dual_weight_for_dry_foods():
+    m = _load()
+    plan = _make_simple_plan(m)
+    plan.shopping_list = [
+        m.Ingredient(food="pinto_beans", grams=3500),
+        m.Ingredient(food="carrots", grams=2000),
+    ]
+    yields = {
+        "pinto_beans": {"raw_to_cooked": 2.8, "state": "dry"},
+        "carrots": {"raw_to_cooked": 0.9, "state": "fresh"},
+    }
+    md = m.render_markdown(plan, yields=yields)
+    assert "3500g dry" in md
+    assert "cooked" in md  # 9800g cooked appears for pinto
+    # carrots get no annotation
+    assert "- carrots: 2000g" in md
+    assert "carrots: 2000g dry" not in md
+
+
+def test_load_cooking_yields_returns_empty_if_file_missing(tmp_path):
+    m = _load()
+    assert m.load_cooking_yields(tmp_path / "nonexistent.yaml") == {}
+
+
+def test_load_cooking_yields_live_file_has_pinto_beans():
+    m = _load()
+    root = Path(__file__).resolve().parent.parent
+    p = root / "data" / "cooking_yields.yaml"
+    if not p.exists():
+        pytest.skip("cooking_yields.yaml not present")
+    yields = m.load_cooking_yields(p)
+    assert "pinto_beans" in yields
+    assert yields["pinto_beans"]["raw_to_cooked"] > 2.5
+    assert yields["pinto_beans"]["state"] == "dry"

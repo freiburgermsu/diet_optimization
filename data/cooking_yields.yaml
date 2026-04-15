@@ -1,0 +1,52 @@
+# Dry/raw → cooked mass multipliers for foods whose mass changes
+# significantly during cooking. Used by scripts/generate_meal_plan.py to
+# annotate ingredient weights correctly and report dual-weight shopping
+# lists.
+#
+# LP nutrient density comes from FDC "raw" entries (dry beans, dry rice,
+# etc.), so the LP's gram outputs are in DRY/RAW units. When rendering
+# a meal plan, the DRY weight is what the user measures and buys, but
+# the COOKED weight is what lands in the bowl.
+#
+# Schema: {food_key: {raw_to_cooked: float, state: "dry"|"fresh"|"cooked"}}
+# Match keys against the LP's search-term vocabulary (lowercase, spaces
+# or underscores). Pattern-matched at runtime (substring match) so
+# "brown rice" and "white rice" both hit the "rice" factor if needed.
+
+# Legumes (roughly triple when cooked from dry)
+pinto_beans:          { raw_to_cooked: 2.8, state: "dry" }
+black_beans:          { raw_to_cooked: 2.8, state: "dry" }
+kidney_beans:         { raw_to_cooked: 2.8, state: "dry" }
+great_northern_beans: { raw_to_cooked: 2.8, state: "dry" }
+navy_beans:           { raw_to_cooked: 2.8, state: "dry" }
+lima_beans:           { raw_to_cooked: 2.6, state: "dry" }
+chickpeas:            { raw_to_cooked: 2.5, state: "dry" }
+lentils:              { raw_to_cooked: 2.4, state: "dry" }
+adzuki_beans:         { raw_to_cooked: 2.6, state: "dry" }
+soybeans:             { raw_to_cooked: 2.8, state: "dry" }
+
+# Grains (roughly 2-3× when cooked)
+brown_rice:           { raw_to_cooked: 3.0, state: "dry" }
+white_rice:           { raw_to_cooked: 3.0, state: "dry" }
+wild_rice:            { raw_to_cooked: 3.5, state: "dry" }
+quinoa:               { raw_to_cooked: 3.0, state: "dry" }
+barley:               { raw_to_cooked: 3.5, state: "dry" }
+oats:                 { raw_to_cooked: 2.0, state: "dry" }
+pasta:                { raw_to_cooked: 2.5, state: "dry" }
+couscous:             { raw_to_cooked: 2.5, state: "dry" }
+bulgur:               { raw_to_cooked: 2.5, state: "dry" }
+
+# Fresh produce (mass shifts slightly on cooking; treat as ~unchanged)
+carrots:              { raw_to_cooked: 0.9, state: "fresh" }
+broccoli:             { raw_to_cooked: 0.9, state: "fresh" }
+spinach:              { raw_to_cooked: 0.25, state: "fresh" }  # wilts dramatically
+kale:                 { raw_to_cooked: 0.4,  state: "fresh" }
+collard:              { raw_to_cooked: 0.45, state: "fresh" }
+cabbage:              { raw_to_cooked: 0.7, state: "fresh" }
+
+# Meat/fish (shrink ~25% when cooked)
+chicken_breast:       { raw_to_cooked: 0.75, state: "raw" }
+beef:                 { raw_to_cooked: 0.72, state: "raw" }
+pork:                 { raw_to_cooked: 0.75, state: "raw" }
+cod_fish:             { raw_to_cooked: 0.80, state: "raw" }
+salmon:               { raw_to_cooked: 0.85, state: "raw" }
