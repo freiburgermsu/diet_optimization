@@ -247,6 +247,92 @@ def validate_plan(plan: WeeklyMealPlan, lp_totals: dict[str, float],
     return violations
 
 
+def rebalance_plan(
+    plan: "WeeklyMealPlan",
+    lp_totals: dict[str, float],
+    tolerance_g: float = 0.5,
+) -> list[str]:
+    """Post-hoc nudge Claude's plan to match LP totals exactly.
+
+    For each food, scales its existing appearances proportionally to hit the
+    LP target. Preserves Claude's culinary choices (which meals contain
+    which foods) while fixing the arithmetic. Foods that Claude omitted
+    entirely are appended to day 1's snack as a fallback. Foods Claude
+    hallucinated (not in LP) are removed.
+
+    Returns a list of human-readable change descriptions.
+    """
+    # Aggregate current plan totals
+    plan_totals: dict[str, float] = {}
+    for day in plan.days:
+        for meal in day.meals:
+            for ing in meal.ingredients:
+                plan_totals[ing.food] = plan_totals.get(ing.food, 0.0) + ing.grams
+
+    changes: list[str] = []
+
+    # (1) Scale each LP food to hit its exact target
+    for food, target in lp_totals.items():
+        current = plan_totals.get(food, 0.0)
+        delta = target - current
+        if abs(delta) < tolerance_g:
+            continue
+
+        if current == 0:
+            # Food entirely missing from plan — add to day 1 snack
+            day1 = plan.days[0]
+            snack = next((m for m in day1.meals if m.name == "snack"), None)
+            if snack is None:
+                snack = day1.meals[-1]  # fall back to last meal
+            snack.ingredients.append(Ingredient(food=food, grams=target))
+            changes.append(f"{food}: added {target:.0f}g (was absent, placed in Day 1 {snack.name})")
+            continue
+
+        scale = target / current
+        for day in plan.days:
+            for meal in day.meals:
+                for ing in meal.ingredients:
+                    if ing.food == food:
+                        ing.grams *= scale
+        changes.append(
+            f"{food}: scaled ×{scale:.3f} (from {current:.0f}g to {target:.0f}g, delta {delta:+.0f}g)"
+        )
+
+    # (2) Remove foods that Claude hallucinated (in plan but not in LP)
+    for food, got in plan_totals.items():
+        if food not in lp_totals:
+            for day in plan.days:
+                for meal in day.meals:
+                    meal.ingredients = [i for i in meal.ingredients if i.food != food]
+            changes.append(f"{food}: removed ({got:.0f}g — not in LP output)")
+
+    # (3) Round all ingredient grams to whole numbers; absorb rounding error
+    #     in the largest appearance of each food
+    for food, target in lp_totals.items():
+        refs = [
+            ing for day in plan.days for meal in day.meals
+            for ing in meal.ingredients if ing.food == food
+        ]
+        if not refs:
+            continue
+        for ing in refs:
+            ing.grams = round(ing.grams)
+        current_sum = sum(ing.grams for ing in refs)
+        if current_sum != round(target):
+            # Assign any residual to the largest allocation
+            refs.sort(key=lambda i: -i.grams)
+            refs[0].grams += round(target) - current_sum
+
+    # (4) Replace shopping list with canonical LP totals
+    plan.shopping_list = [
+        Ingredient(food=f, grams=round(g))
+        for f, g in sorted(lp_totals.items(), key=lambda kv: -kv[1])
+        if round(g) > 0
+    ]
+
+    return changes
+
+
 def call_claude(
     client: anthropic.Anthropic,
     model: str,
@@ -372,7 +458,18 @@ def main() -> int:
     p.add_argument("--tolerance-g", type=float, default=5.0,
                    help="mass-conservation tolerance in grams per food")
     p.add_argument("--max-retries", type=int, default=3)
+    p.add_argument(
+        "--no-rebalance", action="store_true",
+        help="skip the post-hoc rebalancer (keep Claude's raw allocations; "
+             "mass-conservation violations may remain)",
+    )
     args = p.parse_args()
+
+    # Defensive strip of ANTHROPIC_API_KEY — trailing whitespace / non-
+    # breaking spaces from copy-pasted console values crash the HTTP layer.
+    import os
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        os.environ["ANTHROPIC_API_KEY"] = os.environ["ANTHROPIC_API_KEY"].strip()
 
     lp_totals = load_lp_diet(Path(args.diet), days=args.days)
     if not lp_totals:
@@ -399,6 +496,24 @@ def main() -> int:
         print("no plan produced", file=sys.stderr)
         return 2
 
+    # Post-hoc rebalance: scale ingredient portions to match LP totals exactly.
+    if not args.no_rebalance and violations:
+        print(f"\nrebalancing {len(violations)} mass-conservation deltas...",
+              file=sys.stderr)
+        changes = rebalance_plan(plan, lp_totals, tolerance_g=args.tolerance_g)
+        for change in changes[:15]:
+            print(f"  {change}", file=sys.stderr)
+        # Re-validate after rebalancing
+        post_violations = validate_plan(plan, lp_totals, tolerance_g=args.tolerance_g)
+        if post_violations:
+            print(f"\nWARNING: {len(post_violations)} violations remain after "
+                  f"rebalance (likely rounding edge cases):", file=sys.stderr)
+            for v in post_violations[:5]:
+                print(f"  - {v}", file=sys.stderr)
+        else:
+            print(f"  ✓ mass conservation holds after rebalance", file=sys.stderr)
+        violations = post_violations
+
     Path(args.output).write_text(plan.model_dump_json(indent=2))
     print(f"wrote {args.output}", file=sys.stderr)
 
@@ -407,10 +522,6 @@ def main() -> int:
         print(f"wrote {args.markdown}", file=sys.stderr)
 
     if violations:
-        print(f"\nWARNING: {len(violations)} mass-conservation violations remain "
-              f"after {args.max_retries} attempts:", file=sys.stderr)
-        for v in violations[:10]:
-            print(f"  - {v}", file=sys.stderr)
         return 3
 
     return 0

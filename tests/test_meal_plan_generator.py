@@ -180,3 +180,108 @@ def test_pydantic_schema_enforces_day_range():
         m.DayPlan(day=8, meals=[])  # >7
     with pytest.raises(Exception):
         m.DayPlan(day=0, meals=[])  # <1
+
+
+# --- Rebalancer ---
+
+def _make_simple_plan(m):
+    """Build a plan with ingredient appearances for rebalancer tests."""
+    return m.WeeklyMealPlan(
+        days=[
+            m.DayPlan(
+                day=d,
+                meals=[
+                    m.Meal(
+                        name="breakfast", dish_name="B", cuisine="C",
+                        prep_time_min=5,
+                        ingredients=[m.Ingredient(food="carrots", grams=50)],
+                        cooking_instructions="Eat.",
+                    ),
+                    m.Meal(
+                        name="snack", dish_name="S", cuisine="C",
+                        prep_time_min=2,
+                        ingredients=[],
+                        cooking_instructions="Pick.",
+                    ),
+                ],
+            )
+            for d in range(1, 4)
+        ],
+        shopping_list=[m.Ingredient(food="carrots", grams=150)],
+        weekly_summary="test",
+    )
+
+
+def test_rebalance_scales_underallocated_food():
+    m = _load()
+    plan = _make_simple_plan(m)
+    # Plan has 3 × 50g = 150g carrots; LP wants 300g
+    changes = m.rebalance_plan(plan, {"carrots": 300.0})
+    total = sum(
+        ing.grams for day in plan.days for meal in day.meals
+        for ing in meal.ingredients if ing.food == "carrots"
+    )
+    assert total == 300
+    assert any("carrots" in c for c in changes)
+
+
+def test_rebalance_scales_overallocated_food():
+    m = _load()
+    plan = _make_simple_plan(m)
+    # LP wants only 75g; plan has 150g → scale down 0.5×
+    m.rebalance_plan(plan, {"carrots": 75.0})
+    total = sum(
+        ing.grams for day in plan.days for meal in day.meals
+        for ing in meal.ingredients if ing.food == "carrots"
+    )
+    assert total == 75
+
+
+def test_rebalance_adds_absent_food_to_day1_snack():
+    m = _load()
+    plan = _make_simple_plan(m)
+    changes = m.rebalance_plan(plan, {"carrots": 150.0, "tofu": 80.0})
+    day1_snack = next(meal for meal in plan.days[0].meals if meal.name == "snack")
+    tofu_in_snack = [i for i in day1_snack.ingredients if i.food == "tofu"]
+    assert len(tofu_in_snack) == 1
+    assert tofu_in_snack[0].grams == 80
+    assert any("tofu" in c for c in changes)
+
+
+def test_rebalance_removes_hallucinated_food():
+    m = _load()
+    plan = _make_simple_plan(m)
+    plan.days[0].meals[0].ingredients.append(m.Ingredient(food="unicorn", grams=10))
+    changes = m.rebalance_plan(plan, {"carrots": 150.0})
+    unicorn_count = sum(
+        1 for day in plan.days for meal in day.meals
+        for ing in meal.ingredients if ing.food == "unicorn"
+    )
+    assert unicorn_count == 0
+    assert any("unicorn" in c for c in changes)
+
+
+def test_rebalance_replaces_shopping_list():
+    m = _load()
+    plan = _make_simple_plan(m)
+    plan.shopping_list = [m.Ingredient(food="stale", grams=99)]
+    m.rebalance_plan(plan, {"carrots": 300.0, "tofu": 50.0})
+    foods = {i.food for i in plan.shopping_list}
+    assert foods == {"carrots", "tofu"}
+    carrots = next(i for i in plan.shopping_list if i.food == "carrots")
+    assert carrots.grams == 300
+
+
+def test_rebalance_preserves_validation():
+    m = _load()
+    plan = _make_simple_plan(m)
+    lp = {"carrots": 430.0, "tofu": 75.0}
+    m.rebalance_plan(plan, lp)
+    assert m.validate_plan(plan, lp, tolerance_g=1.0) == []
+
+
+def test_rebalance_skips_within_tolerance():
+    m = _load()
+    plan = _make_simple_plan(m)
+    changes = m.rebalance_plan(plan, {"carrots": 150.3}, tolerance_g=0.5)
+    assert not changes
