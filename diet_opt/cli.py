@@ -5,6 +5,7 @@ import argparse
 import sys
 
 from .data import load_pipeline_inputs, load_priced_foods, validate_bounds
+from .dri import ACTIVITY_PAL, UserProfile, apply_profile
 from .model import build_model
 from .overrides import apply_overrides, load_overrides
 from .presets import foods_excluded_by_presets, list_presets
@@ -36,6 +37,16 @@ def main(argv: list[str] | None = None) -> int:
              f"Available presets: {', '.join(list_presets())}. "
              f"Multiple presets union together (e.g. 'vegan,gluten_free').",
     )
+    opt.add_argument(
+        "--age", type=int, default=None,
+        help="age in years; enables profile-scaled DRI (energy, protein, "
+             "fiber, water, iron, calcium, etc. adjusted for user demographics)",
+    )
+    opt.add_argument("--sex", choices=["male", "female", "nonbinary"], default=None)
+    opt.add_argument("--weight-kg", type=float, default=None)
+    opt.add_argument("--height-cm", type=float, default=None)
+    opt.add_argument("--activity", choices=list(ACTIVITY_PAL), default=None,
+                     help="physical activity level for BMR × PAL scaling")
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
 
@@ -51,6 +62,36 @@ def main(argv: list[str] | None = None) -> int:
         nutrition = apply_overrides(nutrition, load_overrides())
     except FileNotFoundError:
         pass
+
+    # Profile-dependent DRI scaling (new). All four flags must be provided
+    # together; otherwise fall back to the baseline nutrition.json (28yo
+    # active 150lb male).
+    profile_flags = [
+        getattr(args, "age", None),
+        getattr(args, "sex", None),
+        getattr(args, "weight_kg", None),
+        getattr(args, "height_cm", None),
+        getattr(args, "activity", None),
+    ]
+    if any(f is not None for f in profile_flags):
+        missing = [name for name, val in zip(
+            ("--age", "--sex", "--weight-kg", "--height-cm", "--activity"),
+            profile_flags) if val is None]
+        if missing:
+            print(f"ERROR: profile scaling requires all of "
+                  f"{', '.join(missing)}", file=sys.stderr)
+            return 1
+        profile = UserProfile(
+            sex=args.sex, age=args.age,
+            weight_kg=args.weight_kg, height_cm=args.height_cm,
+            activity=args.activity,
+        )
+        nutrition = apply_profile(nutrition, profile)
+        print(
+            f"DRI scaled for {profile.sex}, {profile.age}y, "
+            f"{profile.weight_kg}kg, {profile.height_cm}cm, {profile.activity}",
+            file=sys.stderr,
+        )
 
     if args.cmd == "validate":
         violations = validate_bounds(nutrition)

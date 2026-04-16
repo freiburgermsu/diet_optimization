@@ -28,6 +28,7 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 from ..data import load_priced_foods
+from ..dri import ACTIVITY_PAL, UserProfile, apply_profile
 from ..presets import foods_excluded_by_presets, list_presets
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -42,6 +43,12 @@ class OptimizeRequest(BaseModel):
     dietary_presets: list[str] = Field(default_factory=list)
     blacklist: list[str] = Field(default_factory=list)
     whitelist: list[str] = Field(default_factory=list)
+    # Optional demographics — when all present, DRI scales to this profile.
+    age: int | None = Field(None, ge=1, le=120)
+    sex: str | None = Field(None, pattern="^(male|female|nonbinary)$")
+    weight_kg: float | None = Field(None, gt=20, lt=300)
+    height_cm: float | None = Field(None, gt=100, lt=230)
+    activity: str | None = Field(None, pattern="^(sedentary|light|moderate|active|very_active)$")
 
 
 class FoodEntry(BaseModel):
@@ -81,6 +88,21 @@ def _solve(req: OptimizeRequest, priced_foods_path: Path) -> OptimizeResponse:
     from ..solve import solve, solve_with_min_serving
 
     food_info, food_matches, nutrition = load_priced_foods(priced_foods_path.name)
+
+    # Profile-scaled DRI if demographics supplied
+    profile_fields = [req.age, req.sex, req.weight_kg, req.height_cm, req.activity]
+    if any(f is not None for f in profile_fields):
+        if not all(f is not None for f in profile_fields):
+            raise HTTPException(
+                status_code=400,
+                detail="All of age/sex/weight_kg/height_cm/activity must be provided together.",
+            )
+        profile = UserProfile(
+            sex=req.sex, age=req.age,
+            weight_kg=req.weight_kg, height_cm=req.height_cm,
+            activity=req.activity,
+        )
+        nutrition = apply_profile(nutrition, profile)
 
     # Apply dietary presets
     excluded_preset_count = 0
