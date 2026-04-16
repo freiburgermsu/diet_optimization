@@ -65,6 +65,16 @@ def main(argv: list[str] | None = None) -> int:
              "the daily LP's solution (default 60). Smaller = faster solve.",
     )
     opt.add_argument(
+        "--weekly-time-limit", type=float, default=120.0,
+        help="with --weekly, cap MILP solve time in seconds (default 120). "
+             "The best feasible solution found within the limit is returned.",
+    )
+    opt.add_argument(
+        "--weekly-mip-gap", type=float, default=0.01,
+        help="with --weekly, MIP optimality gap (default 0.01 = 1%%). Higher "
+             "= faster but more suboptimal.",
+    )
+    opt.add_argument(
         "--pool-emphasis",
         choices=["budget", "athlete", "recovery", "older", "iron_deficient", "pregnancy", "auto"],
         default="auto",
@@ -200,6 +210,8 @@ def main(argv: list[str] | None = None) -> int:
                 pool_info, pool_matches, nutrition,
                 days=args.weekly, max_days_per_food=args.max_days_per_food,
                 min_serving_units=min_units,
+                time_limit_sec=args.weekly_time_limit,
+                mip_gap=args.weekly_mip_gap,
             )
             # HiGHS solved during build_weekly_model via .minimize(); nothing
             # to do here.

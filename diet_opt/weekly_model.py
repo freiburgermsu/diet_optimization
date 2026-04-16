@@ -249,6 +249,8 @@ def build_weekly_model(
     min_serving_units: float = DEFAULT_MIN_SERVING_UNITS,
     var_ub: float = DEFAULT_VAR_UB,
     include_volume: bool = False,
+    time_limit_sec: float = 120.0,
+    mip_gap: float = 0.01,
 ) -> WeeklyModel:
     """Build the weekly MILP per the module docstring.
 
@@ -263,6 +265,16 @@ def build_weekly_model(
 
     h = highspy.Highs()
     h.silent()
+    # Cap solve time so the branch-and-bound terminates quickly with the
+    # incumbent (best-feasible-so-far) solution. Without this, live runs
+    # can take hours chasing the last fraction of a percent of optimality.
+    try:
+        h.setOptionValue("time_limit", float(time_limit_sec))
+        # 1% MIP gap: stop once the best feasible is within 1% of the
+        # LP relaxation bound. Usually hits this within seconds.
+        h.setOptionValue("mip_rel_gap", float(mip_gap))
+    except Exception:
+        pass
 
     # Variable registries: map (food, day) → highspy highs_var object
     x_vars: dict[tuple[str, int], Any] = {}   # continuous grams (100g units)
