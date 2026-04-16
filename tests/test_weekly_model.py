@@ -130,6 +130,89 @@ def test_min_serving_forces_each_served_portion_above_threshold():
             assert grams >= 50 - 0.1, f"{food} on day {d} = {grams}g < 50g"
 
 
+def test_jaccard_similarity_identical_days():
+    from diet_opt.weekly_model import jaccard_similarity
+    a = {"carrots": 100, "rice": 200}
+    b = {"carrots": 50, "rice": 150}
+    assert jaccard_similarity(a, b) == 1.0
+
+
+def test_jaccard_similarity_disjoint_days():
+    from diet_opt.weekly_model import jaccard_similarity
+    a = {"carrots": 100}
+    b = {"tofu": 50}
+    assert jaccard_similarity(a, b) == 0.0
+
+
+def test_jaccard_similarity_partial_overlap():
+    from diet_opt.weekly_model import jaccard_similarity
+    a = {"carrots": 100, "rice": 200}
+    b = {"carrots": 50, "beans": 100}
+    # {carrots} ∩ / {carrots, rice, beans} = 1/3
+    assert abs(jaccard_similarity(a, b) - 1/3) < 1e-9
+
+
+def test_jaccard_empty_days():
+    from diet_opt.weekly_model import jaccard_similarity
+    assert jaccard_similarity({}, {}) == 0.0
+
+
+def test_cluster_days_places_similar_days_adjacent():
+    from diet_opt.weekly_model import cluster_days_for_leftovers, jaccard_similarity
+    # 4 days: day 0 and day 3 share carrots+rice; day 1 and day 2 share beans.
+    # Between disjoint clusters ONE transition pair will have zero overlap;
+    # ≥2 of the 3 adjacent pairs should share ingredients.
+    per_day = {
+        0: {"carrots": 400, "rice": 200},
+        1: {"beans": 300, "tofu": 100},
+        2: {"beans": 300, "eggs": 80},
+        3: {"carrots": 400, "rice": 200},
+    }
+    ordered = cluster_days_for_leftovers(per_day)
+
+    # Total adjacent-similarity should beat the original ordering.
+    def adj_total(d):
+        keys = sorted(d)
+        return sum(jaccard_similarity(d[keys[i]], d[keys[i+1]])
+                   for i in range(len(keys) - 1))
+    assert adj_total(ordered) > adj_total(per_day)
+
+    # At least 2 of 3 adjacent pairs should share an ingredient.
+    keys = sorted(ordered)
+    shared_pairs = sum(
+        1 for i in range(len(keys) - 1)
+        if set(ordered[keys[i]]) & set(ordered[keys[i+1]])
+    )
+    assert shared_pairs >= 2
+
+
+def test_cluster_days_preserves_total_amounts():
+    from diet_opt.weekly_model import cluster_days_for_leftovers
+    per_day = {
+        0: {"a": 100, "b": 50},
+        1: {"b": 40, "c": 75},
+        2: {"a": 80, "c": 60},
+    }
+    ordered = cluster_days_for_leftovers(per_day)
+    # Same total grams per food across the week
+    def totals(d):
+        out = {}
+        for day_foods in d.values():
+            for food, g in day_foods.items():
+                out[food] = out.get(food, 0) + g
+        return out
+    assert totals(per_day) == totals(ordered)
+
+
+def test_cluster_days_noop_for_small_inputs():
+    from diet_opt.weekly_model import cluster_days_for_leftovers
+    assert cluster_days_for_leftovers({}) == {}
+    single = {0: {"a": 100}}
+    assert cluster_days_for_leftovers(single) == single
+    pair = {0: {"a": 100}, 1: {"b": 50}}
+    assert cluster_days_for_leftovers(pair) == pair
+
+
 def test_extract_empty_when_model_has_no_solution():
     model = optlang.Model()
     x = {("a", 0): optlang.Variable("a_d0", lb=0, ub=1)}

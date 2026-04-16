@@ -202,3 +202,56 @@ def extract_weekly_solution(weekly: WeeklyModel) -> dict[int, dict[str, float]]:
             continue
         out.setdefault(d, {})[food] = val * 100  # back to grams
     return out
+
+
+def jaccard_similarity(day_a: dict[str, float], day_b: dict[str, float]) -> float:
+    """Ingredient-set Jaccard similarity between two days.
+
+    |A ∩ B| / |A ∪ B| where A and B are the food-name sets. Returns
+    0.0 when both days are empty (treat as maximally dissimilar rather
+    than undefined).
+    """
+    a = set(day_a)
+    b = set(day_b)
+    union = a | b
+    if not union:
+        return 0.0
+    return len(a & b) / len(union)
+
+
+def cluster_days_for_leftovers(
+    per_day: dict[int, dict[str, float]],
+) -> dict[int, dict[str, float]]:
+    """Reorder days so adjacent days share the most ingredients.
+
+    Post-solve only: does NOT change any food quantities or the total
+    weekly cost. Just renumbers days so that leftover cooked portions
+    flow naturally from one day to the next.
+
+    Formulation: maximize sum_{i=0}^{n-2} jaccard(day_perm[i], day_perm[i+1]).
+    For n=7 days, 7! = 5040 permutations — trivially enumerable.
+    Day 1 of the reordered sequence is fixed as the original day 0 to
+    remove the rotational-symmetry degeneracy (the problem is a path,
+    not a cycle).
+
+    Returns a new dict keyed from 0 to n-1 with foods unchanged per day,
+    just renumbered so output[0] corresponds to whatever original day
+    anchors best.
+    """
+    from itertools import permutations
+
+    day_indices = sorted(per_day)
+    if len(day_indices) <= 2:
+        return dict(per_day)
+
+    def total_adjacent_similarity(order: tuple[int, ...]) -> float:
+        return sum(
+            jaccard_similarity(per_day[order[i]], per_day[order[i + 1]])
+            for i in range(len(order) - 1)
+        )
+
+    # Enumerate every ordering; pick the one with maximum adjacent similarity.
+    # For 7 days this is 5040 orderings; trivial.
+    best_order = max(permutations(day_indices), key=total_adjacent_similarity)
+    # Renumber so consecutive day indices reflect the optimal order.
+    return {new_d: per_day[old_d] for new_d, old_d in enumerate(best_order)}

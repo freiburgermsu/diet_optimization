@@ -64,6 +64,14 @@ def main(argv: list[str] | None = None) -> int:
         help="with --weekly, pre-filter to the top-N cheapest foods plus "
              "the daily LP's solution (default 60). Smaller = faster solve.",
     )
+    opt.add_argument(
+        "--cluster-leftovers", action="store_true", default=True,
+        help="with --weekly, reorder days so adjacent days share the most "
+             "ingredients (for practical leftover reuse). Enabled by default.",
+    )
+    opt.add_argument(
+        "--no-cluster-leftovers", dest="cluster_leftovers", action="store_false",
+    )
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
 
@@ -175,6 +183,26 @@ def main(argv: list[str] | None = None) -> int:
             weekly.model.optimize()
             per_day = extract_weekly_solution(weekly)
             total_cost = weekly.model.objective.value
+
+            # Reorder days for leftover adjacency
+            if args.cluster_leftovers and len(per_day) > 2:
+                from .weekly_model import cluster_days_for_leftovers, jaccard_similarity
+                before_sim = sum(
+                    jaccard_similarity(per_day[i], per_day[i+1])
+                    for i in sorted(per_day)[:-1]
+                )
+                per_day = cluster_days_for_leftovers(per_day)
+                after_sim = sum(
+                    jaccard_similarity(per_day[i], per_day[i+1])
+                    for i in sorted(per_day)[:-1]
+                )
+                print(
+                    f"clustered days for leftover adjacency "
+                    f"(avg Jaccard {before_sim/(len(per_day)-1):.2f} → "
+                    f"{after_sim/(len(per_day)-1):.2f})",
+                    file=sys.stderr,
+                )
+
             print(f"objective = ${total_cost:.2f}/week "
                   f"(${total_cost/args.weekly:.2f}/day)")
             all_foods = sorted({f for day in per_day.values() for f in day})
