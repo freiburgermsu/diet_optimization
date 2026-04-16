@@ -55,9 +55,9 @@ def main(argv: list[str] | None = None) -> int:
              "to tune how often any single food may repeat (default 3).",
     )
     opt.add_argument(
-        "--max-days-per-food", type=int, default=3,
+        "--max-days-per-food", type=int, default=4,
         help="with --weekly, cap how many days a single food can appear "
-             "(default 3). Lower = more variety, higher cost.",
+             "(default 4). Lower = more variety, higher cost.",
     )
     opt.add_argument(
         "--weekly-pool-size", type=int, default=60,
@@ -176,13 +176,10 @@ def main(argv: list[str] | None = None) -> int:
                 days=args.weekly, max_days_per_food=args.max_days_per_food,
                 min_serving_units=min_units,
             )
-            try:
-                weekly.model.configuration.lp_method = "simplex"
-            except Exception:
-                pass
-            weekly.model.optimize()
+            # HiGHS solved during build_weekly_model via .minimize(); nothing
+            # to do here.
             per_day = extract_weekly_solution(weekly)
-            total_cost = weekly.model.objective.value
+            total_cost = weekly.model.getObjectiveValue()
 
             # Reorder days for leftover adjacency
             if args.cluster_leftovers and len(per_day) > 2:

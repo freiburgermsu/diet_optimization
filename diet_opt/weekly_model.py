@@ -41,7 +41,7 @@ from .data import parse_bound
 from .model import SPARSE_NUTRIENT_THRESHOLD, _safe_name
 
 GRAMS_PER_LITER = 998
-DEFAULT_MAX_DAYS_PER_FOOD = 3
+DEFAULT_MAX_DAYS_PER_FOOD = 4
 DEFAULT_MIN_SERVING_UNITS = 0.30    # 30g/day
 DEFAULT_VAR_UB = 4.0                # 400g/day per food
 WEEKLY_BIG_M = DEFAULT_VAR_UB
@@ -49,10 +49,15 @@ WEEKLY_BIG_M = DEFAULT_VAR_UB
 
 @dataclass
 class WeeklyModel:
-    """Container for a built weekly MILP and its per-cell variables."""
-    model: Any                                  # optlang.Model
-    x: dict[tuple[str, int], Any]               # continuous f[food, day]
-    y: dict[tuple[str, int], Any]               # binary y[food, day]
+    """Container for a built weekly MILP and its per-cell variables.
+
+    With the HiGHS backend, `x` and `y` map (food, day) → int column
+    index (not variable objects). Use `model.getSolution().col_value`
+    to read the values.
+    """
+    model: Any                                  # highspy.Highs
+    x: dict[tuple[str, int], Any]               # HiGHS column index for x
+    y: dict[tuple[str, int], Any]               # HiGHS column index for y
 
 
 def preselect_foods(
@@ -98,46 +103,38 @@ def build_weekly_model(
 ) -> WeeklyModel:
     """Build the weekly MILP per the module docstring.
 
-    Returns a WeeklyModel bundling the optlang Model and the
-    (continuous, binary) variable dicts keyed on (food_name, day_index).
+    Uses HiGHS directly (not via optlang) because optlang's HiGHS
+    interface doesn't exist in v1.x and GLPK's MIP solver was too slow
+    on this formulation (600+ variable MILPs would time out).
+
+    Returns a WeeklyModel bundling the HiGHS instance and dicts mapping
+    (food, day) to column indices for later extraction.
     """
-    import optlang
+    import highspy
 
-    model = optlang.Model(name=f"weekly_{days}d")
+    h = highspy.Highs()
+    h.silent()
 
-    x: dict[tuple[str, int], optlang.Variable] = {}
-    y: dict[tuple[str, int], optlang.Variable] = {}
+    # Variable registries: map (food, day) → highspy highs_var object
+    x_vars: dict[tuple[str, int], Any] = {}   # continuous grams (100g units)
+    y_vars: dict[tuple[str, int], Any] = {}   # binary "served that day"
+
     for food in food_info:
-        safe = _safe_name(food)
         for d in range(days):
-            x[(food, d)] = optlang.Variable(
-                f"{safe}_d{d}", lb=0, ub=var_ub, type="continuous"
-            )
-            y[(food, d)] = optlang.Variable(
-                f"use_{safe}_d{d}", lb=0, ub=1, type="binary"
-            )
-    model.add(list(x.values()))
-    model.add(list(y.values()))
-
-    # --- Semi-continuous gating: x[f,d] ∈ {0} ∪ [min_serving, var_ub] ---
-    for (food, d), xv in x.items():
-        yv = y[(food, d)]
-        model.add(optlang.Constraint(
-            xv - WEEKLY_BIG_M * yv, ub=0,
-            name=f"gate_ub_{_safe_name(food)}_d{d}",
-        ))
-        model.add(optlang.Constraint(
-            xv - min_serving_units * yv, lb=0,
-            name=f"gate_lb_{_safe_name(food)}_d{d}",
-        ))
-
-    # --- Per-food rotation cap across days ---
+            x_vars[(food, d)] = h.addVariable(lb=0, ub=var_ub)
     for food in food_info:
-        model.add(optlang.Constraint(
-            sum(y[(food, d)] for d in range(days)),
-            ub=max_days_per_food,
-            name=f"rot_{_safe_name(food)}",
-        ))
+        for d in range(days):
+            y_vars[(food, d)] = h.addBinary()
+
+    # --- Semi-continuous gating: x ∈ {0} ∪ [min_serving, var_ub] ---
+    for (food, d), xv in x_vars.items():
+        yv = y_vars[(food, d)]
+        h.addConstr(xv - WEEKLY_BIG_M * yv <= 0)
+        h.addConstr(xv - min_serving_units * yv >= 0)
+
+    # --- Rotation cap: each food appears ≤ max_days_per_food days ---
+    for food in food_info:
+        h.addConstr(sum(y_vars[(food, d)] for d in range(days)) <= max_days_per_food)
 
     # --- Per-day nutrient constraints (identical DRI each day) ---
     support = {
@@ -157,47 +154,46 @@ def build_weekly_model(
                 amount = food_matches[food][nutrient]
                 if nutrient == "Total Water":
                     amount /= GRAMS_PER_LITER
-                expr_terms.append(amount * x[(food, d)])
+                expr_terms.append(amount * x_vars[(food, d)])
             if not expr_terms:
                 continue
             expr = sum(expr_terms)
-            c_lb = lb if lb != float("inf") else None
-            c_ub = ub if ub != float("inf") else None
-            model.add(optlang.Constraint(
-                expr, lb=c_lb, ub=c_ub,
-                name=f"{_safe_name(nutrient)}_d{d}",
-            ))
+            if lb != float("inf"):
+                h.addConstr(expr >= lb)
+            if ub != float("inf"):
+                h.addConstr(expr <= ub)
 
-    # --- Volume constraint (optional, off by default for weekly) ---
+    # --- Volume constraint (optional) ---
     if include_volume:
         for d in range(days):
             vol_expr = sum(
-                info["cupEQ"] * x[(food, d)]
+                info["cupEQ"] * x_vars[(food, d)]
                 for food, info in food_info.items()
             )
-            model.add(optlang.Constraint(
-                vol_expr, lb=5, ub=20, name=f"volume_d{d}",
-            ))
+            h.addConstr(vol_expr >= 5)
+            h.addConstr(vol_expr <= 20)
 
     # --- Objective: minimize total weekly cost ---
     obj_terms = []
-    for (food, d), xv in x.items():
+    for (food, d), xv in x_vars.items():
         info = food_info[food]
         cost_per_100g = info["price"] / max(info.get("yield", 1.0), 0.01) / 4.54
         obj_terms.append(cost_per_100g * xv)
-    model.objective = optlang.Objective(sum(obj_terms), direction="min")
+    h.minimize(sum(obj_terms))
 
-    return WeeklyModel(model=model, x=x, y=y)
+    return WeeklyModel(model=h, x=x_vars, y=y_vars)
 
 
 def extract_weekly_solution(weekly: WeeklyModel) -> dict[int, dict[str, float]]:
     """Return {day_index: {food_name: grams}} from a solved WeeklyModel.
 
-    Caller is responsible for having invoked `weekly.model.optimize()`.
+    Caller must have invoked `weekly.model.minimize(...)` / `maximize(...)`
+    (the HiGHS solve is triggered automatically by those calls).
     """
+    h = weekly.model
     out: dict[int, dict[str, float]] = {}
-    for (food, d), xv in weekly.x.items():
-        val = xv.primal
+    for (food, d), var in weekly.x.items():
+        val = h.variableValue(var)
         if val is None or val < 1e-6:
             continue
         out.setdefault(d, {})[food] = val * 100  # back to grams
