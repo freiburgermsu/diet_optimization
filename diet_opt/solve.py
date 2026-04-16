@@ -14,21 +14,19 @@ class ShadowPrice:
     dual: float         # positive magnitude of ∂objective / ∂bound
 
 
-def solve(model, extract_duals: bool = False):
+def solve(model, extract_duals: bool = False, use_exact: bool = False):
     """Solve and return (objective, primals, constraint_values, shadow_prices).
 
-    When `extract_duals=False`, runs in exact-arithmetic mode and returns
-    an empty shadow_prices list. When True, falls back to simplex — GLPK's
-    exact mode does not populate duals.
+    Default method is GLPK's floating-point simplex — fast and produces
+    duals for shadow-price reporting. Pass `use_exact=True` to switch to
+    GLPK's rational-arithmetic mode for bit-exact reproducibility (slower,
+    and duals are NOT populated — incompatible with extract_duals).
     """
-    # GLPK's "exact" method is iterating-simplex with rational arithmetic; duals
-    # aren't populated. Only force "exact" when we don't need duals; fall back
-    # to the solver's default (primal simplex) for simplex/dual extraction.
     try:
-        if extract_duals:
-            model.configuration.lp_method = "simplex"
-        else:
+        if use_exact and not extract_duals:
             model.configuration.lp_method = "exact"
+        else:
+            model.configuration.lp_method = "simplex"
     except (AttributeError, ValueError):
         pass  # non-GLPK backend; use defaults
     model.optimize()
