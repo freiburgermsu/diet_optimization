@@ -223,19 +223,26 @@
   </fieldset>
 
   <fieldset>
-    <legend>Advanced</legend>
-    <details>
-      <summary>LP constraints &amp; custom food lists</summary>
-      <label for="min-serving">Minimum serving size (grams/day per food)</label>
-      <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="0">
-      <div class="help">Foods in the optimum diet must contribute at least this much, or nothing at all. <strong>Warning:</strong> values ≥10g enable MILP which takes 15-60 seconds; value 0 is fast (&lt;2s).</div>
+    <legend>Portion constraint</legend>
+    <label for="min-serving">Minimum serving (grams/day per included food)</label>
+    <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="30">
+    <div class="help">
+      A food in the optimum diet must contribute at least this much, or nothing at all
+      (MILP semi-continuous). Recommended: <strong>30g</strong> for meaningful portions.
+      Set to <strong>0</strong> for fast mode — the LP may include 2g/day trace foods.
+    </div>
+    <div class="help" style="margin-top:0.4rem">
+      Solve time: ~1s at 0g, ~15-60s at ≥10g (GLPK MILP, 610 binary variables).
+    </div>
+  </fieldset>
 
-      <label for="blacklist">Blacklist — foods to exclude (comma-separated)</label>
-      <input type="text" id="blacklist" name="blacklist" placeholder="mushrooms, kidney beans">
+  <fieldset>
+    <legend>Custom exclusions (optional)</legend>
+    <label for="blacklist">Blacklist — foods to exclude (comma-separated)</label>
+    <input type="text" id="blacklist" name="blacklist" placeholder="mushrooms, kidney beans">
 
-      <label for="whitelist">Whitelist — foods that must appear (comma-separated)</label>
-      <input type="text" id="whitelist" name="whitelist" placeholder="spinach, pinto beans">
-    </details>
+    <label for="whitelist">Whitelist — foods that must appear (comma-separated)</label>
+    <input type="text" id="whitelist" name="whitelist" placeholder="spinach, pinto beans">
   </fieldset>
 
   <div class="submit-row">
