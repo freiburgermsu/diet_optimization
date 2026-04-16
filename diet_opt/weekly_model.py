@@ -65,14 +65,17 @@ def preselect_foods(
     daily_primals: dict[str, float],
     extra_count: int = 50,
 ) -> list[str]:
-    """Return a candidate food pool for the weekly solve.
+    """Return a candidate food pool for the weekly solve (price-only).
 
     Seeds with foods the single-day LP already uses (they're known
     cost-effective), then fills in the cheapest remaining foods by
     `price_per_100g_edible` to reach at least `len(seed) + extra_count`.
+
+    See `preselect_foods_by_profile` for nutrient-aware scoring that
+    biases the pool toward the user's priorities (athlete → protein,
+    elder → calcium, etc.).
     """
     seed = {_unslug(k, food_info) for k in daily_primals if _unslug(k, food_info)}
-    # Sort remaining foods by their $/100g-edible (price/yield/4.54)
     remaining = [
         (f, info["price"] / max(info.get("yield", 1.0), 0.01) / 4.54)
         for f, info in food_info.items()
@@ -81,6 +84,152 @@ def preselect_foods(
     remaining.sort(key=lambda x: x[1])
     pool = list(seed) + [f for f, _ in remaining[:extra_count]]
     return pool
+
+
+# Predefined nutrient emphasis templates. Weights > 1 boost a nutrient's
+# contribution to a food's score. Unlisted nutrients default to weight 1.
+EMPHASIS_TEMPLATES: dict[str, dict[str, float]] = {
+    "budget": {},  # no emphasis — weights all 1.0 (closest to price-only)
+    "athlete": {
+        "Protein": 3.0,
+        "Energy": 2.0,
+        "Iron": 2.0,
+        "Magnesium": 2.0,
+        "Potassium": 2.0,
+        "Sodium": 1.5,    # replacing what's lost in sweat
+    },
+    "recovery": {
+        "Protein": 3.0,
+        "Vitamin C": 2.0,
+        "Iron": 2.0,
+        "Zinc": 2.0,
+    },
+    "older": {
+        "Calcium": 3.0,
+        "Vitamin D": 3.0,
+        "Vitamin B12": 3.0,
+        "Fiber": 2.0,
+        "Total Fiber": 2.0,
+        "Protein": 2.0,
+        "Vitamin B6": 1.5,
+    },
+    "iron_deficient": {
+        "Iron": 4.0,
+        "Vitamin C": 2.0,      # aids iron absorption
+        "Vitamin B12": 2.0,
+        "Folate": 2.0,
+    },
+    "pregnancy": {
+        "Folate": 3.0,
+        "Iron": 3.0,
+        "Calcium": 2.0,
+        "Protein": 2.0,
+        "Choline": 2.0,
+        "Vitamin D": 2.0,
+    },
+}
+
+
+def profile_to_emphasis(
+    sex: str | None = None,
+    age: int | None = None,
+    activity: str | None = None,
+) -> str:
+    """Map a user profile to the most fitting emphasis template.
+
+    Ordering of checks matters: more specific first. Returns the
+    template name; caller looks it up in EMPHASIS_TEMPLATES.
+    """
+    if activity in ("active", "very_active"):
+        return "athlete"
+    if age is not None and age >= 60:
+        return "older"
+    if sex == "female" and age is not None and 15 <= age < 51:
+        return "iron_deficient"
+    return "budget"
+
+
+def score_foods(
+    food_info: dict,
+    food_matches: dict,
+    nutrition: dict,
+    emphasis: dict[str, float] | None = None,
+) -> list[tuple[str, float]]:
+    """Score each food by (weighted nutrient density) / price.
+
+    Formula:
+        score = Σ_n weight_n * (nutrient_per_g_n / DRI_lb_n) / price_per_g
+
+    High score = cheap AND dense in the emphasized nutrients. Foods
+    with unknown or zero price are scored 0 (filtered out).
+
+    Returns a list of (food_name, score) sorted by score descending.
+    """
+    from .data import parse_bound
+
+    emphasis = emphasis or {}
+    scores: list[tuple[str, float]] = []
+
+    # Precompute DRI lower bounds for normalization
+    dri_lb = {}
+    for nutrient, content in nutrition.items():
+        lb = parse_bound(content.get("low_bound", 0))
+        if lb and lb > 0 and lb != float("inf"):
+            dri_lb[nutrient] = lb
+
+    for food, info in food_info.items():
+        price_per_g = info["price"] / max(info.get("yield", 1.0), 0.01) / 454.0
+        if price_per_g <= 0:
+            continue
+        nutrients = food_matches.get(food, {})
+        numer = 0.0
+        for nutrient, amount in nutrients.items():
+            if nutrient not in dri_lb:
+                continue
+            weight = emphasis.get(nutrient, 1.0)
+            # amount is per-100g; normalize by DRI lb (mass per day)
+            numer += weight * (amount / dri_lb[nutrient])
+        score = numer / price_per_g if price_per_g > 0 else 0.0
+        scores.append((food, score))
+
+    scores.sort(key=lambda kv: -kv[1])
+    return scores
+
+
+def preselect_foods_by_profile(
+    food_info: dict,
+    food_matches: dict,
+    nutrition: dict,
+    daily_primals: dict[str, float] | None = None,
+    *,
+    emphasis: dict[str, float] | str | None = None,
+    extra_count: int = 50,
+) -> list[str]:
+    """Profile-aware pool selection.
+
+    Always seeds with foods the 1-day LP chose. Then fills `extra_count`
+    additional slots by *nutrient-per-dollar* score, using the
+    `emphasis` weights (string name → template, or dict → custom).
+
+    When emphasis is None or "budget", falls back to price-only ordering
+    via `preselect_foods` (for backward compatibility).
+    """
+    if isinstance(emphasis, str):
+        emphasis = EMPHASIS_TEMPLATES.get(emphasis, {})
+
+    if not emphasis:
+        return preselect_foods(food_info, daily_primals or {}, extra_count)
+
+    seed = {_unslug(k, food_info) for k in (daily_primals or {}) if _unslug(k, food_info)}
+    ranked = score_foods(food_info, food_matches, nutrition, emphasis)
+    extras: list[str] = []
+    for food, _score in ranked:
+        if food in seed:
+            continue
+        extras.append(food)
+        if len(extras) >= extra_count:
+            break
+    return list(seed) + extras
 
 
 def _unslug(safe_key: str, food_info: dict) -> str | None:

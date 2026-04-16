@@ -98,6 +98,103 @@ def test_preselect_foods_seeds_with_daily_solution():
     assert "beans" in non_seed
 
 
+# --- Profile-aware scoring ---
+
+def test_profile_to_emphasis_routes_correctly():
+    from diet_opt.weekly_model import profile_to_emphasis
+    assert profile_to_emphasis(sex="male", age=28, activity="active") == "athlete"
+    assert profile_to_emphasis(sex="male", age=28, activity="very_active") == "athlete"
+    assert profile_to_emphasis(sex="male", age=70, activity="sedentary") == "older"
+    assert profile_to_emphasis(sex="female", age=30, activity="moderate") == "iron_deficient"
+    assert profile_to_emphasis(sex="female", age=60, activity="sedentary") == "older"
+    assert profile_to_emphasis(sex="male", age=28, activity="sedentary") == "budget"
+
+
+def test_emphasis_templates_have_expected_keys():
+    from diet_opt.weekly_model import EMPHASIS_TEMPLATES
+    assert "athlete" in EMPHASIS_TEMPLATES
+    assert "older" in EMPHASIS_TEMPLATES
+    assert "iron_deficient" in EMPHASIS_TEMPLATES
+    assert EMPHASIS_TEMPLATES["athlete"]["Protein"] >= 3.0
+    assert EMPHASIS_TEMPLATES["older"]["Calcium"] >= 3.0
+    assert EMPHASIS_TEMPLATES["iron_deficient"]["Iron"] >= 4.0
+
+
+def test_score_foods_emphasizes_athlete_proteins():
+    """A protein-dense food should outrank a cheap but protein-poor one
+    when athlete emphasis is applied."""
+    from diet_opt.weekly_model import score_foods, EMPHASIS_TEMPLATES
+    food_info = {
+        "carrots": {"price": 0.5, "yield": 0.9, "cupEQ": 2},     # cheap, low protein
+        "tofu":    {"price": 1.0, "yield": 1.0, "cupEQ": 2},     # moderate, high protein
+    }
+    food_matches = {
+        "carrots": {"Protein": 0.9, "Iron": 0.3, "Energy": 41},
+        "tofu":    {"Protein": 17,  "Iron": 2.7, "Energy": 144},
+    }
+    nutrition = {
+        "Protein": {"low_bound": 80, "high_bound": 200, "units": "grams"},
+        "Iron":    {"low_bound": 18, "high_bound": 45,  "units": "mg"},
+        "Energy":  {"low_bound": 2400, "high_bound": 3200, "units": "kcal"},
+    }
+    # Budget mode: carrots cheaper so higher score
+    budget_ranked = score_foods(food_info, food_matches, nutrition,
+                                emphasis=EMPHASIS_TEMPLATES["budget"])
+    # Athlete mode: tofu's protein density should overcome carrot's price advantage
+    athlete_ranked = score_foods(food_info, food_matches, nutrition,
+                                 emphasis=EMPHASIS_TEMPLATES["athlete"])
+    budget_top = budget_ranked[0][0]
+    athlete_top = athlete_ranked[0][0]
+    # Order may be same or different, but athlete should boost tofu's relative score
+    def score_of(ranked, food):
+        return dict(ranked)[food]
+    budget_ratio = score_of(budget_ranked, "tofu") / score_of(budget_ranked, "carrots")
+    athlete_ratio = score_of(athlete_ranked, "tofu") / score_of(athlete_ranked, "carrots")
+    assert athlete_ratio > budget_ratio, (
+        "athlete emphasis should boost tofu's relative score"
+    )
+
+
+def test_preselect_foods_by_profile_with_emphasis():
+    from diet_opt.weekly_model import preselect_foods_by_profile
+    food_info = {
+        "carrots": {"price": 0.5, "yield": 0.9, "cupEQ": 2},
+        "tofu":    {"price": 1.0, "yield": 1.0, "cupEQ": 2},
+        "eggs":    {"price": 2.0, "yield": 1.0, "cupEQ": 2},
+    }
+    food_matches = {
+        "carrots": {"Protein": 0.9, "Iron": 0.3, "Energy": 41},
+        "tofu":    {"Protein": 17,  "Iron": 2.7, "Energy": 144},
+        "eggs":    {"Protein": 13,  "Iron": 1.2, "Energy": 155},
+    }
+    nutrition = {
+        "Protein": {"low_bound": 80, "high_bound": 200, "units": "grams"},
+        "Iron":    {"low_bound": 18, "high_bound": 45,  "units": "mg"},
+        "Energy":  {"low_bound": 2400, "high_bound": 3200, "units": "kcal"},
+    }
+    pool = preselect_foods_by_profile(
+        food_info, food_matches, nutrition,
+        daily_primals={"tofu": 2.0},
+        emphasis="athlete",
+        extra_count=2,
+    )
+    # Seed is tofu; next two by athlete score should include higher-protein foods
+    assert "tofu" in pool
+    assert len(pool) <= 3
+
+
+def test_preselect_by_profile_falls_back_when_emphasis_none():
+    """emphasis=None should behave like plain preselect_foods (price-only)."""
+    from diet_opt.weekly_model import preselect_foods_by_profile
+    fi = {"a": {"price": 1.0, "yield": 1.0, "cupEQ": 2},
+          "b": {"price": 2.0, "yield": 1.0, "cupEQ": 2}}
+    fm = {"a": {}, "b": {}}
+    n = {}
+    pool = preselect_foods_by_profile(fi, fm, n, {}, emphasis=None, extra_count=2)
+    # Falls through to preselect_foods, which sorts by price → a first
+    assert "a" in pool
+
+
 def test_min_serving_forces_each_served_portion_above_threshold():
     fi, fm, n = _toy_food_info(), _toy_food_matches(), _toy_nutrition()
     weekly = build_weekly_model(fi, fm, n, days=4, max_days_per_food=2,

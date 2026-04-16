@@ -65,6 +65,15 @@ def main(argv: list[str] | None = None) -> int:
              "the daily LP's solution (default 60). Smaller = faster solve.",
     )
     opt.add_argument(
+        "--pool-emphasis",
+        choices=["budget", "athlete", "recovery", "older", "iron_deficient", "pregnancy", "auto"],
+        default="auto",
+        help="scoring template for the food pool. `budget` favors cheap foods "
+             "(default); `athlete` emphasizes protein/iron/electrolytes; "
+             "`older` emphasizes calcium/vitamin D/B12; `iron_deficient` heavy "
+             "iron + vitamin C; `auto` derives from --age/--sex/--activity.",
+    )
+    opt.add_argument(
         "--cluster-leftovers", action="store_true", default=True,
         help="with --weekly, reorder days so adjacent days share the most "
              "ingredients (for practical leftover reuse). Enabled by default.",
@@ -151,7 +160,10 @@ def main(argv: list[str] | None = None) -> int:
 
         # Weekly MILP path: distinct daily menus via rotation cap
         if args.weekly is not None:
-            from .weekly_model import build_weekly_model, extract_weekly_solution, preselect_foods
+            from .weekly_model import (
+                EMPHASIS_TEMPLATES, build_weekly_model, extract_weekly_solution,
+                preselect_foods_by_profile, profile_to_emphasis,
+            )
 
             # First pass: single-day LP to seed the food pool
             seed_model, seed_vars, _ = build_model(food_info, food_matches, nutrition)
@@ -159,14 +171,27 @@ def main(argv: list[str] | None = None) -> int:
                 _seed_obj, seed_primals, _, _ = solve(seed_model)
             except Exception:
                 seed_primals = {}
-            pool_names = preselect_foods(
-                food_info, seed_primals, extra_count=args.weekly_pool_size,
+
+            # Determine pool emphasis
+            emphasis = args.pool_emphasis
+            if emphasis == "auto":
+                emphasis = profile_to_emphasis(
+                    sex=getattr(args, "sex", None),
+                    age=getattr(args, "age", None),
+                    activity=getattr(args, "activity", None),
+                )
+
+            pool_names = preselect_foods_by_profile(
+                food_info, food_matches, nutrition, seed_primals,
+                emphasis=emphasis,
+                extra_count=args.weekly_pool_size,
             )
             pool_info = {n: food_info[n] for n in pool_names if n in food_info}
             pool_matches = {n: food_matches[n] for n in pool_names if n in food_matches}
             print(
                 f"weekly MILP over {len(pool_info)} pre-selected foods "
-                f"× {args.weekly} days, max {args.max_days_per_food} days/food",
+                f"× {args.weekly} days, max {args.max_days_per_food} days/food, "
+                f"pool emphasis: {emphasis}",
                 file=sys.stderr,
             )
 
