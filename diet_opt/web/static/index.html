@@ -296,8 +296,14 @@
     e.preventDefault();
     solveBtn.disabled = true;
     const minServing = +document.getElementById("min-serving").value;
-    const eta = minServing > 0 ? "15-60s (MILP)" : "1-2s";
-    resultDiv.innerHTML = `<p><span class="spinner"></span>Solving… (${eta})</p>`;
+    const eta = minServing > 0 ? "expected 15-60s (MILP)" : "expected ~1-2s (LP)";
+    resultDiv.innerHTML = `<p><span class="spinner"></span>Solving… <span id="solve-eta">${eta}</span>  ·  elapsed <span id="solve-elapsed">0s</span></p>`;
+    const tStart = Date.now();
+    const tick = setInterval(() => {
+      const el = document.getElementById("solve-elapsed");
+      if (el) el.textContent = `${Math.round((Date.now() - tStart) / 1000)}s`;
+    }, 500);
+    const stopTick = () => clearInterval(tick);
     const fd = new FormData(optForm);
     const presets = [...document.querySelectorAll("#presets-grid input:checked")].map(x => x.value);
     const body = {
@@ -316,21 +322,25 @@
     }
     try {
       const data = await api("/optimize", { method: "POST", body });
+      stopTick();
+      const elapsed = Math.round((Date.now() - tStart) / 1000);
       lastDiet = Object.fromEntries(data.foods.map(f => [f.food, f.grams]));
-      renderDietTable(data, DEFAULT_DAYS);
+      renderDietTable(data, DEFAULT_DAYS, elapsed);
     } catch (err) {
+      stopTick();
       resultDiv.innerHTML = `<div class="error">Error: ${err.message}</div>`;
     } finally {
       solveBtn.disabled = false;
     }
   });
 
-  function renderDietTable(data, days) {
+  function renderDietTable(data, days, elapsedSec) {
     const foods = data.foods;
     let html = `<div class="result-card">`;
     html += `<h2 style="margin-top:0">Optimum diet</h2>`;
     html += `<p class="cost-sub">${foods.length} foods`;
     if (data.excluded_by_preset) html += `, ${data.excluded_by_preset} excluded by presets`;
+    if (typeof elapsedSec === "number") html += ` · solved in ${elapsedSec}s`;
     html += `</p>`;
 
     // Build columns: Food | Day 1 … Day N | Total | Cost/day | Cost total
