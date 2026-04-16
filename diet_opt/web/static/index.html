@@ -377,6 +377,65 @@
 
     data.warnings.forEach(w => html += `<div class="warn">${w}</div>`);
 
+    // --- Nutrient satisfaction table ---
+    if (data.nutrients && data.nutrients.length) {
+      html += `<h2>Nutrients — DRI coverage</h2>`;
+      html += `<table><tr>
+        <th class="food-col">Nutrient</th>
+        <th class="grams-col">Lower</th>
+        <th class="grams-col">Value</th>
+        <th class="grams-col">Upper</th>
+        <th class="grams-col">% of lower</th>
+        <th>Status</th>
+      </tr>`;
+      data.nutrients.forEach(n => {
+        const lb = n.low_bound != null ? `${n.low_bound} ${n.units}` : "—";
+        const ub = n.high_bound != null ? `${n.high_bound} ${n.units}` : "—";
+        const pct = n.pct_of_lower != null ? `${n.pct_of_lower.toFixed(0)}%` : "—";
+        let status = "ok";
+        let statusClass = "source-tag";
+        if (n.binding === "lower") { status = "binding ↓"; statusClass = "source-tag tfp"; }
+        else if (n.binding === "upper") { status = "binding ↑"; statusClass = "source-tag tfp"; }
+        html += `<tr>
+          <td class="food-col">${n.nutrient}</td>
+          <td class="grams-col">${lb}</td>
+          <td class="grams-col total-col">${n.value.toFixed(2)} ${n.units}</td>
+          <td class="grams-col">${ub}</td>
+          <td class="grams-col">${pct}</td>
+          <td><span class="${statusClass}">${status}</span></td>
+        </tr>`;
+      });
+      html += `</table>`;
+    }
+
+    // --- Shadow prices (only when duals are available) ---
+    if (data.shadow_prices && data.shadow_prices.length) {
+      html += `<h2>Shadow prices — what's making your diet expensive</h2>`;
+      html += `<p class="help">Each binding constraint is pinning the cost. Relaxing it by 1 unit would save the listed amount.</p>`;
+      html += `<table><tr>
+        <th class="food-col">Nutrient</th>
+        <th>Bound</th>
+        <th class="grams-col">Level</th>
+        <th class="grams-col">$/unit to relax</th>
+      </tr>`;
+      data.shadow_prices.forEach(sp => {
+        html += `<tr>
+          <td class="food-col">${sp.nutrient}</td>
+          <td>${sp.bound}</td>
+          <td class="grams-col">${sp.bound_value.toFixed(2)}</td>
+          <td class="grams-col total-col">$${sp.savings_per_unit.toFixed(3)}</td>
+        </tr>`;
+      });
+      html += `</table>`;
+      html += `<details style="margin-top:0.5rem"><summary>Plain-language explanations</summary>`;
+      data.shadow_prices.forEach(sp => {
+        html += `<div class="help" style="margin:0.3rem 0">${sp.explanation}</div>`;
+      });
+      html += `</details>`;
+    } else if (data.foods.length > 0) {
+      html += `<p class="help" style="margin-top:1rem"><em>Shadow prices unavailable (MILP mode, i.e. min-serving &gt; 0). Set min-serving to 0 to see which nutrients are pinning your cost.</em></p>`;
+    }
+
     html += `<div class="post-table-actions">`;
     html += `<button type="button" id="gen-plan-btn">Generate weekly meal plan</button>`;
     html += `<span class="help" style="margin-left:1rem">Uses Claude to distribute these totals across ${days} days × 4 meals with cooking instructions. ~30-60s.</span>`;

@@ -14,6 +14,7 @@ dependencies = [
     "optlang>=1.7",
     "pyyaml>=6.0",
     "modelseedpy",
+    "highspy>=1.14.0",
 ]
 
 [project.optional-dependencies]

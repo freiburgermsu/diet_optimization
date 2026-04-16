@@ -47,6 +47,50 @@ def main(argv: list[str] | None = None) -> int:
     opt.add_argument("--height-cm", type=float, default=None)
     opt.add_argument("--activity", choices=list(ACTIVITY_PAL), default=None,
                      help="physical activity level for BMR × PAL scaling")
+    opt.add_argument(
+        "--weekly", type=int, nargs="?", const=7, default=None, metavar="DAYS",
+        help="solve a weekly MILP producing DISTINCT daily menus with forced "
+             "food rotation. Optional int argument is the number of days "
+             "(default 7). Requires --priced-foods. Use --max-days-per-food "
+             "to tune how often any single food may repeat (default 3).",
+    )
+    opt.add_argument(
+        "--max-days-per-food", type=int, default=4,
+        help="with --weekly, cap how many days a single food can appear "
+             "(default 4). Lower = more variety, higher cost.",
+    )
+    opt.add_argument(
+        "--weekly-pool-size", type=int, default=60,
+        help="with --weekly, pre-filter to the top-N cheapest foods plus "
+             "the daily LP's solution (default 60). Smaller = faster solve.",
+    )
+    opt.add_argument(
+        "--weekly-time-limit", type=float, default=120.0,
+        help="with --weekly, cap MILP solve time in seconds (default 120). "
+             "The best feasible solution found within the limit is returned.",
+    )
+    opt.add_argument(
+        "--weekly-mip-gap", type=float, default=0.01,
+        help="with --weekly, MIP optimality gap (default 0.01 = 1%%). Higher "
+             "= faster but more suboptimal.",
+    )
+    opt.add_argument(
+        "--pool-emphasis",
+        choices=["budget", "athlete", "recovery", "older", "iron_deficient", "pregnancy", "auto"],
+        default="auto",
+        help="scoring template for the food pool. `budget` favors cheap foods "
+             "(default); `athlete` emphasizes protein/iron/electrolytes; "
+             "`older` emphasizes calcium/vitamin D/B12; `iron_deficient` heavy "
+             "iron + vitamin C; `auto` derives from --age/--sex/--activity.",
+    )
+    opt.add_argument(
+        "--cluster-leftovers", action="store_true", default=True,
+        help="with --weekly, reorder days so adjacent days share the most "
+             "ingredients (for practical leftover reuse). Enabled by default.",
+    )
+    opt.add_argument(
+        "--no-cluster-leftovers", dest="cluster_leftovers", action="store_false",
+    )
     sub.add_parser("validate", help="check DRI bounds for lb > ub inversions")
     args = parser.parse_args(argv)
 
@@ -123,6 +167,89 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  examples: {', '.join(sample)}"
                       + (f", +{len(excluded) - 8} more" if len(excluded) > 8 else ""),
                       file=sys.stderr)
+
+        # Weekly MILP path: distinct daily menus via rotation cap
+        if args.weekly is not None:
+            from .weekly_model import (
+                EMPHASIS_TEMPLATES, build_weekly_model, extract_weekly_solution,
+                preselect_foods_by_profile, profile_to_emphasis,
+            )
+
+            # First pass: single-day LP to seed the food pool
+            seed_model, seed_vars, _ = build_model(food_info, food_matches, nutrition)
+            try:
+                _seed_obj, seed_primals, _, _ = solve(seed_model)
+            except Exception:
+                seed_primals = {}
+
+            # Determine pool emphasis
+            emphasis = args.pool_emphasis
+            if emphasis == "auto":
+                emphasis = profile_to_emphasis(
+                    sex=getattr(args, "sex", None),
+                    age=getattr(args, "age", None),
+                    activity=getattr(args, "activity", None),
+                )
+
+            pool_names = preselect_foods_by_profile(
+                food_info, food_matches, nutrition, seed_primals,
+                emphasis=emphasis,
+                extra_count=args.weekly_pool_size,
+            )
+            pool_info = {n: food_info[n] for n in pool_names if n in food_info}
+            pool_matches = {n: food_matches[n] for n in pool_names if n in food_matches}
+            print(
+                f"weekly MILP over {len(pool_info)} pre-selected foods "
+                f"× {args.weekly} days, max {args.max_days_per_food} days/food, "
+                f"pool emphasis: {emphasis}",
+                file=sys.stderr,
+            )
+
+            min_units = (args.min_serving_grams or 30) / 100.0
+            weekly = build_weekly_model(
+                pool_info, pool_matches, nutrition,
+                days=args.weekly, max_days_per_food=args.max_days_per_food,
+                min_serving_units=min_units,
+                time_limit_sec=args.weekly_time_limit,
+                mip_gap=args.weekly_mip_gap,
+            )
+            # HiGHS solved during build_weekly_model via .minimize(); nothing
+            # to do here.
+            per_day = extract_weekly_solution(weekly)
+            total_cost = weekly.model.getObjectiveValue()
+
+            # Reorder days for leftover adjacency
+            if args.cluster_leftovers and len(per_day) > 2:
+                from .weekly_model import cluster_days_for_leftovers, jaccard_similarity
+                before_sim = sum(
+                    jaccard_similarity(per_day[i], per_day[i+1])
+                    for i in sorted(per_day)[:-1]
+                )
+                per_day = cluster_days_for_leftovers(per_day)
+                after_sim = sum(
+                    jaccard_similarity(per_day[i], per_day[i+1])
+                    for i in sorted(per_day)[:-1]
+                )
+                print(
+                    f"clustered days for leftover adjacency "
+                    f"(avg Jaccard {before_sim/(len(per_day)-1):.2f} → "
+                    f"{after_sim/(len(per_day)-1):.2f})",
+                    file=sys.stderr,
+                )
+
+            print(f"objective = ${total_cost:.2f}/week "
+                  f"(${total_cost/args.weekly:.2f}/day)")
+            all_foods = sorted({f for day in per_day.values() for f in day})
+            days = sorted(per_day)
+            # Print a per-day table to stdout
+            header = "food".ljust(26) + "".join(f" d{d+1:>3}" for d in days) + "  total"
+            print(header)
+            for food in all_foods:
+                row = [int(per_day.get(d, {}).get(food, 0)) for d in days]
+                total = sum(row)
+                cells = "".join(f" {g:>4}" for g in row)
+                print(f"{food[:26]:26s}{cells}  {total:>5}")
+            return 0
 
         model, variables, _cons = build_model(food_info, food_matches, nutrition)
 
