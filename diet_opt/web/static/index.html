@@ -17,26 +17,26 @@
   * { box-sizing: border-box; }
   body {
     font-family: system-ui, -apple-system, sans-serif;
-    max-width: 840px;
+    max-width: 1000px;
     margin: 2rem auto;
-    padding: 0 1rem;
+    padding: 0 1rem 4rem 1rem;
     background: var(--bg);
     color: #222;
     line-height: 1.5;
   }
   h1 { font-size: 1.5rem; margin: 0 0 0.25rem 0; }
-  h2 { font-size: 1.1rem; margin-top: 2rem; }
+  h2 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
   .subtitle { color: var(--muted); margin-top: 0; }
 
   fieldset {
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 1rem 1.25rem;
+    padding: 0.9rem 1.25rem 1rem 1.25rem;
     margin: 1rem 0;
     background: #fff;
   }
   legend { font-weight: 600; padding: 0 0.4rem; }
-  label { display: block; margin: 0.5rem 0 0.25rem 0; font-size: 0.95rem; }
+  label { display: block; margin: 0.5rem 0 0.2rem 0; font-size: 0.92rem; font-weight: 500; }
   input, select, textarea {
     font: inherit;
     padding: 0.4rem 0.5rem;
@@ -47,65 +47,85 @@
   }
   input[type="checkbox"] { width: auto; margin-right: 0.4rem; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
   .preset-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.3rem 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 0.15rem 1rem;
+    margin-top: 0.5rem;
   }
   .preset-grid label {
-    margin: 0.1rem 0;
+    margin: 0.15rem 0;
     font-weight: normal;
     font-size: 0.88rem;
-    padding: 0.25rem 0;
+    padding: 0.2rem 0;
+    cursor: pointer;
   }
   .help {
     font-size: 0.8rem;
     color: var(--muted);
-    margin-top: 0.1rem;
+    margin-top: 0.15rem;
+  }
+
+  .submit-row {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
   }
   button {
     font: inherit;
     font-weight: 600;
-    padding: 0.6rem 1.4rem;
+    padding: 0.65rem 2rem;
     background: var(--accent);
     color: white;
     border: 0;
     border-radius: 4px;
     cursor: pointer;
   }
+  button.big { padding: 0.8rem 3rem; font-size: 1.05rem; }
   button:hover:not(:disabled) { background: var(--accent-dark); }
   button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  #result, #plan-result { margin-top: 2rem; }
+  #result { margin-top: 2rem; }
   .result-card {
     background: white;
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 1.25rem;
+    overflow-x: auto;
   }
-  .result-cost {
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0;
-  }
-  table { border-collapse: collapse; width: 100%; margin-top: 0.75rem; }
+  .cost-header { font-size: 1.8rem; font-weight: 600; margin: 0 0 0.3rem 0; }
+  .cost-sub { color: var(--muted); margin: 0 0 1rem 0; font-size: 0.9rem; }
+
+  table { border-collapse: collapse; width: 100%; margin-top: 0.5rem; }
   th, td {
-    text-align: left;
-    padding: 0.4rem 0.6rem;
+    text-align: right;
+    padding: 0.35rem 0.55rem;
     border-bottom: 1px solid #eee;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
   }
-  th { color: var(--muted); font-weight: 500; font-size: 0.85rem; }
-  .grams-col { text-align: right; }
+  th {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: #f8f8f8;
+  }
+  td.food-col, th.food-col { text-align: left; min-width: 160px; }
+  td.total-col { font-weight: 600; background: #f8faf8; }
+  tr.totals-row { background: #f5f9f5; font-weight: 600; }
+  tr.totals-row td { border-top: 2px solid var(--accent); border-bottom: 0; }
   .source-tag {
     display: inline-block;
-    padding: 0.1rem 0.5rem;
+    padding: 0.05rem 0.4rem;
     border-radius: 10px;
-    font-size: 0.75rem;
-    background: #eef;
-    color: #337;
+    font-size: 0.72rem;
+    background: #e8eff5;
+    color: #335;
   }
-  .source-tag.tfp { background: #fee; color: #733; }
+  .source-tag.tfp { background: #fcecec; color: #733; }
 
   .warn {
     background: var(--warn-bg);
@@ -117,7 +137,7 @@
   .error {
     color: var(--error);
     background: #fbe9e9;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 1rem;
     border-radius: 4px;
   }
   .spinner {
@@ -132,12 +152,16 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  details { margin-top: 0.5rem; }
+  summary { cursor: pointer; font-size: 0.92rem; color: var(--accent); font-weight: 500; }
+  .post-table-actions { margin-top: 1rem; }
+
   .markdown-out {
     background: #fafafa;
     border: 1px solid var(--border);
     padding: 1rem;
     border-radius: 6px;
-    max-height: 480px;
+    max-height: 520px;
     overflow-y: auto;
     font-size: 0.88rem;
     white-space: pre-wrap;
@@ -151,102 +175,82 @@
 
 <form id="optimize-form">
   <fieldset>
-    <legend>Your profile (optional — scales DRI to you)</legend>
-    <div class="row">
+    <legend>Your profile</legend>
+    <div class="row-3">
       <div>
-        <label for="age">Age (years)</label>
-        <input type="number" id="age" name="age" min="1" max="120" placeholder="e.g. 28">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" min="1" max="120" placeholder="28">
       </div>
       <div>
         <label for="sex">Sex</label>
         <select id="sex" name="sex">
-          <option value="">— default —</option>
+          <option value="">default</option>
           <option value="male">male</option>
           <option value="female">female</option>
-          <option value="nonbinary">nonbinary / not specified</option>
+          <option value="nonbinary">nonbinary</option>
+        </select>
+      </div>
+      <div>
+        <label for="activity">Activity</label>
+        <select id="activity" name="activity">
+          <option value="">default</option>
+          <option value="sedentary">sedentary</option>
+          <option value="light">light</option>
+          <option value="moderate">moderate</option>
+          <option value="active">active</option>
+          <option value="very_active">very active</option>
         </select>
       </div>
     </div>
     <div class="row">
       <div>
         <label for="weight-kg">Weight (kg)</label>
-        <input type="number" id="weight-kg" name="weight_kg" min="20" max="300" step="0.5" placeholder="e.g. 68">
+        <input type="number" id="weight-kg" name="weight_kg" min="20" max="300" step="0.5" placeholder="68">
       </div>
       <div>
         <label for="height-cm">Height (cm)</label>
-        <input type="number" id="height-cm" name="height_cm" min="100" max="230" step="1" placeholder="e.g. 175">
+        <input type="number" id="height-cm" name="height_cm" min="100" max="230" step="1" placeholder="175">
       </div>
     </div>
-    <label for="activity">Activity level</label>
-    <select id="activity" name="activity">
-      <option value="">— default (active) —</option>
-      <option value="sedentary">sedentary (desk job, minimal exercise)</option>
-      <option value="light">light (some daily walking)</option>
-      <option value="moderate">moderate (3-5 days/week moderate exercise)</option>
-      <option value="active">active (6-7 days/week strenuous)</option>
-      <option value="very_active">very active (daily intense + physical job)</option>
-    </select>
-    <div class="help">Leave any field blank to use the default profile (28yo, 68kg, 175cm, active male). To customize, fill ALL fields.</div>
+    <div class="help">Fill ALL five fields for personalized DRI; leave any blank to use the default (28yo active male, 68kg, 175cm).</div>
   </fieldset>
 
   <fieldset>
-    <legend>LP constraints</legend>
-
-    <label for="min-serving">Minimum serving size (grams/day per food, 0 disables)</label>
-    <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="30">
-    <div class="help">A food in the optimum diet must contribute at least this much, or nothing at all (MILP semi-continuous).</div>
-
-    <label>Dietary presets (multiple allowed)</label>
+    <legend>Dietary presets</legend>
     <div id="presets-grid" class="preset-grid"></div>
-    <div class="help">Excludes foods matching each preset's keyword list. Stacks union-wise.</div>
+    <div id="presets-error" class="help" style="color: var(--error); display:none"></div>
+    <div class="help">Check any to exclude foods matching that preset's keyword list. Multiple presets stack.</div>
   </fieldset>
 
   <fieldset>
-    <legend>Custom exclusions</legend>
-    <label for="blacklist">Blacklist — comma-separated food names to exclude</label>
-    <input type="text" id="blacklist" name="blacklist" placeholder="e.g. mushrooms, kidney beans">
-
-    <label for="whitelist">Whitelist — comma-separated names that must be included (forces ≥ 30g)</label>
-    <input type="text" id="whitelist" name="whitelist" placeholder="e.g. spinach, pinto beans">
+    <legend>Portion constraint</legend>
+    <label for="min-serving">Minimum serving (grams/day per included food)</label>
+    <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="30">
+    <div class="help">
+      A food in the optimum diet must contribute at least this much, or nothing at all
+      (MILP semi-continuous). Recommended: <strong>30g</strong> for meaningful portions.
+      Set to <strong>0</strong> for fast mode — the LP may include 2g/day trace foods.
+    </div>
+    <div class="help" style="margin-top:0.4rem">
+      Solve time: ~1s at 0g, ~15-60s at ≥10g (GLPK MILP, 610 binary variables).
+    </div>
   </fieldset>
 
-  <button type="submit" id="solve-btn">Solve diet</button>
+  <fieldset>
+    <legend>Custom exclusions (optional)</legend>
+    <label for="blacklist">Blacklist — foods to exclude (comma-separated)</label>
+    <input type="text" id="blacklist" name="blacklist" placeholder="mushrooms, kidney beans">
+
+    <label for="whitelist">Whitelist — foods that must appear (comma-separated)</label>
+    <input type="text" id="whitelist" name="whitelist" placeholder="spinach, pinto beans">
+  </fieldset>
+
+  <div class="submit-row">
+    <button type="submit" id="solve-btn" class="big">Optimize</button>
+  </div>
 </form>
 
 <div id="result"></div>
-
-<form id="mealplan-form" style="display:none">
-  <h2>Generate meal plan</h2>
-  <fieldset>
-    <legend>Meal plan options</legend>
-
-    <div class="row">
-      <div>
-        <label for="days">Days (1-14)</label>
-        <input type="number" id="days" name="days" min="1" max="14" value="7">
-      </div>
-      <div>
-        <label for="max-prep">Max prep minutes / meal</label>
-        <input type="number" id="max-prep" name="max_prep_min" min="5" max="120" value="25">
-      </div>
-    </div>
-
-    <label for="cuisine-style">Cuisine style (blank = varied across the week)</label>
-    <input type="text" id="cuisine-style" name="cuisine_style"
-           placeholder="e.g. Mediterranean, Indian vegetarian, Plain American">
-
-    <label for="model">Claude model</label>
-    <select id="model" name="model">
-      <option value="claude-haiku-4-5">Haiku 4.5 (fast, ~$0.01/plan)</option>
-      <option value="claude-sonnet-4-6">Sonnet 4.6 (~$0.03/plan)</option>
-      <option value="claude-opus-4-6">Opus 4.6 (best, ~$0.10/plan)</option>
-    </select>
-  </fieldset>
-
-  <button type="submit" id="plan-btn">Generate meal plan</button>
-</form>
-
-<div id="plan-result"></div>
 
 <script>
   const api = (path, opts = {}) =>
@@ -255,119 +259,158 @@
       ...opts,
       body: opts.body ? JSON.stringify(opts.body) : undefined,
     }).then(async (r) => {
-      if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
-      return r.json();
+      const text = await r.text();
+      if (!r.ok) {
+        try { throw new Error(JSON.parse(text).detail || r.statusText); }
+        catch { throw new Error(text || r.statusText); }
+      }
+      return JSON.parse(text);
     });
 
   const toList = (s) => s ? s.split(",").map(x => x.trim()).filter(Boolean) : [];
 
-  api("/presets").then(({ presets }) => {
-    const grid = document.getElementById("presets-grid");
-    presets.forEach(p => {
-      const id = `preset-${p}`;
-      const wrap = document.createElement("label");
-      wrap.innerHTML = `<input type="checkbox" value="${p}" id="${id}"> ${p}`;
-      grid.appendChild(wrap);
-    });
-  });
+  // Populate preset checkboxes
+  (async () => {
+    try {
+      const { presets } = await api("/presets");
+      const grid = document.getElementById("presets-grid");
+      presets.forEach(p => {
+        const wrap = document.createElement("label");
+        wrap.innerHTML = `<input type="checkbox" value="${p}"> ${p.replace(/_/g, " ")}`;
+        grid.appendChild(wrap);
+      });
+    } catch (err) {
+      const div = document.getElementById("presets-error");
+      div.style.display = "block";
+      div.textContent = `Failed to load presets: ${err.message}`;
+    }
+  })();
 
   const optForm = document.getElementById("optimize-form");
   const resultDiv = document.getElementById("result");
-  const planForm = document.getElementById("mealplan-form");
-  const planResult = document.getElementById("plan-result");
   const solveBtn = document.getElementById("solve-btn");
-  const planBtn = document.getElementById("plan-btn");
   let lastDiet = null;
+  const DEFAULT_DAYS = 7;
 
   optForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     solveBtn.disabled = true;
-    resultDiv.innerHTML = `<p><span class="spinner"></span>Solving…</p>`;
-    planForm.style.display = "none";
+    const minServing = +document.getElementById("min-serving").value;
+    const eta = minServing > 0 ? "expected 15-60s (MILP)" : "expected ~1-2s (LP)";
+    resultDiv.innerHTML = `<p><span class="spinner"></span>Solving… <span id="solve-eta">${eta}</span>  ·  elapsed <span id="solve-elapsed">0s</span></p>`;
+    const tStart = Date.now();
+    const tick = setInterval(() => {
+      const el = document.getElementById("solve-elapsed");
+      if (el) el.textContent = `${Math.round((Date.now() - tStart) / 1000)}s`;
+    }, 500);
+    const stopTick = () => clearInterval(tick);
     const fd = new FormData(optForm);
     const presets = [...document.querySelectorAll("#presets-grid input:checked")].map(x => x.value);
     const body = {
-      min_serving_grams: +fd.get("min_serving_grams"),
+      min_serving_grams: minServing,
       dietary_presets: presets,
       blacklist: toList(fd.get("blacklist")),
       whitelist: toList(fd.get("whitelist")),
     };
-    // Profile fields — only include if the user filled them all in
     const age = fd.get("age"), sex = fd.get("sex"),
           weight = fd.get("weight_kg"), height = fd.get("height_cm"),
           activity = fd.get("activity");
     if (age && sex && weight && height && activity) {
-      body.age = +age;
-      body.sex = sex;
-      body.weight_kg = +weight;
-      body.height_cm = +height;
+      body.age = +age; body.sex = sex;
+      body.weight_kg = +weight; body.height_cm = +height;
       body.activity = activity;
     }
     try {
       const data = await api("/optimize", { method: "POST", body });
-      renderDiet(data);
+      stopTick();
+      const elapsed = Math.round((Date.now() - tStart) / 1000);
       lastDiet = Object.fromEntries(data.foods.map(f => [f.food, f.grams]));
-      planForm.style.display = "block";
+      renderDietTable(data, DEFAULT_DAYS, elapsed);
     } catch (err) {
+      stopTick();
       resultDiv.innerHTML = `<div class="error">Error: ${err.message}</div>`;
     } finally {
       solveBtn.disabled = false;
     }
   });
 
-  function renderDiet(data) {
+  function renderDietTable(data, days, elapsedSec) {
+    const foods = data.foods;
     let html = `<div class="result-card">`;
-    html += `<p class="result-cost">$${data.cost_per_day.toFixed(2)} / day</p>`;
-    html += `<p>${data.foods.length} foods`;
+    html += `<h2 style="margin-top:0">Optimum diet</h2>`;
+    html += `<p class="cost-sub">${foods.length} foods`;
     if (data.excluded_by_preset) html += `, ${data.excluded_by_preset} excluded by presets`;
+    if (typeof elapsedSec === "number") html += ` · solved in ${elapsedSec}s`;
     html += `</p>`;
-    html += `<table><tr><th>Food</th><th class="grams-col">g/day</th><th class="grams-col">$/100g</th><th>Source</th></tr>`;
-    data.foods.forEach(f => {
+
+    // Build columns: Food | Day 1 … Day N | Total | Cost/day | Cost total
+    let thead = `<tr><th class="food-col">Food</th>`;
+    for (let i = 1; i <= days; i++) thead += `<th>Day ${i}</th>`;
+    thead += `<th class="total-col">Total (g)</th><th>$/100g</th><th>Source</th><th class="total-col">Total cost</th></tr>`;
+
+    let rows = "";
+    const costPerFood = [];
+    foods.forEach(f => {
+      const perDay = f.grams;       // LP outputs per-day amount (same each day)
+      const total = perDay * days;
+      const totalCost = total / 100 * f.price_per_100g;
+      costPerFood.push(totalCost);
       const tagClass = f.price_source === "tfp" ? "source-tag tfp" : "source-tag";
-      html += `<tr><td>${f.food}</td>`
-            + `<td class="grams-col">${f.grams}</td>`
-            + `<td class="grams-col">$${f.price_per_100g.toFixed(3)}</td>`
-            + `<td><span class="${tagClass}">${f.price_source}</span></td></tr>`;
+      rows += `<tr><td class="food-col">${f.food}</td>`;
+      for (let i = 0; i < days; i++) rows += `<td>${perDay}</td>`;
+      rows += `<td class="total-col">${total}</td>`;
+      rows += `<td>$${f.price_per_100g.toFixed(3)}</td>`;
+      rows += `<td><span class="${tagClass}">${f.price_source}</span></td>`;
+      rows += `<td class="total-col">$${totalCost.toFixed(2)}</td></tr>`;
     });
-    html += `</table>`;
+
+    // Bottom totals row
+    const grandTotal = costPerFood.reduce((a, b) => a + b, 0);
+    const totalPerDay = grandTotal / days;
+    let foot = `<tr class="totals-row"><td class="food-col">Total cost</td>`;
+    for (let i = 0; i < days; i++) foot += `<td>$${totalPerDay.toFixed(2)}</td>`;
+    foot += `<td colspan="3" style="text-align:center; color: var(--muted)">—</td>`;
+    foot += `<td class="total-col">$${grandTotal.toFixed(2)}</td></tr>`;
+
+    html += `<table>${thead}${rows}${foot}</table>`;
+    html += `<div class="cost-sub" style="margin-top:0.5rem">Cost per day: <strong>$${data.cost_per_day.toFixed(2)}</strong> × ${days} days = <strong>$${(data.cost_per_day * days).toFixed(2)}</strong></div>`;
+
     data.warnings.forEach(w => html += `<div class="warn">${w}</div>`);
+
+    html += `<div class="post-table-actions">`;
+    html += `<button type="button" id="gen-plan-btn">Generate weekly meal plan</button>`;
+    html += `<span class="help" style="margin-left:1rem">Uses Claude to distribute these totals across ${days} days × 4 meals with cooking instructions. ~30-60s.</span>`;
     html += `</div>`;
+    html += `<div id="plan-slot"></div>`;
+    html += `</div>`;
+
     resultDiv.innerHTML = html;
+    document.getElementById("gen-plan-btn").addEventListener("click", generateMealPlan);
   }
 
-  planForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!lastDiet) {
-      planResult.innerHTML = `<div class="error">Solve a diet first.</div>`;
-      return;
-    }
-    planBtn.disabled = true;
-    planResult.innerHTML = `<p><span class="spinner"></span>Generating meal plan (30-120s depending on model)…</p>`;
-    const fd = new FormData(planForm);
-    const body = {
-      diet: lastDiet,
-      days: +fd.get("days"),
-      max_prep_min: +fd.get("max_prep_min"),
-      cuisine_style: fd.get("cuisine_style") || null,
-      model: fd.get("model"),
-      blacklist: [],
-      whitelist: [],
-    };
+  async function generateMealPlan() {
+    const btn = document.getElementById("gen-plan-btn");
+    const slot = document.getElementById("plan-slot");
+    if (!lastDiet) return;
+    btn.disabled = true;
+    slot.innerHTML = `<p style="margin-top:1rem"><span class="spinner"></span>Calling Claude (30-60s)…</p>`;
     try {
-      const data = await api("/meal-plan", { method: "POST", body });
-      let html = `<div class="result-card">`;
+      const data = await api("/meal-plan", {
+        method: "POST",
+        body: { diet: lastDiet, days: 7, max_prep_min: 25, model: "claude-haiku-4-5", blacklist: [], whitelist: [] },
+      });
+      let html = `<h2>Weekly meal plan</h2>`;
       if (data.violations.length) {
-        html += `<div class="warn">${data.violations.length} mass-conservation issues remain after rebalance</div>`;
+        html += `<div class="warn">${data.violations.length} mass-conservation notes</div>`;
       }
       html += `<div class="markdown-out">${escapeHtml(data.markdown)}</div>`;
-      html += `</div>`;
-      planResult.innerHTML = html;
+      slot.innerHTML = html;
     } catch (err) {
-      planResult.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      slot.innerHTML = `<div class="error">${err.message}</div>`;
     } finally {
-      planBtn.disabled = false;
+      btn.disabled = false;
     }
-  });
+  }
 
   function escapeHtml(s) {
     return s.replace(/[&<>"']/g, c => ({
