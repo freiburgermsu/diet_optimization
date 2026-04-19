@@ -127,6 +127,18 @@
   }
   .source-tag.tfp { background: #fcecec; color: #733; }
 
+  tr.nutrient-group-header td {
+    background: #edf3ed;
+    color: var(--accent-dark);
+    text-align: left;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.5rem 0.6rem 0.3rem 0.6rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
   .warn {
     background: var(--warn-bg);
     border-left: 3px solid var(--warn-border);
@@ -227,12 +239,13 @@
     <label for="min-serving">Minimum serving (grams/day per included food)</label>
     <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="30">
     <div class="help">
-      A food in the optimum diet must contribute at least this much, or nothing at all
-      (MILP semi-continuous). Recommended: <strong>30g</strong> for meaningful portions.
-      Set to <strong>0</strong> for fast mode — the LP may include 2g/day trace foods.
+      A food in the weekly diet must contribute at least this much on days it
+      appears, or not be served that day (MILP semi-continuous). The weekly
+      solver hard-codes <strong>30g</strong>; this field is informational.
     </div>
     <div class="help" style="margin-top:0.4rem">
-      Solve time: ~1s at 0g, ~15-60s at ≥10g (GLPK MILP, 610 binary variables).
+      Typical solve time: ~35s (reference LP ~4s, weekly MILP ~30s on a
+      pre-selected 60-food pool with a 1% optimality gap).
     </div>
   </fieldset>
 
@@ -295,19 +308,10 @@
   optForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     solveBtn.disabled = true;
-    const minServing = +document.getElementById("min-serving").value;
-    const eta = minServing > 0 ? "expected 15-60s (MILP)" : "expected ~1-2s (LP)";
-    resultDiv.innerHTML = `<p><span class="spinner"></span>Solving… <span id="solve-eta">${eta}</span>  ·  elapsed <span id="solve-elapsed">0s</span></p>`;
-    const tStart = Date.now();
-    const tick = setInterval(() => {
-      const el = document.getElementById("solve-elapsed");
-      if (el) el.textContent = `${Math.round((Date.now() - tStart) / 1000)}s`;
-    }, 500);
-    const stopTick = () => clearInterval(tick);
     const fd = new FormData(optForm);
     const presets = [...document.querySelectorAll("#presets-grid input:checked")].map(x => x.value);
     const body = {
-      min_serving_grams: minServing,
+      min_serving_grams: +document.getElementById("min-serving").value,
       dietary_presets: presets,
       blacklist: toList(fd.get("blacklist")),
       whitelist: toList(fd.get("whitelist")),
@@ -320,130 +324,268 @@
       body.weight_kg = +weight; body.height_cm = +height;
       body.activity = activity;
     }
+
+    renderShell(DEFAULT_DAYS);
+    const state = {
+      days: DEFAULT_DAYS,
+      perDay: {},             // {day_index_1based: {food: grams}}
+      foodRowOrder: [],       // order foods were first seen
+      costs: {},              // {day_index: cost}
+      allFoods: new Set(),
+    };
+
     try {
-      const data = await api("/optimize", { method: "POST", body });
-      stopTick();
-      const elapsed = Math.round((Date.now() - tStart) / 1000);
-      lastDiet = Object.fromEntries(data.foods.map(f => [f.food, f.grams]));
-      renderDietTable(data, DEFAULT_DAYS, elapsed);
+      const response = await fetch("/optimize-weekly", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        const txt = await response.text();
+        let msg = txt;
+        try { msg = JSON.parse(txt).detail || txt; } catch {}
+        throw new Error(msg);
+      }
+      await streamWeekly(response, state);
     } catch (err) {
-      stopTick();
-      resultDiv.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      document.getElementById("status-line").innerHTML =
+        `<span class="error" style="display:inline-block; padding:0.3rem 0.6rem">${err.message}</span>`;
     } finally {
       solveBtn.disabled = false;
     }
   });
 
-  function renderDietTable(data, days, elapsedSec) {
-    const foods = data.foods;
-    let html = `<div class="result-card">`;
-    html += `<h2 style="margin-top:0">Optimum diet</h2>`;
-    html += `<p class="cost-sub">${foods.length} foods`;
-    if (data.excluded_by_preset) html += `, ${data.excluded_by_preset} excluded by presets`;
-    if (typeof elapsedSec === "number") html += ` · solved in ${elapsedSec}s`;
-    html += `</p>`;
+  // Initial empty shell — column headers, status line, placeholder sections.
+  function renderShell(days) {
+    let head = `<tr><th class="food-col">Food</th>`;
+    for (let d = 1; d <= days; d++) head += `<th id="dayhdr-${d}" data-day="${d}">Day ${d} ⋯</th>`;
+    head += `<th class="total-col">Week (g)</th><th>$/100g</th><th>Source</th><th class="total-col">Cost</th></tr>`;
 
-    // Build columns: Food | Day 1 … Day N | Total | Cost/day | Cost total
-    let thead = `<tr><th class="food-col">Food</th>`;
-    for (let i = 1; i <= days; i++) thead += `<th>Day ${i}</th>`;
-    thead += `<th class="total-col">Total (g)</th><th>$/100g</th><th>Source</th><th class="total-col">Total cost</th></tr>`;
+    resultDiv.innerHTML = `
+      <div class="result-card">
+        <h2 style="margin-top:0">Optimum 7-day diet — distinct daily menus</h2>
+        <div id="status-line" class="cost-sub">
+          <span class="spinner"></span>Loading inputs…
+        </div>
+        <table id="foods-table"><thead>${head}</thead><tbody></tbody><tfoot></tfoot></table>
+        <div id="nutrients-slot"></div>
+        <div id="shadow-slot"></div>
+        <div id="actions-slot"></div>
+        <div id="plan-slot"></div>
+      </div>
+    `;
+  }
 
-    let rows = "";
-    const costPerFood = [];
-    foods.forEach(f => {
-      const perDay = f.grams;       // LP outputs per-day amount (same each day)
-      const total = perDay * days;
-      const totalCost = total / 100 * f.price_per_100g;
-      costPerFood.push(totalCost);
-      const tagClass = f.price_source === "tfp" ? "source-tag tfp" : "source-tag";
-      rows += `<tr><td class="food-col">${f.food}</td>`;
-      for (let i = 0; i < days; i++) rows += `<td>${perDay}</td>`;
-      rows += `<td class="total-col">${total}</td>`;
-      rows += `<td>$${f.price_per_100g.toFixed(3)}</td>`;
-      rows += `<td><span class="${tagClass}">${f.price_source}</span></td>`;
-      rows += `<td class="total-col">$${totalCost.toFixed(2)}</td></tr>`;
+  async function streamWeekly(response, state) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        let evt;
+        try { evt = JSON.parse(line); } catch { continue; }
+        handleEvent(evt, state);
+      }
+    }
+    if (buffer.trim()) {
+      try { handleEvent(JSON.parse(buffer), state); } catch {}
+    }
+  }
+
+  function handleEvent(evt, state) {
+    const status = document.getElementById("status-line");
+    if (evt.event === "start") {
+      state.days = evt.days;
+      state.excluded_by_preset = evt.excluded_by_preset;
+      status.innerHTML =
+        `<span class="spinner"></span>Solving reference LP over ${evt.total_foods} foods…` +
+        (evt.excluded_by_preset ? ` (${evt.excluded_by_preset} excluded by presets)` : "");
+    } else if (evt.event === "reference") {
+      renderReference(evt);
+      status.innerHTML =
+        `<span class="spinner"></span>Reference diet $${evt.cost}/day computed ` +
+        `(${evt.elapsed_s}s). Running weekly MILP with rotation cap for daily variety…`;
+    } else if (evt.event === "solving") {
+      status.innerHTML =
+        `<span class="spinner"></span>MILP solving on ${evt.pool_foods} pre-selected foods ` +
+        `(emphasis: ${evt.emphasis}, ≤${evt.time_limit_sec}s, gap ${evt.mip_gap * 100}%)…`;
+    } else if (evt.event === "day") {
+      populateDayColumn(evt, state);
+    } else if (evt.event === "done") {
+      renderSummary(evt, state);
+      renderMealPlanButton(state);
+    } else if (evt.event === "error") {
+      status.innerHTML = `<span class="error" style="display:inline-block; padding:0.3rem 0.6rem">${evt.message}</span>`;
+    }
+  }
+
+  function populateDayColumn(evt, state) {
+    const day = evt.day;
+    state.perDay[day] = {};
+    evt.foods.forEach(f => {
+      state.perDay[day][f.food] = f;
+      if (!state.allFoods.has(f.food)) {
+        state.allFoods.add(f.food);
+        state.foodRowOrder.push(f.food);
+      }
     });
+    state.costs[day] = evt.cost;
 
-    // Bottom totals row
-    const grandTotal = costPerFood.reduce((a, b) => a + b, 0);
-    const totalPerDay = grandTotal / days;
-    let foot = `<tr class="totals-row"><td class="food-col">Total cost</td>`;
-    for (let i = 0; i < days; i++) foot += `<td>$${totalPerDay.toFixed(2)}</td>`;
-    foot += `<td colspan="3" style="text-align:center; color: var(--muted)">—</td>`;
-    foot += `<td class="total-col">$${grandTotal.toFixed(2)}</td></tr>`;
+    // Mark the day header as solved
+    const hdr = document.getElementById(`dayhdr-${day}`);
+    if (hdr) hdr.textContent = `Day ${day}`;
 
-    html += `<table>${thead}${rows}${foot}</table>`;
-    html += `<div class="cost-sub" style="margin-top:0.5rem">Cost per day: <strong>$${data.cost_per_day.toFixed(2)}</strong> × ${days} days = <strong>$${(data.cost_per_day * days).toFixed(2)}</strong></div>`;
+    rerenderBody(state);
 
-    data.warnings.forEach(w => html += `<div class="warn">${w}</div>`);
+    document.getElementById("status-line").innerHTML =
+      `<span class="spinner"></span>Day ${day}/${state.days} rendered · elapsed ${evt.elapsed_s}s · ${evt.total_foods_seen} unique foods so far`;
+  }
 
-    // --- Nutrient satisfaction table ---
-    if (data.nutrients && data.nutrients.length) {
-      html += `<h2>Nutrients — DRI coverage</h2>`;
-      html += `<table><tr>
+  // Rebuild the <tbody> + <tfoot> to reflect accumulated per-day data.
+  // Cheap: ≤20 rows × 7 cols. Keeps the DOM easy to reason about.
+  function rerenderBody(state) {
+    const tbody = document.querySelector("#foods-table tbody");
+    const tfoot = document.querySelector("#foods-table tfoot");
+    const foods = state.foodRowOrder;
+    const days = state.days;
+
+    let bodyHTML = "";
+    for (const food of foods) {
+      let weekTotal = 0;
+      let firstEntry = null;
+      let row = `<tr><td class="food-col">${food}</td>`;
+      for (let d = 1; d <= days; d++) {
+        const solved = state.perDay[d];
+        if (!solved) {
+          row += `<td style="color:var(--muted)">⋯</td>`;
+          continue;
+        }
+        const entry = solved[food];
+        if (entry) {
+          firstEntry = firstEntry || entry;
+          weekTotal += entry.grams;
+          row += `<td>${entry.grams}</td>`;
+        } else {
+          row += `<td>—</td>`;
+        }
+      }
+      const ref = firstEntry || { price_per_100g: 0, price_source: "" };
+      const weekCost = weekTotal / 100 * ref.price_per_100g;
+      const tag = ref.price_source === "tfp" ? "source-tag tfp" : "source-tag";
+      row += `<td class="total-col">${weekTotal}</td>`;
+      row += `<td>$${ref.price_per_100g.toFixed(3)}</td>`;
+      row += `<td><span class="${tag}">${ref.price_source}</span></td>`;
+      row += `<td class="total-col">$${weekCost.toFixed(2)}</td></tr>`;
+      bodyHTML += row;
+    }
+    tbody.innerHTML = bodyHTML;
+
+    // Totals row
+    let weekSum = 0;
+    let foot = `<tr class="totals-row"><td class="food-col">Cost ($)</td>`;
+    for (let d = 1; d <= days; d++) {
+      const c = state.costs[d];
+      if (c == null) foot += `<td style="color:var(--muted)">⋯</td>`;
+      else { foot += `<td>$${c.toFixed(2)}</td>`; weekSum += c; }
+    }
+    foot += `<td class="total-col" colspan="3" style="text-align:center; color:var(--muted)">total</td>`;
+    foot += `<td class="total-col">$${weekSum.toFixed(2)}</td></tr>`;
+    tfoot.innerHTML = foot;
+  }
+
+  function renderSummary(evt, state) {
+    document.getElementById("status-line").innerHTML =
+      `<strong>${evt.unique_foods} unique foods</strong> across ${state.days} days · ` +
+      `total <strong>$${evt.total_cost.toFixed(2)}</strong> ` +
+      `(avg <strong>$${evt.avg_cost_per_day.toFixed(2)}/day</strong>) · ` +
+      `solved in ${evt.elapsed_s}s` +
+      (state.excluded_by_preset ? ` · ${state.excluded_by_preset} foods excluded by presets` : "");
+    // Build the daily-averaged lastDiet for the meal plan button.
+    const totals = {};
+    for (const d of Object.keys(state.perDay)) {
+      for (const f of Object.values(state.perDay[d])) {
+        totals[f.food] = (totals[f.food] || 0) + f.grams;
+      }
+    }
+    lastDiet = Object.fromEntries(
+      Object.entries(totals).map(([f, g]) => [f, Math.round(g / state.days)])
+    );
+  }
+
+  function renderReference(evt) {
+    const nSlot = document.getElementById("nutrients-slot");
+    const sSlot = document.getElementById("shadow-slot");
+
+    // Nutrients grouped by category (macros → water → vitamins → minerals → amino acids).
+    if (evt.nutrients && evt.nutrients.length) {
+      let html = `<h2>Nutrients — DRI coverage <span class="help" style="font-weight:normal">(reference LP, representative per-day)</span></h2>`;
+      html += `<table><thead><tr>
         <th class="food-col">Nutrient</th>
-        <th class="grams-col">Lower</th>
-        <th class="grams-col">Value</th>
-        <th class="grams-col">Upper</th>
-        <th class="grams-col">% of lower</th>
-        <th>Status</th>
-      </tr>`;
-      data.nutrients.forEach(n => {
+        <th>Lower</th>
+        <th>Value</th>
+        <th>Upper</th>
+        <th>% of lower</th>
+        <th>Status</th></tr></thead><tbody>`;
+      let currentCat = null;
+      evt.nutrients.forEach(n => {
+        if (n.category !== currentCat) {
+          currentCat = n.category;
+          html += `<tr class="nutrient-group-header"><td colspan="6"><strong>${currentCat}</strong></td></tr>`;
+        }
         const lb = n.low_bound != null ? `${n.low_bound} ${n.units}` : "—";
         const ub = n.high_bound != null ? `${n.high_bound} ${n.units}` : "—";
         const pct = n.pct_of_lower != null ? `${n.pct_of_lower.toFixed(0)}%` : "—";
-        let status = "ok";
-        let statusClass = "source-tag";
+        let status = "ok", statusClass = "source-tag";
         if (n.binding === "lower") { status = "binding ↓"; statusClass = "source-tag tfp"; }
         else if (n.binding === "upper") { status = "binding ↑"; statusClass = "source-tag tfp"; }
         html += `<tr>
           <td class="food-col">${n.nutrient}</td>
-          <td class="grams-col">${lb}</td>
-          <td class="grams-col total-col">${n.value.toFixed(2)} ${n.units}</td>
-          <td class="grams-col">${ub}</td>
-          <td class="grams-col">${pct}</td>
+          <td>${lb}</td>
+          <td class="total-col">${n.value.toFixed(2)} ${n.units}</td>
+          <td>${ub}</td>
+          <td>${pct}</td>
           <td><span class="${statusClass}">${status}</span></td>
         </tr>`;
       });
-      html += `</table>`;
+      html += `</tbody></table>`;
+      nSlot.innerHTML = html;
     }
 
-    // --- Shadow prices (only when duals are available) ---
-    if (data.shadow_prices && data.shadow_prices.length) {
-      html += `<h2>Shadow prices — what's making your diet expensive</h2>`;
-      html += `<p class="help">Each binding constraint is pinning the cost. Relaxing it by 1 unit would save the listed amount.</p>`;
+    if (evt.shadow_prices && evt.shadow_prices.length) {
+      let html = `<h2>Shadow prices <span class="help" style="font-weight:normal">(reference LP)</span></h2>`;
+      html += `<p class="help">Each binding constraint pins the cost. Relaxing it by 1 unit would save the listed amount.</p>`;
       html += `<table><tr>
-        <th class="food-col">Nutrient</th>
-        <th>Bound</th>
-        <th class="grams-col">Level</th>
-        <th class="grams-col">$/unit to relax</th>
-      </tr>`;
-      data.shadow_prices.forEach(sp => {
+        <th class="food-col">Nutrient</th><th>Bound</th>
+        <th>Level</th><th>$/unit to relax</th></tr>`;
+      evt.shadow_prices.forEach(sp => {
         html += `<tr>
           <td class="food-col">${sp.nutrient}</td>
           <td>${sp.bound}</td>
-          <td class="grams-col">${sp.bound_value.toFixed(2)}</td>
-          <td class="grams-col total-col">$${sp.savings_per_unit.toFixed(3)}</td>
-        </tr>`;
+          <td>${sp.bound_value.toFixed(2)}</td>
+          <td class="total-col">$${sp.savings_per_unit.toFixed(3)}</td></tr>`;
       });
       html += `</table>`;
       html += `<details style="margin-top:0.5rem"><summary>Plain-language explanations</summary>`;
-      data.shadow_prices.forEach(sp => {
+      evt.shadow_prices.forEach(sp => {
         html += `<div class="help" style="margin:0.3rem 0">${sp.explanation}</div>`;
       });
       html += `</details>`;
-    } else if (data.foods.length > 0) {
-      html += `<p class="help" style="margin-top:1rem"><em>Shadow prices unavailable (MILP mode, i.e. min-serving &gt; 0). Set min-serving to 0 to see which nutrients are pinning your cost.</em></p>`;
+      sSlot.innerHTML = html;
     }
+  }
 
-    html += `<div class="post-table-actions">`;
-    html += `<button type="button" id="gen-plan-btn">Generate weekly meal plan</button>`;
-    html += `<span class="help" style="margin-left:1rem">Uses Claude to distribute these totals across ${days} days × 4 meals with cooking instructions. ~30-60s.</span>`;
-    html += `</div>`;
-    html += `<div id="plan-slot"></div>`;
-    html += `</div>`;
-
-    resultDiv.innerHTML = html;
+  function renderMealPlanButton(state) {
+    const slot = document.getElementById("actions-slot");
+    slot.innerHTML = `<div class="post-table-actions">
+      <button type="button" id="gen-plan-btn">Generate weekly meal plan</button>
+      <span class="help" style="margin-left:1rem">Uses Claude to distribute the weekly average (${Object.keys(lastDiet).length} foods) across ${state.days} days × 4 meals with cooking instructions. ~30-60s.</span>
+    </div>`;
     document.getElementById("gen-plan-btn").addEventListener("click", generateMealPlan);
   }
 

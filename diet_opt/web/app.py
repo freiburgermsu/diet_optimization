@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from ..data import load_priced_foods
@@ -34,6 +34,67 @@ from ..presets import foods_excluded_by_presets, list_presets
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_PRICED_FOODS = REPO_ROOT / "priced_foods.json"
+
+
+# Nutrient classification — macros on top, micros on bottom, following the
+# conventional nutrition-label ordering. Tuple: (category_rank, category_label).
+NUTRIENT_CATEGORIES: dict[str, tuple[int, str]] = {
+    "Energy":                 (0, "Energy"),
+    "Protein":                (1, "Macronutrients"),
+    "Carbohydrate":           (1, "Macronutrients"),
+    "Total Fiber":            (1, "Macronutrients"),
+    "Fat":                    (1, "Macronutrients"),
+    "Saturated fatty acids":  (1, "Macronutrients"),
+    "Linoleic Acid":          (1, "Macronutrients"),
+    "Linolenic Acid":         (1, "Macronutrients"),
+    "Dietary Cholesterol":    (1, "Macronutrients"),
+    "Total Water":            (2, "Water"),
+    "Vitamin A":              (3, "Fat-soluble vitamins"),
+    "Vitamin D":              (3, "Fat-soluble vitamins"),
+    "Vitamin E":              (3, "Fat-soluble vitamins"),
+    "Vitamin K":              (3, "Fat-soluble vitamins"),
+    "Carotenoids":            (3, "Fat-soluble vitamins"),
+    "Vitamin C":              (4, "Water-soluble vitamins"),
+    "Thiamin":                (4, "Water-soluble vitamins"),
+    "Riboflavin":             (4, "Water-soluble vitamins"),
+    "Niacin":                 (4, "Water-soluble vitamins"),
+    "Pantothenic Acid":       (4, "Water-soluble vitamins"),
+    "Vitamin B6":             (4, "Water-soluble vitamins"),
+    "Biotin":                 (4, "Water-soluble vitamins"),
+    "Folate":                 (4, "Water-soluble vitamins"),
+    "Vitamin B12":            (4, "Water-soluble vitamins"),
+    "Choline":                (4, "Water-soluble vitamins"),
+    "Calcium":                (5, "Major minerals"),
+    "Phosphorus":             (5, "Major minerals"),
+    "Magnesium":              (5, "Major minerals"),
+    "Sodium":                 (5, "Major minerals"),
+    "Potassium":              (5, "Major minerals"),
+    "Chloride":               (5, "Major minerals"),
+    "Iron":                   (6, "Trace minerals"),
+    "Zinc":                   (6, "Trace minerals"),
+    "Copper":                 (6, "Trace minerals"),
+    "Manganese":              (6, "Trace minerals"),
+    "Iodine":                 (6, "Trace minerals"),
+    "Selenium":               (6, "Trace minerals"),
+    "Molybdenum":             (6, "Trace minerals"),
+    "Chromium":               (6, "Trace minerals"),
+    "Fluoride":               (6, "Trace minerals"),
+    "Histidine":              (7, "Essential amino acids"),
+    "Isoleucine":             (7, "Essential amino acids"),
+    "Leucine":                (7, "Essential amino acids"),
+    "Lysine":                 (7, "Essential amino acids"),
+    "Methionine":             (7, "Essential amino acids"),
+    "Phenylalanine":          (7, "Essential amino acids"),
+    "Threonine":              (7, "Essential amino acids"),
+    "Tryptophan":             (7, "Essential amino acids"),
+    "Valine":                 (7, "Essential amino acids"),
+    "Tyrosine":               (7, "Essential amino acids"),
+}
+_NUTRIENT_ORDER = {name: i for i, name in enumerate(NUTRIENT_CATEGORIES)}
+
+
+def _category_for(nutrient: str) -> tuple[int, str]:
+    return NUTRIENT_CATEGORIES.get(nutrient, (99, "Other"))
 
 
 # --- Request / response schemas ---
@@ -66,6 +127,7 @@ class NutrientStatus(BaseModel):
     units: str
     pct_of_lower: float | None   # value / low_bound * 100 (None if lb=0/inf)
     binding: str | None          # "lower" / "upper" / None — tells UI which bound pins it
+    category: str                # classification label, e.g. "Macronutrients"
 
 
 class ShadowPriceOut(BaseModel):
@@ -205,6 +267,7 @@ def _solve(req: OptimizeRequest, priced_foods_path: Path) -> OptimizeResponse:
             binding = "lower"
         elif n_ub and n_ub != float("inf") and abs(value - n_ub) < max(1e-3, n_ub * 1e-4):
             binding = "upper"
+        cat_rank, cat_label = _category_for(key)
         nutrients_out.append(NutrientStatus(
             nutrient=key,
             value=round(value, 2),
@@ -213,9 +276,14 @@ def _solve(req: OptimizeRequest, priced_foods_path: Path) -> OptimizeResponse:
             units=nutrition[key].get("units", ""),
             pct_of_lower=round(pct, 1) if pct is not None else None,
             binding=binding,
+            category=cat_label,
         ))
-    # Sort: binding first, then by % descending
-    nutrients_out.sort(key=lambda n: (n.binding is None, -(n.pct_of_lower or 0)))
+    # Sort by category (macros → water → vitamins → minerals → amino acids),
+    # then by canonical position within category.
+    nutrients_out.sort(key=lambda n: (
+        _category_for(n.nutrient)[0],
+        _NUTRIENT_ORDER.get(n.nutrient, 999),
+    ))
 
     # Assemble food list
     foods_out: list[FoodEntry] = []
@@ -251,6 +319,258 @@ def _reverse_key_lookup(safe_key: str, priced: dict) -> str | None:
         if safe == safe_key:
             return name
     return None
+
+
+def _weekly_event_stream(
+    req: OptimizeRequest,
+    priced_foods_path: Path,
+    days: int = 7,
+    max_days_per_food: int = 4,
+    pool_size: int = 60,
+    time_limit_sec: float = 30.0,
+    mip_gap: float = 0.02,
+):
+    """Stream NDJSON events for a 7-day variety diet.
+
+    Uses the global weekly MILP (`diet_opt.weekly_model.build_weekly_model`)
+    over a pre-filtered pool of the ~60 most cost-effective foods. The MILP
+    jointly optimises 7 days with a hard rotation cap (each food ≤ K days)
+    and semi-continuous per-day servings (≥30g if served), producing truly
+    distinct daily menus at minimum total weekly cost.
+
+    Sequential daily LPs with a soft reuse penalty were tried first but
+    produced degenerate identical solutions on days 5-7 because the LP's
+    per-food 400g ceiling binds across many alternatives. The MILP avoids
+    that by globally coordinating the week's rotation.
+
+    Event shapes (one JSON object per newline):
+      {"event": "start", "days": N, "max_days_per_food": K, "total_foods": M,
+       "excluded_by_preset": E, "pool_size": P}
+      {"event": "reference", "cost": $, "nutrients": [...], "shadow_prices": [...],
+       "elapsed_s": S}
+      {"event": "solving", "pool_foods": P, "time_limit_sec": S, "elapsed_s": S}
+      {"event": "day", "day": D, "cost": $, "foods": [...], "elapsed_s": S,
+       "total_foods_seen": M}
+      {"event": "done", "total_cost": $, "avg_cost_per_day": $,
+       "unique_foods": N, "elapsed_s": S}
+      {"event": "error", "message": "..."}
+    """
+    import json as _json
+    import time
+
+    from ..data import load_priced_foods, parse_bound
+    from ..model import build_model
+    from ..solve import solve
+    from ..weekly_model import (
+        build_weekly_model, extract_weekly_solution,
+        preselect_foods_by_profile, profile_to_emphasis,
+    )
+
+    def emit(obj: dict) -> bytes:
+        return (_json.dumps(obj) + "\n").encode()
+
+    try:
+        food_info, food_matches, nutrition = load_priced_foods(priced_foods_path.name)
+    except Exception as e:
+        yield emit({"event": "error", "message": f"load failed: {e}"})
+        return
+
+    profile_fields = [req.age, req.sex, req.weight_kg, req.height_cm, req.activity]
+    if any(f is not None for f in profile_fields):
+        if not all(f is not None for f in profile_fields):
+            yield emit({"event": "error",
+                        "message": "profile scaling requires all of age/sex/weight_kg/height_cm/activity"})
+            return
+        profile = UserProfile(
+            sex=req.sex, age=req.age, weight_kg=req.weight_kg,
+            height_cm=req.height_cm, activity=req.activity,
+        )
+        nutrition = apply_profile(nutrition, profile)
+
+    excluded_preset_count = 0
+    if req.dietary_presets:
+        try:
+            excluded = foods_excluded_by_presets(req.dietary_presets, list(food_info))
+        except ValueError as e:
+            yield emit({"event": "error", "message": str(e)})
+            return
+        excluded_preset_count = len(excluded)
+        for food in excluded:
+            food_info.pop(food, None)
+            food_matches.pop(food, None)
+
+    for food in req.blacklist:
+        food_info.pop(food, None)
+        food_matches.pop(food, None)
+
+    if not food_info:
+        yield emit({"event": "error", "message": "No foods remain after filtering"})
+        return
+
+    priced_raw = _json.loads(priced_foods_path.read_text())
+
+    yield emit({
+        "event": "start",
+        "days": days,
+        "max_days_per_food": max_days_per_food,
+        "pool_size": pool_size,
+        "excluded_by_preset": excluded_preset_count,
+        "total_foods": len(food_info),
+    })
+
+    t0 = time.perf_counter()
+
+    # --- Reference solve: unperturbed, for nutrient table + shadow prices ---
+    try:
+        ref_model, ref_vars, _ = build_model(food_info, food_matches, nutrition, include_volume=False)
+        for food in req.whitelist:
+            key = food.replace(" ", "_")
+            key = "".join(c if c.isalnum() or c == "_" else "_" for c in key)
+            if key in ref_vars:
+                ref_vars[key].lb = max(ref_vars[key].lb, 0.30)
+        from ..solve import explain_shadow_prices
+        ref_obj, ref_primals, ref_cv, ref_shadows = solve(ref_model, extract_duals=True)
+
+        nutrients_out: list[dict] = []
+        for name, cv in ref_cv.items():
+            if name == "volume" or name.startswith("mincap_"):
+                continue
+            key = name.replace("_", " ")
+            if key not in nutrition:
+                continue
+            n_lb = parse_bound(nutrition[key].get("low_bound", 0))
+            n_ub = parse_bound(nutrition[key].get("high_bound", float("inf")))
+            value = cv["val"] or 0.0
+            pct = (value / n_lb * 100) if n_lb and n_lb > 0 else None
+            binding = None
+            if n_lb and n_lb > 0 and abs(value - n_lb) < max(1e-3, n_lb * 1e-4):
+                binding = "lower"
+            elif n_ub and n_ub != float("inf") and abs(value - n_ub) < max(1e-3, n_ub * 1e-4):
+                binding = "upper"
+            _, cat_label = _category_for(key)
+            nutrients_out.append({
+                "nutrient": key,
+                "value": round(value, 2),
+                "low_bound": None if not n_lb or n_lb == float("inf") else n_lb,
+                "high_bound": None if n_ub == float("inf") else n_ub,
+                "units": nutrition[key].get("units", ""),
+                "pct_of_lower": round(pct, 1) if pct is not None else None,
+                "binding": binding,
+                "category": cat_label,
+            })
+        nutrients_out.sort(key=lambda n: (
+            _category_for(n["nutrient"])[0],
+            _NUTRIENT_ORDER.get(n["nutrient"], 999),
+        ))
+
+        shadow_out: list[dict] = []
+        for sp in ref_shadows[:8]:
+            key = sp.constraint.replace("_", " ")
+            unit = nutrition.get(key, {}).get("units", "")
+            direction = "Raising" if sp.bound == "upper" else "Lowering"
+            shadow_out.append({
+                "nutrient": key,
+                "bound": sp.bound,
+                "bound_value": sp.bound_value,
+                "savings_per_unit": round(sp.dual, 4),
+                "explanation": (
+                    f"{key} is at its {sp.bound} bound ({sp.bound_value:g} {unit}). "
+                    f"{direction} it by 1 {unit} would save ${sp.dual:.3f}/day."
+                ),
+            })
+
+        yield emit({
+            "event": "reference",
+            "cost": round(ref_obj, 2),
+            "nutrients": nutrients_out,
+            "shadow_prices": shadow_out,
+            "elapsed_s": round(time.perf_counter() - t0, 1),
+        })
+    except Exception as e:
+        yield emit({"event": "error", "message": f"reference solve failed: {e}"})
+        return
+
+    # --- Pre-filter to ~60 most cost-effective foods for the MILP ---
+    emphasis = profile_to_emphasis(
+        sex=req.sex, age=req.age, activity=req.activity,
+    )
+    pool_names = preselect_foods_by_profile(
+        food_info, food_matches, nutrition, ref_primals,
+        emphasis=emphasis, extra_count=pool_size,
+    )
+    pool_info = {n: food_info[n] for n in pool_names if n in food_info}
+    pool_matches = {n: food_matches[n] for n in pool_names if n in food_matches}
+
+    yield emit({
+        "event": "solving",
+        "pool_foods": len(pool_info),
+        "time_limit_sec": time_limit_sec,
+        "mip_gap": mip_gap,
+        "emphasis": emphasis,
+        "elapsed_s": round(time.perf_counter() - t0, 1),
+    })
+
+    # --- Weekly MILP: jointly optimize 7 days with rotation cap ---
+    try:
+        weekly = build_weekly_model(
+            pool_info, pool_matches, nutrition,
+            days=days, max_days_per_food=max_days_per_food,
+            min_serving_units=0.30,
+            time_limit_sec=time_limit_sec,
+            mip_gap=mip_gap,
+        )
+    except Exception as e:
+        yield emit({"event": "error", "message": f"weekly MILP failed: {e}"})
+        return
+
+    per_day = extract_weekly_solution(weekly)
+    if not per_day:
+        yield emit({"event": "error",
+                    "message": "weekly MILP returned no solution (infeasible or timed out)"})
+        return
+
+    per_day_cost: list[float] = []
+    all_foods_seen: set[str] = set()
+
+    # Emit one "day" event per day (already solved — just rendering)
+    for d in sorted(per_day):
+        foods_today = per_day[d]
+        foods_out: list[dict] = []
+        true_cost = 0.0
+        for name, grams in sorted(foods_today.items(), key=lambda kv: -kv[1]):
+            entry = priced_raw.get(name, {})
+            orig = food_info.get(name)
+            if orig:
+                per_100g_cost = orig["price"] / max(orig.get("yield", 1.0), 0.01) / 4.54
+                cost_today = per_100g_cost * (grams / 100.0)
+                true_cost += cost_today
+            else:
+                cost_today = 0.0
+            foods_out.append({
+                "food": name,
+                "grams": round(grams),
+                "price_per_100g": round(entry.get("price_per_100g", 0.0), 3),
+                "price_source": entry.get("price_source", ""),
+                "cost_today": round(cost_today, 3),
+            })
+            all_foods_seen.add(name)
+        per_day_cost.append(true_cost)
+        yield emit({
+            "event": "day",
+            "day": d + 1,
+            "cost": round(true_cost, 2),
+            "foods": foods_out,
+            "elapsed_s": round(time.perf_counter() - t0, 1),
+            "total_foods_seen": len(all_foods_seen),
+        })
+
+    yield emit({
+        "event": "done",
+        "total_cost": round(sum(per_day_cost), 2),
+        "avg_cost_per_day": round(sum(per_day_cost) / max(days, 1), 2),
+        "unique_foods": len(all_foods_seen),
+        "elapsed_s": round(time.perf_counter() - t0, 1),
+    })
 
 
 def _generate_meal_plan(req: MealPlanRequest) -> MealPlanResponse:
@@ -351,6 +671,21 @@ def create_app(priced_foods_path: Path | None = None) -> FastAPI:
                        "Run scripts/build_priced_foods.py.",
             )
         return _solve(req, priced_foods_path)
+
+    @app.post("/optimize-weekly")
+    async def optimize_weekly(req: OptimizeRequest, request: Request) -> StreamingResponse:
+        """Streaming NDJSON: reference solve, 7 daily LPs with rotation cap,
+        then a done event. One JSON object per line; client parses
+        line-by-line and renders each day's column as it arrives."""
+        if not priced_foods_path.exists():
+            raise HTTPException(
+                status_code=500,
+                detail=f"{priced_foods_path.name} not found on server.",
+            )
+        return StreamingResponse(
+            _weekly_event_stream(req, priced_foods_path),
+            media_type="application/x-ndjson",
+        )
 
     @app.post("/meal-plan", response_model=MealPlanResponse)
     async def meal_plan(req: MealPlanRequest, request: Request) -> MealPlanResponse:

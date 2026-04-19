@@ -198,5 +198,55 @@
       "low_bound": "11",
       "high_bound": "40",
       "units": "mg"
+   },
+   "Histidine": {
+      "low_bound": "0.95",
+      "high_bound": "10",
+      "units": "grams"
+   },
+   "Isoleucine": {
+      "low_bound": "1.29",
+      "high_bound": "20",
+      "units": "grams"
+   },
+   "Leucine": {
+      "low_bound": "2.86",
+      "high_bound": "40",
+      "units": "grams"
+   },
+   "Lysine": {
+      "low_bound": "2.58",
+      "high_bound": "30",
+      "units": "grams"
+   },
+   "Methionine": {
+      "low_bound": "1.29",
+      "high_bound": "15",
+      "units": "grams"
+   },
+   "Phenylalanine": {
+      "low_bound": "2.24",
+      "high_bound": "20",
+      "units": "grams"
+   },
+   "Threonine": {
+      "low_bound": "1.36",
+      "high_bound": "20",
+      "units": "grams"
+   },
+   "Tryptophan": {
+      "low_bound": "0.34",
+      "high_bound": "10",
+      "units": "grams"
+   },
+   "Valine": {
+      "low_bound": "1.63",
+      "high_bound": "20",
+      "units": "grams"
+   },
+   "Tyrosine": {
+      "low_bound": "0",
+      "high_bound": "20",
+      "units": "grams"
    }
 }

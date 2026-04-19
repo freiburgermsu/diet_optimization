@@ -1,16 +1,21 @@
-"""Build the LP directly on optlang (no private-fork dependency).
+"""Build the LP as a raw JSON dict and load via optlang.Model.from_json.
 
-Originally extracted from the notebook and wrapped through
-`modelseedpy.core.optlanghelper` (a private fork). Rewritten to use
-optlang's native Model/Variable/Constraint/Objective so the LP runs on
-any installation with `pip install optlang`.
+Previously this module constructed the model through optlang's Python API
+(`optlang.Variable(...)`, `amount * var` → sympy, `sum(expr_terms)`,
+`model.add(...)`), which on the 610-food priced table spent ~26 s in
+Python/sympy before the solver ever ran.
 
-Behavior preserved bit-for-bit from cell 21:
+Raw-JSON construction — the pattern from the local OptlangHelper package
+(`/Users/andrewfreiburger/Documents/Research/OptlangHelper`) — skips that
+overhead: we assemble the model as a plain dict of primitive types, then
+call `Model.from_json(model)` once. No per-variable Variable() calls, no
+per-term sympy Mul objects, no O(n²) `sum()` reduction.
+
+Behavior preserved bit-for-bit from the previous implementation:
   - Per-nutrient linear constraints with DRI lower/upper bounds
   - Water units converted from g to L via grams-per-liter=998
   - Skip nutrients reported by <SPARSE_NUTRIENT_THRESHOLD foods
-  - 5-20 cup volume constraint (skippable via include_volume=False
-    since the 610-food priced table rarely has per-food cupEQ data)
+  - 5-20 cup volume constraint (skippable via include_volume=False)
   - Objective: sum_f(var_f * price_per_100g_edible)
 """
 from __future__ import annotations
@@ -18,15 +23,11 @@ from __future__ import annotations
 from .data import parse_bound
 
 GRAMS_PER_LITER = 998
-SPARSE_NUTRIENT_THRESHOLD = 6  # see #8 for the per-nutrient triage follow-up
-MAX_SERVINGS_PER_FOOD = 4      # each variable's ub in units of 100g/day (= 400g/day)
-                                # reduced from 5 in the original LP to tighten
-                                # per-food portion realism pending the full #11
-                                # variety-cap wiring.
+SPARSE_NUTRIENT_THRESHOLD = 6
+MAX_SERVINGS_PER_FOOD = 4
 
 
 def _sparse_nutrients(food_info: dict, food_matches: dict, nutrition: dict) -> dict[str, int]:
-    """Count foods that report each nutrient — used to skip sparse ones."""
     return {
         nutrient: sum(
             1 for food in food_info if nutrient in food_matches.get(food, {})
@@ -36,8 +37,34 @@ def _sparse_nutrients(food_info: dict, food_matches: dict, nutrition: dict) -> d
 
 
 def _safe_name(food: str) -> str:
-    """Optlang variable names can't contain spaces / some punctuation."""
     return "".join(c if c.isalnum() or c == "_" else "_" for c in food.replace(" ", "_"))
+
+
+def _linear_expr(terms: list[tuple[float, str]]) -> dict:
+    """Build the optlang-JSON expression dict for sum(coef_i * var_i).
+
+    Output shape (matches OptlangHelper._define_expression's output):
+        {"type": "Add", "args": [
+            {"type": "Mul", "args": [
+                {"type": "Number", "value": c1},
+                {"type": "Symbol", "name": "v1"},
+            ]},
+            ...
+        ]}
+    """
+    return {
+        "type": "Add",
+        "args": [
+            {
+                "type": "Mul",
+                "args": [
+                    {"type": "Number", "value": coef},
+                    {"type": "Symbol", "name": var_name},
+                ],
+            }
+            for coef, var_name in terms
+        ],
+    }
 
 
 def build_model(
@@ -46,26 +73,34 @@ def build_model(
     nutrition: dict,
     include_volume: bool = True,
 ):
-    """Construct the LP from the three input tables using optlang directly.
+    """Construct the LP via raw-JSON → Model.from_json.
 
     Returns: (model, variables, constraints) where:
-      - model: optlang.Model
-      - variables: {safe_name: Variable}
-      - constraints: {name: Constraint}
+      - model: optlang.Model loaded from the JSON dict
+      - variables: {safe_name: optlang.Variable} looked up from model
+      - constraints: {safe_name: optlang.Constraint} looked up from model
     """
-    import optlang
+    from optlang import Model
 
-    variables: dict[str, "optlang.Variable"] = {
-        _safe_name(food): optlang.Variable(
-            _safe_name(food), lb=0, ub=MAX_SERVINGS_PER_FOOD, type="continuous"
-        )
-        for food in food_info
-    }
+    # Dedup by safe_name: two food_info keys can collide (e.g. "passion fruit"
+    # vs "passion-fruit" → "passion_fruit"). The previous dict-comprehension
+    # silently kept only the last; preserve that behavior while letting the
+    # constraint terms still reference the shared symbol.
+    seen_vars: set[str] = set()
+    variables_json: list[dict] = []
+    for food in food_info:
+        safe = _safe_name(food)
+        if safe in seen_vars:
+            continue
+        seen_vars.add(safe)
+        variables_json.append({
+            "name": safe,
+            "lb": 0.0,
+            "ub": float(MAX_SERVINGS_PER_FOOD),
+            "type": "continuous",
+        })
 
-    model = optlang.Model(name="minimize_nutrition_cost")
-    model.add(list(variables.values()))
-
-    constraints: dict[str, "optlang.Constraint"] = {}
+    constraints_json: list[dict] = []
     support = _sparse_nutrients(food_info, food_matches, nutrition)
 
     for nutrient, content in nutrition.items():
@@ -74,40 +109,65 @@ def build_model(
         lb = parse_bound(content["low_bound"])
         ub = parse_bound(content["high_bound"])
 
-        expr_terms = []
+        terms: list[tuple[float, str]] = []
         for food in food_info:
-            if nutrient not in food_matches[food]:
+            matches = food_matches.get(food, {})
+            if nutrient not in matches:
                 continue
-            amount = food_matches[food][nutrient]
+            amount = matches[nutrient]
             if nutrient == "Total Water":
                 amount /= GRAMS_PER_LITER
-            expr_terms.append(amount * variables[_safe_name(food)])
-        if not expr_terms:
+            terms.append((float(amount), _safe_name(food)))
+        if not terms:
             continue
 
-        expr = sum(expr_terms)
-        cname = _safe_name(nutrient)
-        # Replace +inf with None so optlang treats it as unbounded
-        c_lb = lb if lb != float("inf") else None
-        c_ub = ub if ub != float("inf") else None
-        c = optlang.Constraint(expr, lb=c_lb, ub=c_ub, name=cname)
-        constraints[cname] = c
-        model.add(c)
+        c_lb = float(lb) if lb != float("inf") else None
+        c_ub = float(ub) if ub != float("inf") else None
+        constraints_json.append({
+            "name": _safe_name(nutrient),
+            "expression": _linear_expr(terms),
+            "lb": c_lb,
+            "ub": c_ub,
+            "indicator_variable": None,
+            "active_when": 1,
+        })
 
     if include_volume:
-        volume_expr = sum(
-            info["cupEQ"] * variables[_safe_name(f)]
-            for f, info in food_info.items()
-        )
-        vol = optlang.Constraint(volume_expr, lb=5, ub=20, name="volume")
-        constraints["volume"] = vol
-        model.add(vol)
+        vol_terms = [
+            (float(info["cupEQ"]), _safe_name(food))
+            for food, info in food_info.items()
+        ]
+        constraints_json.append({
+            "name": "volume",
+            "expression": _linear_expr(vol_terms),
+            "lb": 5.0,
+            "ub": 20.0,
+            "indicator_variable": None,
+            "active_when": 1,
+        })
 
-    # Objective: minimize sum_f(var_f * price_per_100g_edible)
-    obj_expr = sum(
-        (pricing["price"] / pricing["yield"] / 4.54) * variables[_safe_name(food)]
+    obj_terms = [
+        (
+            float(pricing["price"]) / float(pricing["yield"]) / 4.54,
+            _safe_name(food),
+        )
         for food, pricing in food_info.items()
-    )
-    model.objective = optlang.Objective(obj_expr, direction="min")
+    ]
+    objective_json = {
+        "name": "minimize_cost",
+        "expression": _linear_expr(obj_terms),
+        "direction": "min",
+    }
+
+    model_dict = {
+        "name": "minimize_nutrition_cost",
+        "variables": variables_json,
+        "constraints": constraints_json,
+        "objective": objective_json,
+    }
+    model = Model.from_json(model_dict)
+
+    variables = {vj["name"]: model.variables[vj["name"]] for vj in variables_json}
+    constraints = {cj["name"]: model.constraints[cj["name"]] for cj in constraints_json}
 
     return model, variables, constraints
