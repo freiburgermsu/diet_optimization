@@ -85,7 +85,8 @@ def build_priced_foods(
         # Preserve optional provenance fields when available
         for field in ("claude_confidence", "claude_reason",
                       "raw_description", "tfp_category",
-                      "inflation_factor", "cpi_current"):
+                      "inflation_factor", "cpi_current",
+                      "package_size_g"):
             if field in price_entry:
                 out[term][field] = price_entry[field]
     return out, counts
@@ -110,6 +111,22 @@ def main() -> int:
           f"FDC descriptions per term)", file=sys.stderr)
 
     priced, counts = build_priced_foods(prices, buckets)
+
+    # Inject pipeline metadata (zip code, location, fetch date) from
+    # prices_raw.json if available — used by the web UI header.
+    raw_path = Path("prices_raw.json")
+    if raw_path.exists():
+        try:
+            raw_meta = json.loads(raw_path.read_text())
+            priced["_metadata"] = {
+                "zip_code": raw_meta.get("zip_code"),
+                "location_id": raw_meta.get("location_id"),
+                "fetched_at": raw_meta.get("fetched_at"),
+                "retailer": raw_meta.get("retailer"),
+            }
+        except Exception:
+            pass
+
     Path(args.output).write_text(json.dumps(priced, indent=2, sort_keys=True))
 
     print(f"\nwrote {counts['matched']}/{len(prices)} priced foods "
@@ -123,7 +140,7 @@ def main() -> int:
 
     # Spot-check by price source
     from collections import Counter
-    by_source = Counter(v["price_source"] for v in priced.values())
+    by_source = Counter(v["price_source"] for k, v in priced.items() if k != "_metadata")
     print(f"\nBy price source:", file=sys.stderr)
     for src, n in by_source.most_common():
         print(f"  {src}: {n}", file=sys.stderr)

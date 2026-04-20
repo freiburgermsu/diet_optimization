@@ -83,10 +83,10 @@ def test_protein_rda_weight_scaling():
     light_low = protein_rda_g(_p(weight_kg=50, activity="sedentary"))
     heavy_high = protein_rda_g(_p(weight_kg=100, activity="very_active"))
     assert light_low < heavy_high
-    # Sedentary 50kg → 0.8 × 50 = 40 g
-    assert abs(light_low - 40) < 0.1
-    # Very active 100kg → 1.6 × 100 = 160 g
-    assert abs(heavy_high - 160) < 0.1
+    # Sedentary 50kg → 0.7 × 50 = 35 g
+    assert abs(light_low - 35) < 0.1
+    # Very active 100kg → 1.5 × 100 = 150 g
+    assert abs(heavy_high - 150) < 0.1
 
 
 # --- Fiber ---
@@ -142,10 +142,10 @@ def test_pick_bracket_below_earliest_returns_none():
 
 def test_load_overrides_has_iron_and_calcium():
     overrides = load_profile_overrides()
-    assert "iron" in overrides
-    assert "calcium" in overrides
-    assert "male" in overrides["iron"]
-    assert "female" in overrides["iron"]
+    assert "Iron" in overrides
+    assert "Calcium" in overrides
+    assert "male" in overrides["Iron"]
+    assert "female" in overrides["Iron"]
 
 
 # --- End-to-end ---
@@ -164,14 +164,14 @@ def test_apply_profile_patches_iron_by_sex():
     male = apply_profile(baseline, _p(sex="male", age=28))
     female = apply_profile(baseline, _p(sex="female", age=28))
     # Premenopausal women need far more iron
-    assert female["iron"]["low_bound"] > male["iron"]["low_bound"]
+    assert female["Iron"]["low_bound"] > male["Iron"]["low_bound"]
 
 
 def test_apply_profile_calcium_rises_after_51():
     baseline = {}
     young = apply_profile(baseline, _p(sex="female", age=30))
     old = apply_profile(baseline, _p(sex="female", age=60))
-    assert old["calcium"]["low_bound"] > young["calcium"]["low_bound"]
+    assert old["Calcium"]["low_bound"] > young["Calcium"]["low_bound"]
 
 
 def test_apply_profile_leaves_unknown_nutrient_untouched():

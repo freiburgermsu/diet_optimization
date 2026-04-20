@@ -127,6 +127,16 @@
   }
   .source-tag.tfp { background: #fcecec; color: #733; }
 
+  .food-tag {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.15rem 0.5rem; background: #e8eff5; color: #335;
+    border-radius: 12px; font-size: 0.82rem;
+  }
+  .food-tag button {
+    background: none; border: 0; color: #933; cursor: pointer;
+    font-size: 0.9rem; padding: 0; line-height: 1;
+  }
+
   tr.nutrient-group-header td {
     background: #edf3ed;
     color: var(--accent-dark);
@@ -183,7 +193,7 @@
 </head>
 <body>
 <h1>diet-opt</h1>
-<p class="subtitle">Cost-minimizing nutritional diet over a 610-food pricing table (Kroger + TFP).</p>
+<p class="subtitle" id="subtitle">Cost-minimizing nutritional diet over a 610-food pricing table (Kroger + TFP).</p>
 
 <form id="optimize-form">
   <fieldset>
@@ -191,13 +201,12 @@
     <div class="row-3">
       <div>
         <label for="age">Age</label>
-        <input type="number" id="age" name="age" min="1" max="120" placeholder="28">
+        <input type="number" id="age" name="age" min="1" max="120" value="29">
       </div>
       <div>
         <label for="sex">Sex</label>
         <select id="sex" name="sex">
-          <option value="">default</option>
-          <option value="male">male</option>
+          <option value="male" selected>male</option>
           <option value="female">female</option>
           <option value="nonbinary">nonbinary</option>
         </select>
@@ -205,58 +214,159 @@
       <div>
         <label for="activity">Activity</label>
         <select id="activity" name="activity">
-          <option value="">default</option>
           <option value="sedentary">sedentary</option>
           <option value="light">light</option>
           <option value="moderate">moderate</option>
+          <option value="weight_lifting" selected>weight lifting</option>
           <option value="active">active</option>
           <option value="very_active">very active</option>
         </select>
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-bottom:0.4rem">
+      <div>
+        <label>Units</label>
+        <select id="unit-system">
+          <option value="metric">Metric (kg / cm)</option>
+          <option value="imperial" selected>Imperial (lbs / ft-in)</option>
+        </select>
+      </div>
+      <div>
+        <label for="zip-code">Zip code</label>
+        <input type="text" id="zip-code" name="zip_code" maxlength="5" pattern="[0-9]{5}" placeholder="60202" value="">
+      </div>
+    </div>
+    <div id="metric-inputs" class="row" style="display:none">
       <div>
         <label for="weight-kg">Weight (kg)</label>
-        <input type="number" id="weight-kg" name="weight_kg" min="20" max="300" step="0.5" placeholder="68">
+        <input type="number" id="weight-kg" name="weight_kg" min="20" max="300" step="0.5" value="70">
       </div>
       <div>
         <label for="height-cm">Height (cm)</label>
-        <input type="number" id="height-cm" name="height_cm" min="100" max="230" step="1" placeholder="175">
+        <input type="number" id="height-cm" name="height_cm" min="100" max="230" step="1" value="178">
       </div>
     </div>
-    <div class="help">Fill ALL five fields for personalized DRI; leave any blank to use the default (28yo active male, 68kg, 175cm).</div>
-  </fieldset>
-
-  <fieldset>
-    <legend>Dietary presets</legend>
-    <div id="presets-grid" class="preset-grid"></div>
-    <div id="presets-error" class="help" style="color: var(--error); display:none"></div>
-    <div class="help">Check any to exclude foods matching that preset's keyword list. Multiple presets stack.</div>
-  </fieldset>
-
-  <fieldset>
-    <legend>Portion constraint</legend>
-    <label for="min-serving">Minimum serving (grams/day per included food)</label>
-    <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="30">
-    <div class="help">
-      A food in the weekly diet must contribute at least this much on days it
-      appears, or not be served that day (MILP semi-continuous). The weekly
-      solver hard-codes <strong>30g</strong>; this field is informational.
+    <div id="imperial-inputs" class="row-3">
+      <div>
+        <label for="weight-lbs">Weight (lbs)</label>
+        <input type="number" id="weight-lbs" min="44" max="660" step="1" value="154">
+      </div>
+      <div>
+        <label for="height-ft">Height (ft)</label>
+        <input type="number" id="height-ft" min="3" max="7" step="1" value="5">
+      </div>
+      <div>
+        <label for="height-in">Height (in)</label>
+        <input type="number" id="height-in" min="0" max="11" step="1" value="10">
+      </div>
     </div>
-    <div class="help" style="margin-top:0.4rem">
-      Typical solve time: ~35s (reference LP ~4s, weekly MILP ~30s on a
-      pre-selected 60-food pool with a 1% optimality gap).
-    </div>
+    <div class="help">DRI bounds are scaled to the profile above. Zip code determines which Kroger market prices to use (requires re-scraping if changed).</div>
   </fieldset>
 
-  <fieldset>
-    <legend>Custom exclusions (optional)</legend>
-    <label for="blacklist">Blacklist — foods to exclude (comma-separated)</label>
-    <input type="text" id="blacklist" name="blacklist" placeholder="mushrooms, kidney beans">
+  <details>
+    <summary style="cursor:pointer; font-weight:600; font-size:0.95rem; padding:0.5rem 0">Dietary presets</summary>
+    <fieldset style="margin-top:0.3rem">
+      <div id="presets-grid" class="preset-grid"></div>
+      <div style="border-top:1px solid var(--border); margin:0.5rem 0 0.3rem 0"></div>
+      <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.88rem; padding:0.2rem 0">
+        <input type="checkbox" id="low-fat" name="low_fat">
+        low fat (total fat ≤ 20% of calories, saturated fat ≤ 30% of fat cap)
+      </label>
+      <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.88rem; padding:0.2rem 0">
+        <input type="checkbox" id="low-carb" name="low_carb">
+        low carb (net carbs ≤ 130g/day, protein +20%)
+      </label>
+      <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.88rem; padding:0.2rem 0">
+        <input type="checkbox" id="anti-inflammatory" name="anti_inflammatory">
+        anti-inflammatory (effective omega-3:omega-6 ≥ 1:4, high omega-3/vitamin K)
+      </label>
+      <div id="presets-error" class="help" style="color: var(--error); display:none"></div>
+      <div class="help">Check any to exclude foods or apply macro constraints. Multiple presets stack.</div>
+    </fieldset>
+  </details>
 
-    <label for="whitelist">Whitelist — foods that must appear (comma-separated)</label>
-    <input type="text" id="whitelist" name="whitelist" placeholder="spinach, pinto beans">
-  </fieldset>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; font-size:0.95rem; padding:0.5rem 0">Disease-state adjustments</summary>
+    <fieldset style="margin-top:0.3rem">
+      <div class="preset-grid" id="disease-grid">
+        <label><input type="checkbox" value="cardiovascular"> cardiovascular disease</label>
+        <label><input type="checkbox" value="diabetes"> diabetes</label>
+        <label><input type="checkbox" value="hypertension"> hypertension</label>
+        <label><input type="checkbox" value="kidney_disease"> kidney disease</label>
+        <label><input type="checkbox" value="gout"> gout</label>
+        <label><input type="checkbox" value="osteoporosis"> osteoporosis</label>
+        <label><input type="checkbox" value="iron_deficiency_anemia"> iron-deficiency anemia</label>
+        <label><input type="checkbox" value="nafld"> fatty liver (NAFLD)</label>
+        <label><input type="checkbox" value="hypothyroidism"> hypothyroidism</label>
+        <label><input type="checkbox" value="ibd_crohns"> IBD / Crohn's</label>
+        <label><input type="checkbox" value="celiac"> celiac disease</label>
+        <label><input type="checkbox" value="pregnancy"> pregnancy</label>
+        <label><input type="checkbox" value="preeclampsia_risk"> preeclampsia risk</label>
+        <label><input type="checkbox" value="sarcopenia"> sarcopenia</label>
+        <label><input type="checkbox" value="migraine"> migraine prevention</label>
+      </div>
+      <div class="help">Each disease preset activates evidence-based nutritional constraints (e.g. cardiovascular = low fat + anti-inflammatory + low sodium/cholesterol). Multiple stack.</div>
+    </fieldset>
+  </details>
+
+  <details style="margin:1rem 0">
+    <summary style="cursor:pointer; font-weight:600; color:var(--accent); font-size:0.95rem">Advanced options</summary>
+
+    <fieldset>
+      <legend>Supplements</legend>
+      <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer">
+        <input type="checkbox" id="b12-supplemented" name="b12_supplemented" checked>
+        B12 supplementation
+      </label>
+      <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; margin-top:0.3rem">
+        <input type="checkbox" id="vitd-supplemented" name="vitd_supplemented" checked>
+        Vitamin D supplementation
+      </label>
+      <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; margin-top:0.3rem">
+        <input type="checkbox" id="iodine-supplemented" name="iodine_supplemented" checked>
+        Iodine supplementation
+      </label>
+      <div class="help">When checked, these nutrients are not required from food (assumed supplemented). They still appear in the nutrient table. Unchecking forces the diet to meet them from food alone — may significantly increase cost.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Portion constraint</legend>
+      <label for="min-serving">Minimum serving (grams/day per included food)</label>
+      <input type="number" id="min-serving" name="min_serving_grams" min="0" max="200" step="5" value="30">
+      <div class="help">
+        A food in the weekly diet must contribute at least this much on days it
+        appears, or not be served that day (MILP semi-continuous). Default: <strong>30g</strong>.
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Custom exclusions</legend>
+      <label>Blacklist — foods to exclude</label>
+      <div style="display:flex; gap:0.3rem; margin-bottom:0.3rem">
+        <input type="text" id="blacklist-input" list="food-datalist" placeholder="type to search foods…" style="flex:1">
+        <button type="button" onclick="addFoodTag('blacklist')" style="font-size:0.85rem; padding:0.3rem 0.6rem">+ Add</button>
+      </div>
+      <div id="blacklist-tags" style="display:flex; flex-wrap:wrap; gap:0.3rem; min-height:1.2rem"></div>
+      <input type="hidden" id="blacklist" name="blacklist">
+
+      <label style="margin-top:0.5rem">Whitelist — foods that must appear</label>
+      <div style="display:flex; gap:0.3rem; margin-bottom:0.3rem">
+        <input type="text" id="whitelist-input" list="food-datalist" placeholder="type to search foods…" style="flex:1">
+        <button type="button" onclick="addFoodTag('whitelist')" style="font-size:0.85rem; padding:0.3rem 0.6rem">+ Add</button>
+      </div>
+      <div id="whitelist-tags" style="display:flex; flex-wrap:wrap; gap:0.3rem; min-height:1.2rem"></div>
+      <input type="hidden" id="whitelist" name="whitelist">
+
+      <datalist id="food-datalist"></datalist>
+    </fieldset>
+
+    <fieldset>
+      <legend>Manual nutrient overrides</legend>
+      <div class="help" style="margin-bottom:0.5rem">Override any nutrient bound. These take highest priority — they override profile scaling, disease presets, and all other settings.</div>
+      <div id="override-rows"></div>
+      <button type="button" id="add-override-btn" style="font-size:0.85rem; padding:0.3rem 0.8rem; margin-top:0.4rem">+ Add override</button>
+    </fieldset>
+  </details>
 
   <div class="submit-row">
     <button type="submit" id="solve-btn" class="big">Optimize</button>
@@ -281,6 +391,158 @@
     });
 
   const toList = (s) => s ? s.split(",").map(x => x.trim()).filter(Boolean) : [];
+
+  // --- Unit system toggle ---
+  const unitSelect = document.getElementById("unit-system");
+  const metricDiv = document.getElementById("metric-inputs");
+  const imperialDiv = document.getElementById("imperial-inputs");
+
+  unitSelect.addEventListener("change", () => {
+    const imperial = unitSelect.value === "imperial";
+    metricDiv.style.display = imperial ? "none" : "";
+    imperialDiv.style.display = imperial ? "" : "none";
+    if (imperial) {
+      // Convert current metric → imperial for display
+      const kg = +document.getElementById("weight-kg").value || 68;
+      const cm = +document.getElementById("height-cm").value || 175;
+      document.getElementById("weight-lbs").value = Math.round(kg * 2.20462);
+      const totalIn = cm / 2.54;
+      document.getElementById("height-ft").value = Math.floor(totalIn / 12);
+      document.getElementById("height-in").value = Math.round(totalIn % 12);
+    } else {
+      // Convert current imperial → metric
+      const lbs = +document.getElementById("weight-lbs").value || 150;
+      const ft = +document.getElementById("height-ft").value || 5;
+      const inches = +document.getElementById("height-in").value || 9;
+      document.getElementById("weight-kg").value = Math.round(lbs / 2.20462 * 2) / 2;
+      document.getElementById("height-cm").value = Math.round((ft * 12 + inches) * 2.54);
+    }
+  });
+
+  // Before submit: sync imperial → metric hidden fields so the backend always gets kg/cm
+  function syncUnits() {
+    if (unitSelect.value === "imperial") {
+      const lbs = +document.getElementById("weight-lbs").value || 150;
+      const ft = +document.getElementById("height-ft").value || 5;
+      const inches = +document.getElementById("height-in").value || 9;
+      document.getElementById("weight-kg").value = Math.round(lbs / 2.20462 * 2) / 2;
+      document.getElementById("height-cm").value = Math.round((ft * 12 + inches) * 2.54);
+    }
+  }
+
+  // --- Manual nutrient override rows ---
+  const NUTRIENT_NAMES = [
+    "Energy","Protein","Carbohydrate","Total Fiber","Fat","Saturated fatty acids",
+    "Linoleic Acid","Linolenic Acid","Dietary Cholesterol","Total Water",
+    "Vitamin A","Vitamin C","Vitamin E","Vitamin K","Carotenoids",
+    "Thiamin","Riboflavin","Niacin","Pantothenic Acid","Vitamin B6",
+    "Biotin","Folate","Vitamin B12","Choline",
+    "Calcium","Phosphorus","Magnesium","Sodium","Potassium","Chloride",
+    "Iron","Zinc","Copper","Manganese","Iodine","Selenium","Molybdenum",
+    "Histidine","Isoleucine","Leucine","Lysine","Methionine",
+    "Phenylalanine","Threonine","Tryptophan","Valine","Tyrosine",
+  ];
+
+  function addOverrideRow() {
+    const container = document.getElementById("override-rows");
+    const row = document.createElement("div");
+    row.className = "row-3";
+    row.style.marginBottom = "0.3rem";
+    row.style.alignItems = "end";
+    const opts = NUTRIENT_NAMES.map(n => `<option value="${n}">${n}</option>`).join("");
+    row.innerHTML = `
+      <div>
+        <select class="ov-nutrient" style="font-size:0.85rem">${opts}</select>
+      </div>
+      <div>
+        <select class="ov-bound" style="font-size:0.85rem">
+          <option value="lower">lower bound ≥</option>
+          <option value="upper">upper bound ≤</option>
+        </select>
+      </div>
+      <div style="display:flex; gap:0.3rem; align-items:center">
+        <input type="number" class="ov-value" step="any" style="font-size:0.85rem; flex:1" placeholder="value">
+        <button type="button" onclick="this.closest('.row-3').remove()" style="padding:0.2rem 0.5rem; font-size:0.8rem; background:#b00020; color:white; border:0; border-radius:3px; cursor:pointer">×</button>
+      </div>`;
+    container.appendChild(row);
+  }
+  document.getElementById("add-override-btn").addEventListener("click", addOverrideRow);
+
+  function collectOverrides() {
+    const rows = document.querySelectorAll("#override-rows .row-3");
+    const overrides = [];
+    rows.forEach(row => {
+      const nutrient = row.querySelector(".ov-nutrient").value;
+      const bound = row.querySelector(".ov-bound").value;
+      const value = +row.querySelector(".ov-value").value;
+      if (nutrient && !isNaN(value)) overrides.push({ nutrient, bound, value });
+    });
+    return overrides;
+  }
+
+  // Show market info from /health metadata + populate zip field
+  let serverZip = null;
+  (async () => {
+    try {
+      const { market } = await api("/health");
+      if (market && market.zip_code) {
+        serverZip = market.zip_code;
+        const sub = document.getElementById("subtitle");
+        const date = market.fetched_at ? ` (${market.fetched_at.split("T")[0]})` : "";
+        sub.textContent += ` Prices near zip ${market.zip_code}${date}.`;
+        const zipInput = document.getElementById("zip-code");
+        if (zipInput && !zipInput.value) zipInput.value = market.zip_code;
+      }
+    } catch {}
+  })();
+
+  // Populate food datalist for blacklist/whitelist autocomplete
+  let allFoodNames = [];
+  (async () => {
+    try {
+      const { foods } = await api("/foods");
+      allFoodNames = foods;
+      const dl = document.getElementById("food-datalist");
+      foods.forEach(f => {
+        const opt = document.createElement("option");
+        opt.value = f;
+        dl.appendChild(opt);
+      });
+    } catch {}
+  })();
+
+  function addFoodTag(listId) {
+    const input = document.getElementById(listId + "-input");
+    const name = input.value.trim();
+    if (!name) return;
+    if (allFoodNames.length && !allFoodNames.includes(name)) {
+      input.style.borderColor = "var(--error)";
+      setTimeout(() => input.style.borderColor = "", 1500);
+      return;
+    }
+    const container = document.getElementById(listId + "-tags");
+    // Don't add duplicates
+    if ([...container.children].some(t => t.dataset.food === name)) { input.value = ""; return; }
+    const tag = document.createElement("span");
+    tag.className = "food-tag";
+    tag.dataset.food = name;
+    tag.innerHTML = `${name} <button type="button" onclick="this.parentElement.remove(); syncFoodTags('${listId}')">&times;</button>`;
+    container.appendChild(tag);
+    input.value = "";
+    syncFoodTags(listId);
+  }
+
+  function syncFoodTags(listId) {
+    const tags = [...document.getElementById(listId + "-tags").children].map(t => t.dataset.food);
+    document.getElementById(listId).value = tags.join(",");
+  }
+
+  // Allow Enter key to add tags
+  ["blacklist", "whitelist"].forEach(id => {
+    document.getElementById(id + "-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); addFoodTag(id); }
+    });
+  });
 
   // Populate preset checkboxes
   (async () => {
@@ -307,6 +569,7 @@
 
   optForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    syncUnits();
     solveBtn.disabled = true;
     const fd = new FormData(optForm);
     const presets = [...document.querySelectorAll("#presets-grid input:checked")].map(x => x.value);
@@ -315,6 +578,14 @@
       dietary_presets: presets,
       blacklist: toList(fd.get("blacklist")),
       whitelist: toList(fd.get("whitelist")),
+      b12_supplemented: document.getElementById("b12-supplemented").checked,
+      vitd_supplemented: document.getElementById("vitd-supplemented").checked,
+      iodine_supplemented: document.getElementById("iodine-supplemented").checked,
+      low_fat: document.getElementById("low-fat").checked,
+      low_carb: document.getElementById("low-carb").checked,
+      anti_inflammatory: document.getElementById("anti-inflammatory").checked,
+      disease_presets: [...document.querySelectorAll("#disease-grid input:checked")].map(x => x.value),
+      nutrient_overrides: collectOverrides(),
     };
     const age = fd.get("age"), sex = fd.get("sex"),
           weight = fd.get("weight_kg"), height = fd.get("height_cm"),
@@ -325,7 +596,26 @@
       body.activity = activity;
     }
 
+    // Warn if user's zip differs from the scraped data
+    const userZip = fd.get("zip_code") || "";
+    const zipMismatch = userZip && serverZip && userZip !== serverZip;
+
     renderShell(DEFAULT_DAYS);
+    if (zipMismatch) {
+      const status = document.getElementById("status-line");
+      status.innerHTML = `<div class="warn" style="margin:0">Prices are from zip ${serverZip}. ` +
+        `To use ${userZip}, re-scrape: <code>uv run python scripts/fetch_prices.py fetch --zip ${userZip} ` +
+        `--terms-from-fdc-descriptions fresh_foods_nutrients_names_physiology.json --output prices_raw.json</code> ` +
+        `then rebuild.</div><p><span class="spinner"></span>Optimizing with current prices (zip ${serverZip})…</p>`;
+    }
+
+    // Elapsed-time counter so the user knows optimization hasn't stalled
+    const tStart = Date.now();
+    const tick = setInterval(() => {
+      const el = document.getElementById("elapsed-counter");
+      if (el) el.textContent = `${Math.round((Date.now() - tStart) / 1000)}s`;
+    }, 500);
+
     const state = {
       days: DEFAULT_DAYS,
       perDay: {},             // {day_index_1based: {food: grams}}
@@ -343,14 +633,18 @@
       if (!response.ok) {
         const txt = await response.text();
         let msg = txt;
-        try { msg = JSON.parse(txt).detail || txt; } catch {}
+        try {
+          const parsed = JSON.parse(txt);
+          msg = typeof parsed.detail === "string" ? parsed.detail : JSON.stringify(parsed.detail);
+        } catch {}
         throw new Error(msg);
       }
       await streamWeekly(response, state);
     } catch (err) {
       document.getElementById("status-line").innerHTML =
-        `<span class="error" style="display:inline-block; padding:0.3rem 0.6rem">${err.message}</span>`;
+        `<span class="error" style="display:inline-block; padding:0.3rem 0.6rem">${err.message || err}</span>`;
     } finally {
+      clearInterval(tick);
       solveBtn.disabled = false;
     }
   });
@@ -368,10 +662,11 @@
           <span class="spinner"></span>Loading inputs…
         </div>
         <table id="foods-table"><thead>${head}</thead><tbody></tbody><tfoot></tfoot></table>
-        <div id="nutrients-slot"></div>
         <div id="shadow-slot"></div>
+        <div id="nutrients-slot"></div>
         <div id="actions-slot"></div>
         <div id="plan-slot"></div>
+        <div id="citations-slot"></div>
       </div>
     `;
   }
@@ -404,21 +699,22 @@
       state.days = evt.days;
       state.excluded_by_preset = evt.excluded_by_preset;
       status.innerHTML =
-        `<span class="spinner"></span>Solving reference LP over ${evt.total_foods} foods…` +
+        `<span class="spinner"></span>Solving reference LP over ${evt.total_foods} foods… ` +
+        `<span id="elapsed-counter">0s</span>` +
         (evt.excluded_by_preset ? ` (${evt.excluded_by_preset} excluded by presets)` : "");
     } else if (evt.event === "reference") {
-      renderReference(evt);
       status.innerHTML =
-        `<span class="spinner"></span>Reference diet $${evt.cost}/day computed ` +
-        `(${evt.elapsed_s}s). Running weekly MILP with rotation cap for daily variety…`;
+        `<span class="spinner"></span>Reference diet $${evt.cost}/day. Running weekly MILP… ` +
+        `<span id="elapsed-counter">${evt.elapsed_s}s</span>`;
     } else if (evt.event === "solving") {
       status.innerHTML =
-        `<span class="spinner"></span>MILP solving on ${evt.pool_foods} pre-selected foods ` +
-        `(emphasis: ${evt.emphasis}, ≤${evt.time_limit_sec}s, gap ${evt.mip_gap * 100}%)…`;
+        `<span class="spinner"></span>MILP solving on ${evt.pool_foods} foods ` +
+        `(≤${evt.time_limit_sec}s limit)… <span id="elapsed-counter">${evt.elapsed_s}s</span>`;
     } else if (evt.event === "day") {
       populateDayColumn(evt, state);
     } else if (evt.event === "done") {
       renderSummary(evt, state);
+      renderReference(evt);
       renderMealPlanButton(state);
     } else if (evt.event === "error") {
       status.innerHTML = `<span class="error" style="display:inline-block; padding:0.3rem 0.6rem">${evt.message}</span>`;
@@ -444,7 +740,7 @@
     rerenderBody(state);
 
     document.getElementById("status-line").innerHTML =
-      `<span class="spinner"></span>Day ${day}/${state.days} rendered · elapsed ${evt.elapsed_s}s · ${evt.total_foods_seen} unique foods so far`;
+      `<span class="spinner"></span>Day ${day}/${state.days} · ${evt.total_foods_seen} unique foods · <span id="elapsed-counter">${evt.elapsed_s}s</span>`;
   }
 
   // Rebuild the <tbody> + <tfoot> to reflect accumulated per-day data.
@@ -524,7 +820,7 @@
 
     // Nutrients grouped by category (macros → water → vitamins → minerals → amino acids).
     if (evt.nutrients && evt.nutrients.length) {
-      let html = `<h2>Nutrients — DRI coverage <span class="help" style="font-weight:normal">(reference LP, representative per-day)</span></h2>`;
+      let html = `<h2>Nutrients — DRI coverage <span class="help" style="font-weight:normal">(daily average across the week)</span></h2>`;
       html += `<table><thead><tr>
         <th class="food-col">Nutrient</th>
         <th>Lower</th>
@@ -544,6 +840,7 @@
         let status = "ok", statusClass = "source-tag";
         if (n.binding === "lower") { status = "binding ↓"; statusClass = "source-tag tfp"; }
         else if (n.binding === "upper") { status = "binding ↑"; statusClass = "source-tag tfp"; }
+        else if (n.high_bound != null && n.value > n.high_bound) { status = "high"; statusClass = "source-tag tfp"; }
         html += `<tr>
           <td class="food-col">${n.nutrient}</td>
           <td>${lb}</td>
@@ -558,7 +855,7 @@
     }
 
     if (evt.shadow_prices && evt.shadow_prices.length) {
-      let html = `<h2>Shadow prices <span class="help" style="font-weight:normal">(reference LP)</span></h2>`;
+      let html = `<h2>Shadow prices <span class="help" style="font-weight:normal">(reference LP, indicative)</span></h2>`;
       html += `<p class="help">Each binding constraint pins the cost. Relaxing it by 1 unit would save the listed amount.</p>`;
       html += `<table><tr>
         <th class="food-col">Nutrient</th><th>Bound</th>
@@ -577,6 +874,20 @@
       });
       html += `</details>`;
       sSlot.innerHTML = html;
+    }
+
+    // Citations
+    if (evt.citations && evt.citations.length) {
+      const cSlot = document.getElementById("citations-slot");
+      let html = `<h2>References</h2>`;
+      html += `<p class="help">Peer-reviewed sources supporting the nutritional guidance for your profile and selected conditions.</p>`;
+      html += `<table><thead><tr><th style="text-align:left; width:2rem">#</th><th style="text-align:left">Citation</th><th>DOI</th></tr></thead><tbody>`;
+      evt.citations.forEach((c, i) => {
+        const doi = c.doi ? `<a href="https://doi.org/${c.doi}" target="_blank" rel="noopener" style="color:var(--accent); font-size:0.82rem">${c.doi}</a>` : "—";
+        html += `<tr><td style="text-align:left; color:var(--muted)">${i+1}</td><td style="text-align:left; white-space:normal; font-size:0.85rem">${c.cite}</td><td>${doi}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+      cSlot.innerHTML = html;
     }
   }
 

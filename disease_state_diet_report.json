@@ -1,0 +1,652 @@
+{
+  "generated": "2026-04-20 08:43",
+  "profile": {
+    "age": 29,
+    "sex": "male",
+    "weight_kg": 70,
+    "height_cm": 178,
+    "activity": "weight_lifting"
+  },
+  "supplements": [
+    "B12",
+    "Vitamin D",
+    "Iodine"
+  ],
+  "diseases": {
+    "cardiovascular": {
+      "cost": 9.15,
+      "cap": 7,
+      "unique_foods": 9,
+      "energy": 2669,
+      "protein": 145.8,
+      "eff_o3": 4.25,
+      "o6": 17.0,
+      "ratio": "1:4",
+      "polyphenols": 1664,
+      "top_foods": {
+        "nonfat milk": 400,
+        "baby carrots": 400,
+        "milk": 369,
+        "spinach": 361,
+        "red grapes": 337,
+        "whitefish fish": 313,
+        "brown rice": 265,
+        "carrots": 232
+      }
+    },
+    "celiac": {
+      "cost": 5.35,
+      "cap": 4,
+      "unique_foods": 26,
+      "energy": 2795,
+      "protein": 136.2,
+      "eff_o3": 0.32,
+      "o6": 23.3,
+      "ratio": "1:73",
+      "polyphenols": 1821,
+      "top_foods": {
+        "reduced fat milk": 229,
+        "milk": 219,
+        "hot peppers": 213,
+        "carrots": 209,
+        "baby carrots": 175,
+        "nonfat milk": 164,
+        "welsh onions": 128,
+        "brown rice": 120
+      }
+    },
+    "diabetes": {
+      "cost": 3.68,
+      "cap": 7,
+      "unique_foods": 15,
+      "energy": 2603,
+      "protein": 126.0,
+      "eff_o3": 0.21,
+      "o6": 24.5,
+      "ratio": "1:119",
+      "polyphenols": 811,
+      "top_foods": {
+        "nonfat milk": 388,
+        "reduced fat milk": 286,
+        "chicken drumstick": 149,
+        "spinach": 149,
+        "carrots": 104,
+        "virginia peanuts": 90,
+        "almonds nuts": 49,
+        "yolk egg": 48
+      }
+    },
+    "gout": {
+      "cost": 3.73,
+      "cap": 7,
+      "unique_foods": 13,
+      "energy": 2732,
+      "protein": 80.0,
+      "eff_o3": 0.36,
+      "o6": 34.1,
+      "ratio": "1:94",
+      "polyphenols": 546,
+      "top_foods": {
+        "carrots": 400,
+        "nonfat milk": 375,
+        "reduced fat milk": 303,
+        "brown rice": 262,
+        "hot peppers": 222,
+        "baby carrots": 149,
+        "yolk egg": 59,
+        "virginia peanuts": 47
+      }
+    },
+    "hypertension": {
+      "cost": 3.9,
+      "cap": 6,
+      "unique_foods": 21,
+      "energy": 2791,
+      "protein": 119.3,
+      "eff_o3": 0.34,
+      "o6": 33.0,
+      "ratio": "1:97",
+      "polyphenols": 832,
+      "top_foods": {
+        "nonfat milk": 337,
+        "carrots": 325,
+        "reduced fat milk": 284,
+        "brown rice": 179,
+        "welsh onions": 142,
+        "milk": 119,
+        "black beans": 115,
+        "hot peppers": 75
+      }
+    },
+    "hypothyroidism": {
+      "cost": 4.06,
+      "cap": 5,
+      "unique_foods": 22,
+      "energy": 2795,
+      "protein": 130.3,
+      "eff_o3": 0.32,
+      "o6": 28.2,
+      "ratio": "1:89",
+      "polyphenols": 978,
+      "top_foods": {
+        "nonfat milk": 286,
+        "carrots": 258,
+        "milk": 238,
+        "reduced fat milk": 223,
+        "brown rice": 153,
+        "hot peppers": 149,
+        "black beans": 121,
+        "baby carrots": 107
+      }
+    },
+    "ibd_crohns": null,
+    "iron_deficiency_anemia": {
+      "cost": 4.29,
+      "cap": 5,
+      "unique_foods": 21,
+      "energy": 2831,
+      "protein": 130.0,
+      "eff_o3": 0.32,
+      "o6": 26.1,
+      "ratio": "1:83",
+      "polyphenols": 1126,
+      "top_foods": {
+        "nonfat milk": 286,
+        "carrots": 258,
+        "milk": 251,
+        "reduced fat milk": 212,
+        "hot peppers": 149,
+        "black beans": 136,
+        "brown rice": 126,
+        "baby carrots": 115
+      }
+    },
+    "kidney_disease": null,
+    "migraine": {
+      "cost": 5.14,
+      "cap": 6,
+      "unique_foods": 18,
+      "energy": 2830,
+      "protein": 133.4,
+      "eff_o3": 0.34,
+      "o6": 27.1,
+      "ratio": "1:80",
+      "polyphenols": 1223,
+      "top_foods": {
+        "nonfat milk": 343,
+        "reduced fat milk": 343,
+        "milk": 327,
+        "carrots": 284,
+        "spinach": 186,
+        "brown rice": 156,
+        "baby carrots": 114,
+        "chicken drumstick": 109
+      }
+    },
+    "nafld": null,
+    "osteoporosis": {
+      "cost": 4.11,
+      "cap": 5,
+      "unique_foods": 19,
+      "energy": 2765,
+      "protein": 129.7,
+      "eff_o3": 0.33,
+      "o6": 29.3,
+      "ratio": "1:89",
+      "polyphenols": 1032,
+      "top_foods": {
+        "carrots": 286,
+        "nonfat milk": 280,
+        "milk": 258,
+        "reduced fat milk": 256,
+        "black beans": 187,
+        "hot peppers": 149,
+        "brown rice": 130,
+        "baby carrots": 115
+      }
+    },
+    "preeclampsia_risk": {
+      "cost": 3.88,
+      "cap": 7,
+      "unique_foods": 18,
+      "energy": 2791,
+      "protein": 107.1,
+      "eff_o3": 0.36,
+      "o6": 36.1,
+      "ratio": "1:99",
+      "polyphenols": 673,
+      "top_foods": {
+        "carrots": 375,
+        "nonfat milk": 347,
+        "reduced fat milk": 337,
+        "brown rice": 225,
+        "baby carrots": 216,
+        "black beans": 74,
+        "milk": 70,
+        "virginia peanuts": 69
+      }
+    },
+    "pregnancy": {
+      "cost": 4.19,
+      "cap": 6,
+      "unique_foods": 16,
+      "energy": 2800,
+      "protein": 141.8,
+      "eff_o3": 0.34,
+      "o6": 30.5,
+      "ratio": "1:90",
+      "polyphenols": 986,
+      "top_foods": {
+        "nonfat milk": 343,
+        "reduced fat milk": 280,
+        "carrots": 270,
+        "black beans": 184,
+        "welsh onions": 144,
+        "brown rice": 105,
+        "milk": 105,
+        "catjang cowpeas": 76
+      }
+    },
+    "sarcopenia": {
+      "cost": 4.41,
+      "cap": 5,
+      "unique_foods": 21,
+      "energy": 2821,
+      "protein": 142.6,
+      "eff_o3": 0.3,
+      "o6": 26.0,
+      "ratio": "1:87",
+      "polyphenols": 1053,
+      "top_foods": {
+        "nonfat milk": 286,
+        "reduced fat milk": 248,
+        "baby carrots": 215,
+        "carrots": 211,
+        "milk": 210,
+        "black beans": 161,
+        "hot peppers": 149,
+        "brown rice": 126
+      }
+    }
+  },
+  "dietary_presets": {
+    "dairy_free": {
+      "cost": 3.66,
+      "cap": 6,
+      "unique_foods": 18,
+      "energy": 2798,
+      "protein": 124.7,
+      "eff_o3": 0.37,
+      "o6": 34.7,
+      "ratio": "1:94",
+      "polyphenols": 976,
+      "top_foods": {
+        "carrots": 319,
+        "great northern beans": 180,
+        "welsh onions": 158,
+        "brown rice": 126,
+        "egg": 83,
+        "hot peppers": 75,
+        "virginia peanuts": 69,
+        "baby carrots": 56
+      }
+    },
+    "egg_free": {
+      "cost": 4.18,
+      "cap": 7,
+      "unique_foods": 12,
+      "energy": 2840,
+      "protein": 143.7,
+      "eff_o3": 0.35,
+      "o6": 24.9,
+      "ratio": "1:71",
+      "polyphenols": 939,
+      "top_foods": {
+        "nonfat milk": 379,
+        "milk": 373,
+        "navy beans": 334,
+        "carrots": 273,
+        "chicken drumstick": 202,
+        "brown rice": 139,
+        "hot peppers": 72,
+        "welsh onions": 60
+      }
+    },
+    "gluten_free": {
+      "cost": 3.67,
+      "cap": 7,
+      "unique_foods": 14,
+      "energy": 2744,
+      "protein": 105.0,
+      "eff_o3": 0.37,
+      "o6": 36.4,
+      "ratio": "1:99",
+      "polyphenols": 501,
+      "top_foods": {
+        "nonfat milk": 400,
+        "carrots": 393,
+        "reduced fat milk": 324,
+        "brown rice": 256,
+        "baby carrots": 103,
+        "chicken drumstick": 87,
+        "hot peppers": 75,
+        "welsh onions": 66
+      }
+    },
+    "lacto_vegetarian": {
+      "cost": 4.46,
+      "cap": 7,
+      "unique_foods": 11,
+      "energy": 2851,
+      "protein": 122.2,
+      "eff_o3": 0.42,
+      "o6": 24.2,
+      "ratio": "1:57",
+      "polyphenols": 1513,
+      "top_foods": {
+        "milk": 400,
+        "carrots": 400,
+        "pinto beans": 363,
+        "nonfat milk": 352,
+        "spinach": 281,
+        "navy beans": 117,
+        "welsh onions": 57,
+        "lentils": 38
+      }
+    },
+    "legume_free": {
+      "cost": 3.84,
+      "cap": 7,
+      "unique_foods": 12,
+      "energy": 2748,
+      "protein": 108.0,
+      "eff_o3": 0.37,
+      "o6": 31.5,
+      "ratio": "1:84",
+      "polyphenols": 565,
+      "top_foods": {
+        "carrots": 400,
+        "reduced fat milk": 383,
+        "nonfat milk": 333,
+        "brown rice": 241,
+        "hot peppers": 224,
+        "chicken drumstick": 154,
+        "oats": 62,
+        "welsh onions": 61
+      }
+    },
+    "nightshade_free": {
+      "cost": 4.34,
+      "cap": 5,
+      "unique_foods": 16,
+      "energy": 2782,
+      "protein": 134.5,
+      "eff_o3": 0.34,
+      "o6": 30.5,
+      "ratio": "1:90",
+      "polyphenols": 1157,
+      "top_foods": {
+        "nonfat milk": 286,
+        "carrots": 286,
+        "reduced fat milk": 256,
+        "milk": 255,
+        "black beans": 185,
+        "baby carrots": 155,
+        "brown rice": 138,
+        "welsh onions": 131
+      }
+    },
+    "nut_free": {
+      "cost": 3.83,
+      "cap": 7,
+      "unique_foods": 14,
+      "energy": 2851,
+      "protein": 107.1,
+      "eff_o3": 0.37,
+      "o6": 34.8,
+      "ratio": "1:95",
+      "polyphenols": 438,
+      "top_foods": {
+        "nonfat milk": 400,
+        "carrots": 400,
+        "reduced fat milk": 304,
+        "baby carrots": 266,
+        "brown rice": 226,
+        "chicken drumstick": 120,
+        "welsh onions": 89,
+        "hot peppers": 75
+      }
+    },
+    "ovo_vegetarian": {
+      "cost": 4.03,
+      "cap": 5,
+      "unique_foods": 16,
+      "energy": 2851,
+      "protein": 125.1,
+      "eff_o3": 0.49,
+      "o6": 27.1,
+      "ratio": "1:55",
+      "polyphenols": 888,
+      "top_foods": {
+        "carrots": 275,
+        "baby carrots": 257,
+        "great northern beans": 144,
+        "brown rice": 127,
+        "yolk only egg": 110,
+        "egg": 108,
+        "hot peppers": 75,
+        "beans": 67
+      }
+    },
+    "paleo": {
+      "cost": 4.2,
+      "cap": 7,
+      "unique_foods": 9,
+      "energy": 2851,
+      "protein": 105.0,
+      "eff_o3": 0.36,
+      "o6": 22.9,
+      "ratio": "1:63",
+      "polyphenols": 922,
+      "top_foods": {
+        "carrots": 240,
+        "welsh onions": 239,
+        "spinach": 212,
+        "brown rice": 208,
+        "chicken drumstick": 206,
+        "kale": 204,
+        "white rice": 161,
+        "yolk only egg": 49
+      }
+    },
+    "pescatarian": {
+      "cost": 3.88,
+      "cap": 6,
+      "unique_foods": 21,
+      "energy": 2790,
+      "protein": 110.7,
+      "eff_o3": 0.3,
+      "o6": 30.1,
+      "ratio": "1:99",
+      "polyphenols": 837,
+      "top_foods": {
+        "nonfat milk": 292,
+        "carrots": 264,
+        "reduced fat milk": 246,
+        "brown rice": 199,
+        "milk": 167,
+        "welsh onions": 110,
+        "hot peppers": 75,
+        "virginia peanuts": 71
+      }
+    },
+    "soy_free": {
+      "cost": 4.33,
+      "cap": 5,
+      "unique_foods": 21,
+      "energy": 2798,
+      "protein": 126.5,
+      "eff_o3": 0.31,
+      "o6": 29.5,
+      "ratio": "1:94",
+      "polyphenols": 1528,
+      "top_foods": {
+        "nonfat milk": 282,
+        "carrots": 264,
+        "reduced fat milk": 263,
+        "milk": 224,
+        "brown rice": 184,
+        "baby carrots": 163,
+        "hot peppers": 149,
+        "black beans": 108
+      }
+    },
+    "vegan": {
+      "cost": 5.97,
+      "cap": 6,
+      "unique_foods": 17,
+      "energy": 2832,
+      "protein": 120.2,
+      "eff_o3": 0.37,
+      "o6": 25.6,
+      "ratio": "1:68",
+      "polyphenols": 1431,
+      "top_foods": {
+        "spinach": 335,
+        "pinto beans": 314,
+        "carrots": 196,
+        "baby carrots": 143,
+        "cookie": 106,
+        "soybeans": 98,
+        "welsh onions": 87,
+        "brown rice": 71
+      }
+    },
+    "vegan_gluten_free": {
+      "cost": 5.46,
+      "cap": 6,
+      "unique_foods": 16,
+      "energy": 2824,
+      "protein": 116.4,
+      "eff_o3": 0.38,
+      "o6": 24.9,
+      "ratio": "1:66",
+      "polyphenols": 1392,
+      "top_foods": {
+        "spinach": 300,
+        "carrots": 239,
+        "pinto beans": 235,
+        "baby carrots": 119,
+        "navy beans": 91,
+        "brown rice": 91,
+        "welsh onions": 90,
+        "black beans": 87
+      }
+    },
+    "vegan_nut_free": {
+      "cost": 5.69,
+      "cap": 7,
+      "unique_foods": 10,
+      "energy": 2851,
+      "protein": 114.5,
+      "eff_o3": 0.43,
+      "o6": 33.1,
+      "ratio": "1:77",
+      "polyphenols": 1415,
+      "top_foods": {
+        "baby carrots": 400,
+        "carrots": 400,
+        "spinach": 386,
+        "pinto beans": 274,
+        "brown rice": 162,
+        "oats": 141,
+        "cauliflower": 116,
+        "soybeans": 87
+      }
+    },
+    "vegetarian": {
+      "cost": 3.88,
+      "cap": 6,
+      "unique_foods": 21,
+      "energy": 2790,
+      "protein": 110.7,
+      "eff_o3": 0.3,
+      "o6": 30.1,
+      "ratio": "1:99",
+      "polyphenols": 837,
+      "top_foods": {
+        "nonfat milk": 292,
+        "carrots": 264,
+        "reduced fat milk": 246,
+        "brown rice": 199,
+        "milk": 167,
+        "welsh onions": 110,
+        "hot peppers": 75,
+        "virginia peanuts": 71
+      }
+    },
+    "whole30": {
+      "cost": 4.2,
+      "cap": 7,
+      "unique_foods": 9,
+      "energy": 2851,
+      "protein": 105.0,
+      "eff_o3": 0.36,
+      "o6": 22.9,
+      "ratio": "1:63",
+      "polyphenols": 922,
+      "top_foods": {
+        "carrots": 240,
+        "welsh onions": 239,
+        "spinach": 212,
+        "brown rice": 208,
+        "chicken drumstick": 206,
+        "kale": 204,
+        "white rice": 161,
+        "yolk only egg": 49
+      }
+    },
+    "whole_foods": {
+      "cost": 4.15,
+      "cap": 5,
+      "unique_foods": 21,
+      "energy": 2804,
+      "protein": 124.0,
+      "eff_o3": 0.32,
+      "o6": 29.3,
+      "ratio": "1:91",
+      "polyphenols": 1549,
+      "top_foods": {
+        "nonfat milk": 277,
+        "milk": 271,
+        "carrots": 265,
+        "reduced fat milk": 205,
+        "brown rice": 184,
+        "hot peppers": 127,
+        "black beans": 117,
+        "baby carrots": 93
+      }
+    }
+  },
+  "baseline": {
+    "cost": 4.15,
+    "cap": 5,
+    "unique_foods": 21,
+    "energy": 2804,
+    "protein": 124.0,
+    "eff_o3": 0.32,
+    "o6": 29.3,
+    "ratio": "1:91",
+    "polyphenols": 1549,
+    "top_foods": {
+      "nonfat milk": 277,
+      "milk": 271,
+      "carrots": 265,
+      "reduced fat milk": 205,
+      "brown rice": 184,
+      "hot peppers": 127,
+      "black beans": 117,
+      "baby carrots": 93
+    }
+  }
+}

@@ -12,7 +12,7 @@
 # Source: IOM 2005 Dietary Reference Intakes tables.
 
 # Iron — women of reproductive age need much more than men or older women.
-iron:
+Iron:
   male:
     - {min_age: 19, low_bound: 8,  high_bound: 45, units: mg}    # 19-50
     - {min_age: 51, low_bound: 8,  high_bound: 45, units: mg}    # 51+
@@ -23,7 +23,7 @@ iron:
     - {min_age: 19, low_bound: 18, high_bound: 45, units: mg}    # conservative default
 
 # Calcium — rises to 1200mg for 51+ women, 71+ men.
-calcium:
+Calcium:
   male:
     - {min_age: 19, low_bound: 1000, high_bound: 2500, units: mg}    # 19-70
     - {min_age: 71, low_bound: 1200, high_bound: 2000, units: mg}    # 71+
@@ -45,7 +45,7 @@ calcium:
     - {min_age: 19, low_bound: 15, high_bound: 100, units: mcg}
 
 # Zinc — IOM: 11mg men, 8mg women.
-zinc:
+Zinc:
   male:
     - {min_age: 19, low_bound: 11, high_bound: 40, units: mg}
   female:
@@ -54,7 +54,7 @@ zinc:
     - {min_age: 19, low_bound: 10, high_bound: 40, units: mg}
 
 # Magnesium — men higher.
-magnesium:
+Magnesium:
   male:
     - {min_age: 19, low_bound: 400, high_bound: 10000, units: mg}    # 19-30: 400; 31+: 420 (rounded)
     - {min_age: 31, low_bound: 420, high_bound: 10000, units: mg}

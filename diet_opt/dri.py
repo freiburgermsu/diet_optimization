@@ -32,20 +32,24 @@ DEFAULT_OVERRIDES_PATH = Path(__file__).resolve().parent.parent / "data" / "dri_
 
 # IOM/WHO Physical Activity Level multipliers applied to BMR.
 ACTIVITY_PAL = {
-    "sedentary": 1.2,   # desk job, minimal exercise
-    "light": 1.375,     # some daily walking
-    "moderate": 1.55,   # 3-5 days/week moderate exercise
-    "active": 1.725,    # 6-7 days/week strenuous
-    "very_active": 1.9, # daily intense training + physical job
+    "sedentary": 1.2,       # desk job, minimal exercise
+    "light": 1.375,         # some daily walking
+    "moderate": 1.55,       # 3-5 days/week moderate exercise
+    "weight_lifting": 1.55, # moderate cardio demand but high protein/AA needs
+    "active": 1.725,        # 6-7 days/week strenuous
+    "very_active": 1.9,     # daily intense training + physical job
 }
 
-# Protein RDA range by activity.
+# Protein requirement scaled by activity level.
+# Sedentary: 0.7 g/kg (IOM RDA floor); very_active: 1.5 g/kg (ISSN upper range).
+# Weight lifting uses the very_active protein target with moderate energy.
 PROTEIN_G_PER_KG = {
-    "sedentary": 0.8,
+    "sedentary": 0.7,
     "light": 0.8,
     "moderate": 1.0,
+    "weight_lifting": 1.5,
     "active": 1.2,
-    "very_active": 1.6,
+    "very_active": 1.5,
 }
 
 
@@ -55,7 +59,7 @@ class UserProfile:
     age: int
     weight_kg: float
     height_cm: float
-    activity: Literal["sedentary", "light", "moderate", "active", "very_active"]
+    activity: Literal["sedentary", "light", "moderate", "weight_lifting", "active", "very_active"]
 
     def __post_init__(self):
         if self.sex not in ("male", "female", "nonbinary"):
@@ -156,18 +160,19 @@ def apply_profile(
     # --- Formula-scaled patches ---
     energy = energy_kcal(profile)
     _patch(result, "Energy", lb=int(energy * 0.85), ub=int(energy * 1.10), units="kcal")
+    prot_lb = round(protein_rda_g(profile), 1)
     _patch(result, "Protein",
-           lb=round(protein_rda_g(profile), 1),
-           ub=round(protein_rda_g(profile) * 2.5, 1),   # safety tolerance
+           lb=prot_lb,
+           ub=round(prot_lb * 1.7, 1),   # 70% above lower bound as practical cap
            units="grams")
     _patch(result, "Total Fiber", lb=round(fiber_rda_g(energy), 1),
            ub=100, units="grams")
     _patch(result, "Total Water", lb=0.37, ub=water_rda_L(profile),
            units="L")
     _patch(result, "Linoleic Acid",
-           lb=linoleic_g(profile), ub=linoleic_g(profile) * 3, units="grams")
+           lb=linoleic_g(profile), ub=float("inf"), units="grams")
     _patch(result, "Linolenic Acid",
-           lb=linolenic_g(profile), ub=linolenic_g(profile) * 3, units="grams")
+           lb=linolenic_g(profile), ub=float("inf"), units="grams")
 
     # --- Bracketed overrides ---
     overrides = load_profile_overrides(overrides_path)

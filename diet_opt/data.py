@@ -198,20 +198,98 @@ def load_priced_foods(
     food_matches: dict[str, dict] = {}
     categories: dict[str, str] = {}
     for term, entry in priced.items():
+        if term == "_metadata":
+            continue
         ppg = entry["price_per_100g"]
-        food_info[term] = {
+        info: dict = {
             "price": ppg * 4.54,
             "yield": 1.0,
             "cupEQ": entry.get("cup_equivalent", default_cup_eq),
         }
-        food_matches[term] = entry.get("nutrients", {})
+        pkg = entry.get("package_size_g")
+        if pkg:
+            info["package_size_g"] = float(pkg)
         cat = entry.get("tfp_category")
         if cat:
             categories[term] = cat
+            info["tfp_category"] = cat
+        info["perishable"] = is_perishable(term, cat)
+        food_info[term] = info
+        food_matches[term] = entry.get("nutrients", {})
     nutrition = load_json("nutrition.json")
     if impute_aa:
         food_matches, _stats = impute_amino_acids(food_matches, categories)
     return food_info, food_matches, nutrition
+
+
+# Keywords / categories for perishability classification.
+# Perishable = spoils within ~1 week at fridge temp. Buy whole packages.
+# Durable = weeks to months (roots, hard squash, dried, canned, frozen, nuts, grains).
+_PERISHABLE_CATEGORIES = {
+    "Dark green vegetables",
+    "Fruit, higher nutrient density",
+    "Fruit, lower nutrient density",
+}
+
+_PERISHABLE_KEYWORDS = {
+    # Leafy greens
+    "spinach", "kale", "lettuce", "arugula", "chard", "collard",
+    "dandelion", "mustard greens", "watercress", "endive", "radicchio",
+    "cabbage", "bok choy", "mesclun",
+    # Soft fruit
+    "berry", "berries", "strawberr", "blueberr", "raspberr", "blackberr",
+    "grape", "mango", "papaya", "banana", "peach", "plum", "nectarine",
+    "cherry", "melon", "watermelon", "cantaloupe", "honeydew", "kiwi",
+    "pear", "fig", "apricot", "avocado", "pineapple", "lychee",
+    "passion fruit", "guava", "persimmon", "starfruit",
+    # Soft vegetables
+    "tomato", "cucumber", "zucchini", "squash summer", "bell pepper",
+    "hot pepper", "jalapeno", "serrano", "celery", "asparagus",
+    "green bean", "snap pea", "snow pea", "okra", "eggplant",
+    "mushroom", "corn",  # fresh corn, not dried
+    "yogurt",  # yogurt spoils faster than hard dairy
+    # Herbs
+    "basil", "cilantro", "parsley", "dill", "mint", "chive",
+    # Fresh proteins (if not frozen)
+    "fresh fish", "fresh chicken",
+}
+
+_DURABLE_KEYWORDS = {
+    # Roots and hard vegetables that last weeks+
+    "carrot", "potato", "sweet potato", "yam", "beet", "turnip",
+    "rutabaga", "parsnip", "radish", "onion", "garlic", "ginger",
+    "butternut", "acorn squash", "pumpkin", "winter squash",
+    # All shelf-stable
+    "rice", "bean", "lentil", "chickpea", "pea dried", "grain",
+    "oat", "wheat", "flour", "pasta", "bread", "cereal",
+    "nut", "seed", "peanut", "almond", "walnut", "cashew", "pistachio",
+    "canned", "frozen", "dried", "jerky", "oil", "vinegar",
+    "sugar", "honey", "molasses", "syrup", "salt",
+    "egg",  # eggs last 3-5 weeks refrigerated
+    "apple",  # apples last weeks refrigerated
+    # Dairy (except yogurt) lasts weeks refrigerated
+    "milk", "cheese", "butter", "cream", "parmesan", "ricotta",
+    "cottage", "mozzarella", "cheddar", "sour cream",
+}
+
+
+def is_perishable(food_name: str, tfp_category: str | None = None) -> bool:
+    """Classify whether a food spoils within ~1 week (buy whole packages)."""
+    name_lower = food_name.lower()
+
+    # Durable keywords override — check first
+    if any(kw in name_lower for kw in _DURABLE_KEYWORDS):
+        return False
+
+    # Perishable keywords
+    if any(kw in name_lower for kw in _PERISHABLE_KEYWORDS):
+        return True
+
+    # Category-based fallback
+    if tfp_category and tfp_category in _PERISHABLE_CATEGORIES:
+        return True
+
+    return False
 
 
 def parse_bound(raw: str | float | int) -> float:

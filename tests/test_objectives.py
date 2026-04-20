@@ -55,7 +55,7 @@ def test_sodium_term_skips_zero_sodium_foods():
 
 def test_load_polyphenol_content_has_blueberries():
     pp = load_polyphenol_content()
-    assert pp["Blueberries"] == 836
+    assert pp["blueberries"] == 836
 
 
 def test_polyphenol_csv_comments_ignored():

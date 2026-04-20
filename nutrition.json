@@ -11,7 +11,7 @@
    },
    "Protein": {
       "low_bound": "100",
-      "high_bound": "150",
+      "high_bound": "170",
       "units": "grams"
    },
    "Fat": {
@@ -26,12 +26,12 @@
    },
    "Linolenic Acid": {
       "low_bound": "1.6",
-      "high_bound": "10000",
+      "high_bound": "inf",
       "units": "grams"
    },
    "Linoleic Acid": {
       "low_bound": "17",
-      "high_bound": "10000",
+      "high_bound": "inf",
       "units": "grams"
    },
    "Dietary Cholesterol": {
@@ -41,7 +41,7 @@
    },
    "Total Water": {
       "low_bound": "0.37",
-      "high_bound": "3.7",
+      "high_bound": "inf",
       "units": "liters"
    },
    "Energy": {

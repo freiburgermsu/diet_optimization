@@ -46,6 +46,39 @@ DEFAULT_MIN_SERVING_UNITS = 0.30    # 30g/day
 DEFAULT_VAR_UB = 4.0                # 400g/day per food
 WEEKLY_BIG_M = DEFAULT_VAR_UB
 
+# Substitute groups: within each group, at most one food may appear in
+# the weekly plan.  Prevents the solver from picking 3 types of milk or
+# 4 kinds of rice when the user would only buy one.
+# Substitute groups: items a shopper would never buy two of simultaneously.
+# For each group, only the cheapest member enters the MILP food pool.
+SUBSTITUTE_GROUPS: list[list[str]] = [
+    ["milk", "nonfat milk", "reduced fat milk"],
+    ["brown rice", "white rice", "jasmine rice", "basmati rice"],
+    ["plain yogurt", "greek yogurt"],
+    ["fuji apples", "gala apples", "granny smith apples", "honeycrisp apples", "red delicious apples", "rose-apples"],
+    ["yellow onions", "white onions", "sweet onions", "onions"],
+    ["baby carrots", "carrots"],
+]
+
+
+def filter_substitutes(food_info: dict) -> set[str]:
+    """Return food names to DROP from the pool (non-cheapest group members).
+
+    For each SUBSTITUTE_GROUPS entry, keep only the cheapest member
+    (by price/yield/4.54). Others are removed before the MILP is built.
+    """
+    to_drop: set[str] = set()
+    for group in SUBSTITUTE_GROUPS:
+        members = [(f, food_info[f]) for f in group if f in food_info]
+        if len(members) < 2:
+            continue
+        # cheapest by objective coefficient
+        members.sort(key=lambda fi: fi[1]["price"] / max(fi[1].get("yield", 1.0), 0.01))
+        # keep the cheapest, drop the rest
+        for f, _ in members[1:]:
+            to_drop.add(f)
+    return to_drop
+
 
 @dataclass
 class WeeklyModel:
@@ -251,6 +284,10 @@ def build_weekly_model(
     include_volume: bool = False,
     time_limit_sec: float = 120.0,
     mip_gap: float = 0.01,
+    whole_package_tolerance: float = 0.15,
+    omega3_omega6_ratio: float | None = None,
+    polyphenol_weight: float = 0.0,
+    polyphenols: dict[str, float] | None = None,
 ) -> WeeklyModel:
     """Build the weekly MILP per the module docstring.
 
@@ -297,6 +334,34 @@ def build_weekly_model(
     for food in food_info:
         h.addConstr(sum(y_vars[(food, d)] for d in range(days)) <= max_days_per_food)
 
+    # --- Whole-package constraint for perishable foods ---
+    # For perishable foods with a known package size, the total weekly
+    # grams must be an integer number of packages (±tolerance).
+    # This prevents food waste: if spinach comes in 8oz bags, you buy
+    # 1 or 2 bags, not 1.3 bags worth.
+    #
+    # Formulation: let P = package_size in 100g units, n = integer var.
+    #   sum_d(x[food,d]) >= P * n * (1 - tol)
+    #   sum_d(x[food,d]) <= P * n * (1 + tol)
+    # with n bounded by [0, ceil(days * var_ub / P)].
+    from math import ceil
+    n_pkg_vars: dict[str, Any] = {}
+    for food, info in food_info.items():
+        if not info.get("perishable"):
+            continue
+        pkg_g = info.get("package_size_g")
+        if not pkg_g or pkg_g <= 0:
+            continue
+        pkg_units = pkg_g / 100.0  # convert to 100g units (same as x_vars)
+        max_packages = ceil(days * var_ub / pkg_units)
+        n_var = h.addIntegral(lb=0, ub=max_packages)
+        n_pkg_vars[food] = n_var
+        weekly_total = sum(x_vars[(food, d)] for d in range(days))
+        # weekly_total >= pkg_units * n * (1 - tol)
+        h.addConstr(weekly_total - pkg_units * (1 - whole_package_tolerance) * n_var >= 0)
+        # weekly_total <= pkg_units * n * (1 + tol)
+        h.addConstr(weekly_total - pkg_units * (1 + whole_package_tolerance) * n_var <= 0)
+
     # --- Per-day nutrient constraints (identical DRI each day) ---
     support = {
         n: sum(1 for f in food_info if n in food_matches.get(f, {}))
@@ -334,12 +399,40 @@ def build_weekly_model(
             h.addConstr(vol_expr >= 5)
             h.addConstr(vol_expr <= 20)
 
+    # --- Omega-3:omega-6 ratio constraint (per day) ---
+    # ALA converts at ~8% to bioactive EPA/DHA in vivo; EPA and DHA are
+    # 100% bioactive. Effective omega-3 = 0.08*ALA + EPA + DHA.
+    ALA_BIOCONVERSION = 0.08
+    if omega3_omega6_ratio is not None:
+        for d in range(days):
+            ratio_terms = []
+            for food in food_info:
+                fm_entry = food_matches.get(food, {})
+                eff_o3 = (ALA_BIOCONVERSION * fm_entry.get("Linolenic Acid", 0)
+                          + fm_entry.get("PUFA 20:5 n-3 (EPA)", 0)
+                          + fm_entry.get("PUFA 22:6 n-3 (DHA)", 0))
+                o6 = fm_entry.get("Linoleic Acid", 0)
+                coef = eff_o3 - omega3_omega6_ratio * o6
+                if coef != 0:
+                    ratio_terms.append(coef * x_vars[(food, d)])
+            if ratio_terms:
+                h.addConstr(sum(ratio_terms) >= 0)
+
     # --- Objective: minimize total weekly cost ---
     obj_terms = []
     for (food, d), xv in x_vars.items():
         info = food_info[food]
         cost_per_100g = info["price"] / max(info.get("yield", 1.0), 0.01) / 4.54
         obj_terms.append(cost_per_100g * xv)
+
+    # Polyphenol bonus (negative cost term to preferentially select
+    # high-polyphenol foods; small weight so cost still dominates)
+    if polyphenol_weight > 0 and polyphenols:
+        for (food, d), xv in x_vars.items():
+            pp_val = polyphenols.get(food, 0)
+            if pp_val > 0:
+                obj_terms.append(-polyphenol_weight * pp_val * xv)
+
     h.minimize(sum(obj_terms))
 
     return WeeklyModel(model=h, x=x_vars, y=y_vars)

@@ -379,8 +379,14 @@ def main() -> int:
     )
     fetch.add_argument(
         "--location-id",
-        help="Kroger store ID. Precedence: this flag > KROGER_LOCATION_ID env > error. "
-             "Use `find-location` subcommand to discover by zip.",
+        help="Kroger store ID. Precedence: this flag > --zip auto-resolve > "
+             "KROGER_LOCATION_ID env > error.",
+    )
+    fetch.add_argument(
+        "--zip",
+        help="US zip code. Auto-resolves to the nearest Kroger store's "
+             "location ID (saved in output metadata). Overridden by "
+             "--location-id if both are given.",
     )
     fetch.add_argument("--output", default="prices_raw.json")
     fetch.add_argument("--rate-limit-sec", type=float, default=1.0)
@@ -434,7 +440,26 @@ def main() -> int:
             )
         return 0
 
-    cfg = load_config(location_id=args.location_id)
+    # --- Resolve --zip to a location ID if needed ---
+    location_id = args.location_id
+    zip_code = getattr(args, "zip", None)
+    if not location_id and zip_code:
+        # Need a temporary token to look up the store; use a partial config.
+        _tmp_cfg = load_config(location_id="_zip_lookup_")
+        _tmp_token = get_access_token(_tmp_cfg)
+        locations = find_locations(_tmp_token, zip_code, radius_miles=15)
+        if not locations:
+            print(f"no Kroger stores within 15 miles of {zip_code}", file=sys.stderr)
+            return 2
+        location_id = locations[0].get("locationId")
+        addr = locations[0].get("address", {})
+        print(
+            f"resolved zip {zip_code} → store {location_id} "
+            f"({locations[0].get('name')}, {addr.get('city')} {addr.get('state')})",
+            file=sys.stderr,
+        )
+
+    cfg = load_config(location_id=location_id)
     token = get_access_token(cfg)
 
     if args.terms_from_food_info:
@@ -500,6 +525,7 @@ def main() -> int:
         "fetched_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "retailer": "kroger",
         "location_id": cfg.location_id,
+        "zip_code": zip_code,
         "terms": terms,
         "products": products,
     }
