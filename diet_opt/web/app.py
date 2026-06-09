@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
 
 from ..data import load_priced_foods
@@ -1179,9 +1179,43 @@ def create_app(priced_foods_path: Path | None = None) -> FastAPI:
     except ImportError:
         pass
 
+    def _public_url(request: Request) -> str:
+        # Prefer explicit env override (set this on a public deploy so OG/canonical
+        # reflect the actual domain instead of the internal bind address).
+        explicit = os.environ.get("DIET_OPT_PUBLIC_URL", "").rstrip("/")
+        if explicit:
+            return explicit
+        # Fall back to scheme+host as seen by the request (honors X-Forwarded-* via
+        # uvicorn --proxy-headers).
+        return f"{request.url.scheme}://{request.url.netloc}".rstrip("/")
+
     @app.get("/", response_class=HTMLResponse)
-    async def index() -> str:
-        return (STATIC_DIR / "index.html").read_text()
+    async def index(request: Request) -> str:
+        html = (STATIC_DIR / "index.html").read_text()
+        return html.replace("{{PUBLIC_URL}}", _public_url(request))
+
+    @app.get("/robots.txt", response_class=PlainTextResponse)
+    async def robots(request: Request) -> str:
+        base = _public_url(request)
+        return (
+            "User-agent: *\n"
+            "Allow: /\n"
+            "Disallow: /optimize\n"
+            "Disallow: /meal-plan\n"
+            "Disallow: /health\n"
+            f"Sitemap: {base}/sitemap.xml\n"
+        )
+
+    @app.get("/sitemap.xml")
+    async def sitemap(request: Request) -> Response:
+        base = _public_url(request)
+        body = (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            f"  <url><loc>{base}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>\n"
+            "</urlset>\n"
+        )
+        return Response(content=body, media_type="application/xml")
 
     @app.get("/presets")
     async def presets() -> dict[str, Any]:

@@ -1,0 +1,153 @@
+diet-opt — self-hosting + SEO notes
+===================================
+
+Files added / changed
+---------------------
+- pyproject.toml
+    Added [web] optional-dependencies group: fastapi, uvicorn[standard],
+    pydantic, slowapi, anthropic.
+
+- deploy/run_server.sh
+    Launcher. Uses the uv-managed venv at ~/Documents/py_venv by default,
+    sources deploy/diet-opt.env if present, execs uvicorn with
+    --proxy-headers so reverse-proxy Forwarded-For/Host headers are honored.
+
+- deploy/diet-opt.env.example
+    Env template. Copy to deploy/diet-opt.env and fill in. Chmod 600
+    because it holds the Anthropic API key. Variables:
+        ANTHROPIC_API_KEY           required for /meal-plan
+        DIET_OPT_HOST               bind address (default 127.0.0.1)
+        DIET_OPT_PORT               default 8000
+        DIET_OPT_WORKERS            default 1 (LP is CPU-bound; 1 is fine)
+        DIET_OPT_TRUSTED_PROXIES    proxy IPs for forwarded-headers
+        DIET_OPT_PUBLIC_URL         canonical URL for SEO tags + sitemap
+        DIET_OPT_PYTHON             override interpreter path
+
+- deploy/diet-opt.service
+    systemd unit. Hardened with NoNewPrivileges, ProtectSystem=strict,
+    ProtectHome=read-only, PrivateTmp, RestrictSUIDSGID, LockPersonality,
+    etc. Edit the User/WorkingDirectory/paths before installing if your
+    layout differs.
+
+- diet_opt/web/static/index.html
+    SEO head: title, meta description, keywords, canonical, robots,
+    theme-color, Open Graph, Twitter card, JSON-LD WebApplication schema.
+    H1 and subtitle enriched with target keywords. Canonical/OG URLs use
+    a {{PUBLIC_URL}} placeholder substituted at request time.
+
+- diet_opt/web/app.py
+    - Templates {{PUBLIC_URL}} into the served index (from
+      DIET_OPT_PUBLIC_URL env, or request scheme+host as fallback).
+    - Adds GET /robots.txt (allows /, disallows POST endpoints + /health,
+      references the sitemap).
+    - Adds GET /sitemap.xml (single URL entry, refreshed from base URL).
+
+
+Minimal hosting path
+--------------------
+1. Install web extras (once):
+       uv pip install --python ~/Documents/py_venv/bin/python -e ".[web]"
+
+2. Build the priced-foods data the server reads:
+       python scripts/build_priced_foods.py \
+           --prices final_prices.json \
+           --nutrients fresh_foods_nutrients_names_physiology.json \
+           --output priced_foods.json
+   (If you don't have final_prices.json yet, run scripts/fetch_prices.py
+   and scripts/merge_prices.py first — see scripts/fetch_data.sh.)
+
+3. Configure:
+       cp deploy/diet-opt.env.example deploy/diet-opt.env
+       chmod 600 deploy/diet-opt.env
+       # edit ANTHROPIC_API_KEY and DIET_OPT_PUBLIC_URL
+
+4. Test in foreground:
+       ./deploy/run_server.sh
+       # visit http://127.0.0.1:8000
+
+5. Install as a service that auto-starts on reboot:
+       sudo cp deploy/diet-opt.service /etc/systemd/system/
+       sudo systemctl daemon-reload
+       sudo systemctl enable --now diet-opt
+       sudo systemctl status diet-opt
+       journalctl -u diet-opt -f          # tail logs
+
+
+Making it reachable from the internet
+-------------------------------------
+The server binds to 127.0.0.1 by default. Pick ONE of these to expose it:
+
+  (A) Reverse proxy with automatic HTTPS (recommended).
+      Install Caddy, then /etc/caddy/Caddyfile:
+
+          diet.yourdomain.com {
+              reverse_proxy 127.0.0.1:8000
+          }
+
+      Caddy auto-issues a Let's Encrypt cert. Point an A record at your
+      public IP. Forward TCP 80/443 on your router to the host's LAN IP.
+      Set DIET_OPT_PUBLIC_URL=https://diet.yourdomain.com so canonical,
+      OG, and sitemap URLs all render correctly.
+
+  (B) Tailscale Funnel or Cloudflare Tunnel.
+      No router port-forwarding, no static IP needed. Good when your ISP
+      blocks inbound 80/443 (e.g. most residential CGNAT).
+
+  (C) LAN-only.
+      Set DIET_OPT_HOST=0.0.0.0 and reach it at http://<host-ip>:8000
+      from other devices on your network.
+
+Firewall:
+    sudo ufw allow 80/tcp
+    sudo ufw allow 443/tcp
+    # do NOT open 8000 to the internet — keep uvicorn behind the proxy.
+
+
+SEO work applied
+----------------
+- Title and meta description tuned for queries like "cheapest
+  nutritionally-complete meal planner" and "diet LP optimizer".
+- Open Graph + Twitter Card for rich link previews when shared.
+- JSON-LD WebApplication schema with price (free), creator, and a
+  backlink to the Zenodo DOI (10.5281/zenodo.17298763) for authority.
+- /robots.txt: allows crawling of /, disallows POST endpoints
+  (/optimize, /meal-plan) and /health — they waste crawl budget and
+  have no SEO value.
+- /sitemap.xml emitted dynamically and referenced from robots.txt.
+- Canonical and OG URLs resolve from DIET_OPT_PUBLIC_URL (or, when
+  absent, from the request scheme+host via --proxy-headers). This
+  prevents duplicate-content issues when the same app is reachable at
+  both an IP and a domain.
+
+
+Next SEO steps (do these after you have a public URL)
+-----------------------------------------------------
+- Submit sitemap in Google Search Console and Bing Webmaster Tools.
+- Add an og:image (1200x630 PNG screenshot of the results panel) and
+  reference it with <meta property="og:image" content="..."> in the
+  head — this dramatically improves share-preview CTR.
+- Build one or two inbound links back to the live URL: edit the
+  project README and the Zenodo record description to link to it.
+- Add a short FAQ section at the bottom of the page covering common
+  queries (e.g. "What is the cheapest healthy diet?", "How does DRI
+  personalization work?") — long-tail keyword coverage without
+  affecting the form UX.
+- Consider a --log-level warning flag and structured access logs if you
+  want to analyze traffic later.
+
+
+Operational notes
+-----------------
+- The service runs as your user and only needs read access to the repo
+  (plus write access for logs/tmp, which PrivateTmp handles). It never
+  persists user data beyond the in-memory request.
+- Rate limiting: slowapi is installed; default limit in app.py is
+  20/minute per remote address. Adjust in create_app() if needed.
+- The /meal-plan endpoint reads ANTHROPIC_API_KEY from the server's
+  environment — it is never accepted from the client. Keep
+  deploy/diet-opt.env chmod 600.
+- To update after a git pull:
+      sudo systemctl restart diet-opt
+- To check that the server sees the right public URL:
+      curl -s http://127.0.0.1:8000/robots.txt
+      curl -s http://127.0.0.1:8000/sitemap.xml

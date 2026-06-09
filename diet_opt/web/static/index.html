@@ -2,7 +2,50 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>diet-opt — cost-minimizing nutritional diet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>diet-opt — cheapest nutritionally-complete meal planner (LP optimizer)</title>
+<meta name="description" content="Open-source diet optimizer that builds the cheapest nutritionally-complete daily meal plan from a 610-food USDA pricing table. Supports vegan, vegetarian, gluten-free, nut-free presets, custom blacklists, DRI personalization by age/sex/weight, and Claude-generated weekly meal plans.">
+<meta name="keywords" content="diet optimization, cheapest healthy diet, linear programming nutrition, USDA FoodData Central, meal planner, vegan diet optimizer, DRI calculator, nutrition LP solver, weekly meal plan, food cost optimization">
+<meta name="author" content="Andrew Freiburger">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta name="theme-color" content="#2d6a4f">
+<link rel="canonical" href="{{PUBLIC_URL}}/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="diet-opt">
+<meta property="og:title" content="diet-opt — cheapest nutritionally-complete meal planner">
+<meta property="og:description" content="Linear-programming diet optimizer over a 610-food USDA pricing table. Vegan/vegetarian/gluten-free presets, DRI personalization, and AI-generated weekly meal plans.">
+<meta property="og:url" content="{{PUBLIC_URL}}/">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="diet-opt — cheapest nutritionally-complete meal planner">
+<meta name="twitter:description" content="Build the cheapest nutritionally-complete daily diet from 610 USDA-priced foods. Open source.">
+
+<!-- Structured data: WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "diet-opt",
+  "alternateName": "Diet Optimizer",
+  "description": "Cost-minimizing diet linear program over the USDA FoodData Central pricing table, with DRI-personalized nutrient bounds and AI-generated weekly meal plans.",
+  "url": "{{PUBLIC_URL}}/",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "creator": {
+    "@type": "Person",
+    "name": "Andrew Freiburger"
+  },
+  "sameAs": [
+    "https://doi.org/10.5281/zenodo.17298763"
+  ]
+}
+</script>
 <style>
   :root {
     --accent: #2d6a4f;
@@ -192,8 +235,10 @@
 </style>
 </head>
 <body>
-<h1>diet-opt</h1>
-<p class="subtitle" id="subtitle">Cost-minimizing nutritional diet over a 610-food pricing table (Kroger + TFP).</p>
+<header>
+  <h1>diet-opt — cost-minimizing nutritional meal planner</h1>
+  <p class="subtitle" id="subtitle">Linear-programming optimizer over a 610-food USDA pricing table (Kroger + Thrifty Food Plan), with DRI personalization and AI-generated weekly meal plans.</p>
+</header>
 
 <form id="optimize-form">
   <fieldset>

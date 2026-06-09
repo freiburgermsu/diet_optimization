@@ -1,0 +1,32 @@
+[Unit]
+Description=diet-opt FastAPI server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Replace USER and the WorkingDirectory path before installing.
+User=freiburger
+Group=freiburger
+WorkingDirectory=/home/freiburger/Documents/diet_optimization
+EnvironmentFile=-/home/freiburger/Documents/diet_optimization/deploy/diet-opt.env
+ExecStart=/home/freiburger/Documents/diet_optimization/deploy/run_server.sh
+Restart=on-failure
+RestartSec=5
+
+# Hardening — the service only needs to read the repo and write nothing.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/freiburger/Documents/diet_optimization
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target
