@@ -220,9 +220,32 @@ groups:
     - peanut
 
   processed:
-    # Added for the whole_foods preset. Catches TFP-priced convenience
-    # foods the LP otherwise treats as cheap nutrient sources (cookies
-    # get enriched-flour nutrients and show up suspiciously often).
+    # Catches processed/extracted/refined foods. Used by whole_foods preset
+    # to restrict the LP to fresh/whole ingredients only.
+    #
+    # Oils & extracted fats
+    - " oil"        # space prefix avoids "soil", "toil"; catches "olive oil", "canola oil"
+    - " lard"       # space prefix to avoid "collards"
+    - shortening
+    - margarine
+    #
+    # Flours, meals, starches
+    - " flour"      # space prefix to avoid "cauliflower"
+    - soy meal
+    - corn meal
+    - flax meal
+    - starch
+    - masa harina
+    #
+    # Sugars & sweeteners
+    - " sugar"      # space prefix to avoid "sugar-apples"
+    - syrup
+    - " honey"      # space prefix to avoid "honeycrisp", "honeydew"
+    - molasses
+    - " agave"      # space prefix
+    - " nectar"     # space prefix to avoid "nectarine"
+    #
+    # Baked goods & snacks
     - cookie
     - cracker
     - biscuit
@@ -233,32 +256,45 @@ groups:
     - donut
     - doughnut
     - pie
-    - muffin  # usually enriched
+    - muffin
     - brownie
+    - chip
+    - pretzel
+    - popcorn
+    #
+    # Frozen / prepared
     - ice cream
     - sorbet
     - frozen yogurt
     - gelato
+    - pudding
+    - custard
+    #
+    # Drinks
     - soda
-    - pop           # soft drink
+    - pop
     - energy drink
     - sport drink
+    #
+    # Bars
     - cereal bar
     - snack bar
     - granola bar
     - protein bar
-    - chip          # potato chip, tortilla chip
-    - pretzel
-    - popcorn
-    - pudding
-    - custard
+    #
+    # Spreads & preserves
     - gummies
     - gummy
     - jelly
     - jam
     - preserves
-    - nectar  # e.g. "agave nectar"
-    - syrup
+    #
+    # Other processed
+    - defatted
+    - hydrogenated
+    - concentrate
+    - isolate        # protein isolate, soy isolate
+    - supplement
 
 # Presets combine one or more groups.
 # --dietary-preset vegan expands to the union of meat + fish + dairy + egg groups.

@@ -119,6 +119,14 @@ def main() -> int:
     claude = load_claude_prices(Path(args.claude))
     tfp = load_tfp_lookup(Path(args.tfp))
 
+    # Include any Claude-priced terms not in the Kroger raw terms
+    # (manually added oils, dairy, etc.)
+    term_set = set(terms)
+    for term in claude:
+        if term not in term_set:
+            terms.append(term)
+            term_set.add(term)
+
     final, counts = build_final_prices(terms, claude, tfp)
     Path(args.output).write_text(json.dumps(final, indent=2, sort_keys=True))
 

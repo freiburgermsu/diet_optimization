@@ -536,14 +536,16 @@ def _solve(req: OptimizeRequest, priced_foods_path: Path) -> OptimizeResponse:
         "anti_inflammatory" in DISEASE_PRESETS.get(dp, {}).get("flags", set())
         for dp in req.disease_presets
     ):
-        # Omega-3:omega-6 ratio >= 1:2 using bioactive equivalents.
-        # ALA converts to EPA/DHA at ~8% in vivo (Burdge & Calder 2005).
-        # EPA and DHA are 100% bioactive. So effective omega-3 =
-        #   0.08 × ALA + 1.0 × EPA + 1.0 × DHA
-        # Constraint: effective_o3 - 0.25 × omega6 >= 0  (ratio >= 1:4)
+        # Omega-3:omega-6 ratio using bioactive equivalents.
+        # ALA converts at ~8% in vivo; EPA/DHA at 100%.
+        # Fish-free diets relax to 1:10 (1:4 is impossible without EPA/DHA).
         import optlang
         from ..model import _safe_name
         ALA_BIOCONVERSION = 0.08
+        _fish_excluded = any(p in req.dietary_presets
+                             for p in ("vegetarian", "lacto_vegetarian",
+                                       "vegan", "vegan_gluten_free", "vegan_nut_free"))
+        _ratio_target = 0.10 if _fish_excluded else 0.25
         ratio_terms = []
         for food in food_info:
             fm_entry = food_matches.get(food, {})
@@ -551,7 +553,7 @@ def _solve(req: OptimizeRequest, priced_foods_path: Path) -> OptimizeResponse:
                       + fm_entry.get("PUFA 20:5 n-3 (EPA)", 0)
                       + fm_entry.get("PUFA 22:6 n-3 (DHA)", 0))
             o6 = fm_entry.get("Linoleic Acid", 0)
-            coef = eff_o3 - 0.25 * o6
+            coef = eff_o3 - _ratio_target * o6
             if coef != 0:
                 safe = _safe_name(food)
                 if safe in variables:
@@ -680,7 +682,7 @@ def _weekly_event_stream(
     days: int = 7,
     max_days_per_food: int = 4,
     pool_size: int = 150,
-    time_limit_sec: float = 120.0,
+    time_limit_sec: float = 300.0,
     mip_gap: float = 0.02,
 ):
     """Stream NDJSON events for a 7-day variety diet.
@@ -802,6 +804,10 @@ def _weekly_event_stream(
             import optlang
             from ..model import _safe_name
             ALA_BIO = 0.08
+            _fish_excluded = any(p in req.dietary_presets
+                                 for p in ("vegetarian", "lacto_vegetarian",
+                                           "vegan", "vegan_gluten_free", "vegan_nut_free"))
+            _ref_ratio = 0.10 if _fish_excluded else 0.25
             _ratio_terms = []
             for food in food_info:
                 e = food_matches.get(food, {})
@@ -809,7 +815,7 @@ def _weekly_event_stream(
                           + e.get("PUFA 20:5 n-3 (EPA)", 0)
                           + e.get("PUFA 22:6 n-3 (DHA)", 0))
                 o6 = e.get("Linoleic Acid", 0)
-                coef = eff_o3 - 0.25 * o6
+                coef = eff_o3 - _ref_ratio * o6
                 safe = _safe_name(food)
                 if coef != 0 and safe in ref_vars:
                     _ratio_terms.append(coef * ref_vars[safe])
@@ -895,7 +901,12 @@ def _weekly_event_stream(
         for dp in req.disease_presets
     )
     if _needs_anti_inflam:
-        milp_kwargs["omega3_omega6_ratio"] = 0.25
+        # Fish-free diets can't achieve 1:4 with 8% ALA conversion.
+        # Relax to 1:10 for vegetarian/vegan, 1:4 otherwise.
+        fish_excluded = any(p in req.dietary_presets
+                           for p in ("vegetarian", "lacto_vegetarian",
+                                     "vegan", "vegan_gluten_free", "vegan_nut_free"))
+        milp_kwargs["omega3_omega6_ratio"] = 0.10 if fish_excluded else 0.25
 
     per_day = None
     weekly = None
